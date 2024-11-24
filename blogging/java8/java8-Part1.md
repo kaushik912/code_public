@@ -26,6 +26,7 @@ It does the same job as before but we can see the following:
 - event is the name of the parameter
 - Instead of an object that implements an interface, we are passing in a *block of code*.
 - We don't provide the 'type' for event, *javac* infers it as an Action Event.
+- 
 Congrats! you've written your first *lambda* expression!
 
 
@@ -126,8 +127,8 @@ Its because Type isn't specified and it can't add Object, Object!
 So we need to specify type like BinaryOperator<Long> , BinaryOperator<Integer> etc.
 
 ## Function Interface - Revisited
-Now, lets talk about an important interface i.e. Function
-It is used a lot in Steaming API in Collections ( we'll discussed in another post)
+Now, lets talk about an important interface i.e. Function.
+ It is used a lot in Streaming API in Collections ( we'll discussed in another post)
 Its interface looks like:
 ```
   public interface Function<T,R>{
