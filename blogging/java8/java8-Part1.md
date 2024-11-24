@@ -128,7 +128,9 @@ So we need to specify type like BinaryOperator<Long> , BinaryOperator<Integer> e
 
 ## Function Interface - Revisited
 Now, lets talk about an important interface i.e. Function.
- It is used a lot in Streaming API in Collections ( we'll discussed in another post)
+
+It is used a lot in Streaming API in Collections ( we'll discuss Streaming APIs in another post)
+
 Its interface looks like:
 ```
   public interface Function<T,R>{
