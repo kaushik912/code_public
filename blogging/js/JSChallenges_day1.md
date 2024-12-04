@@ -71,7 +71,7 @@ function MyClass() {
 - Try to guess what the below code prints.
 - Please fix the code below so that it prints 'John Doe'.
 
-### Solution
+### Solution 1 
  If you're using a regular function (not an arrow function), and you want to preserve the value of `this`, using a variable like `self` or `that` to store the reference to the context of this (such as the object that owns the method) makes sense.
  Below code shows that approach.
 ```
@@ -86,3 +86,23 @@ function MyClass() {
 
 ```
 
+### Solution 2
+- Using Arrow functions!
+
+```
+function MyClass() {
+  this.name = 'John Doe';
+  
+  setTimeout(() => {
+    console.log(this.name);  // `this` now refers to the MyClass instance
+  }, 1000);
+}
+
+const myInstance = new MyClass(); 
+```
+
+Arrow Function Behavior: 
+
+        The arrow function (() => {}) inside setTimeout does not have its own this.
+        Instead, it inherits the this value from its surrounding lexical context. 
+        In this case, the lexical context is the MyClass constructor, where this refers to the instance of MyClass.
