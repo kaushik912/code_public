@@ -1,4 +1,6 @@
-    
+- [Using External Iteration](#using-external-iteration)
+- [Internal Iteration Using Streams](#internal-iteration-using-streams)
+- [Lazy and Eager filters](#lazy-and-eager-filters)
 In this tutorial, we will explore different kinds of iterations using code examples
 
 ## Using External Iteration
