@@ -1,7 +1,7 @@
 # Javascript Challenges
 ## Challenge 1 
 
-- Explain why below code prints `undefined` instead of `John Doe`
+- Try to guess what the below code prints.
 - Fix the code to print `John Doe`
 
 ```
@@ -56,14 +56,14 @@ Lets do some analysis
 ### Challenge 2
 Consider the following function declaration.
 ```
-    function MyClass() {
-    this.name = 'John Doe';
-    
-    setTimeout(function() {
-        console.log("Printing..")
-        console.log(this.name);  // 'this' will refer to the global object, not MyClass
-    }, 1000);
-    }
+function MyClass() {
+  this.name = 'John Doe';
+  
+  setTimeout(function() {
+    console.log(this.name);  // 'this' will refer to the global object, not MyClass
+  }, 1000);
+}
+
 ```
 - Try to guess what the below code prints.
 - Please fix the code below so that it prints 'John Doe'.
