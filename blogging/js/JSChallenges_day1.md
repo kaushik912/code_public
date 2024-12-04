@@ -38,6 +38,9 @@ Lets do some analysis
 
     `setTimeout(() => person.getName(), 1000);`
 
+    Arrow functions do not have their own `this`, so they inherit the this from the surrounding lexical context.
+    In this case, the surrounding context is the object `person`, so this inside the arrow function will correctly refer to the person object.
+
 - Solution 3: Store this in a variable (for older browsers or environments that don’t support .bind() or arrow functions)
 
     ```
@@ -68,4 +71,18 @@ function MyClass() {
 - Try to guess what the below code prints.
 - Please fix the code below so that it prints 'John Doe'.
 
+### Solution
+ If you're using a regular function (not an arrow function), and you want to preserve the value of `this`, using a variable like `self` or `that` to store the reference to the context of this (such as the object that owns the method) makes sense.
+ Below code shows that approach.
+```
+function MyClass() {
+  this.name = 'John Doe';
+  let self = this;  // Preserve `this` in `self`
+  
+  setTimeout(function() {
+    console.log(self.name);  // `self` still refers to the MyClass instance
+  }, 1000);
+}
+
+```
 
