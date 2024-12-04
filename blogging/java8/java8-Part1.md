@@ -3,13 +3,13 @@
 # Getting Started 
 Consider the following snippet
 ```
-  button.addActionListener(
-  new ActionListener(){
-      public void actionPerformed(ActionEvent e){
-          System.out.println("Button Clicked");
-      }
-  }
-  )
+button.addActionListener(
+    new ActionListener(){
+        public void actionPerformed(ActionEvent e){
+            System.out.println("Button Clicked");
+        }
+    }
+)
 ```
 As we can see, there are few observations
 - Lots of *boilerplate* code
