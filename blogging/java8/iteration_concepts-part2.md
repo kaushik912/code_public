@@ -1,12 +1,4 @@
- 
-
-# Java8 Internal and External Iteration Concepts
-- [Java8 Internal and External Iteration Concepts](#java8-internal-and-external-iteration-concepts)
-  - [Using External Iteration](#using-external-iteration)
-  - [Internal Iteration Using Streams](#internal-iteration-using-streams)
-  - [Lazy and Eager filters](#lazy-and-eager-filters)
     
-
 In this tutorial, we will explore different kinds of iterations using code examples
 
 ## Using External Iteration
