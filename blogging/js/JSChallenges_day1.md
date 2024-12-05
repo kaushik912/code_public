@@ -32,11 +32,15 @@ Lets do some analysis
 ## Solutions
 - Solution 1: Use .bind() to explicitly set the context of this:
 
-    `setTimeout(person.getName.bind(person), 1000);`
+    ```
+    setTimeout(person.getName.bind(person), 1000);
+    ```
 
 - Solution 2: Use an Arrow Function (which doesn't have its own this):
 
-    `setTimeout(() => person.getName(), 1000);`
+    ```
+    setTimeout(() => person.getName(), 1000);
+    ```
 
     Arrow functions do not have their own `this`, so they inherit the this from the surrounding lexical context.
     In this case, the surrounding context is the object `person`, so this inside the arrow function will correctly refer to the person object.
@@ -56,20 +60,27 @@ Lets do some analysis
     }, 1000);
     ```
 
-### Challenge 2
+## Challenge 2
 Consider the following function declaration.
 ```
 function MyClass() {
   this.name = 'John Doe';
   
   setTimeout(function() {
-    console.log(this.name);  // 'this' will refer to the global object, not MyClass
+    console.log(this.name); 
   }, 1000);
 }
 
 ```
 - Try to guess what the below code prints.
 - Please fix the code below so that it prints 'John Doe'.
+
+## Solutions
+If we observe the below logging statement, 
+
+`console.log(this.name);`
+
+here `this` will refer to the global object, not MyClass
 
 ### Solution 1 
  If you're using a regular function (not an arrow function), and you want to preserve the value of `this`, using a variable like `self` or `that` to store the reference to the context of this (such as the object that owns the method) makes sense.
@@ -101,8 +112,8 @@ function MyClass() {
 const myInstance = new MyClass(); 
 ```
 
-Arrow Function Behavior: 
+### Arrow Function Behavior: 
 
-        The arrow function (() => {}) inside setTimeout does not have its own this.
-        Instead, it inherits the this value from its surrounding lexical context. 
-        In this case, the lexical context is the MyClass constructor, where this refers to the instance of MyClass.
+- The arrow function (() => {}) inside setTimeout does not have its own `this`.
+- Instead, it inherits the this value from its surrounding lexical context. 
+- In this case, the lexical context is the MyClass constructor, where this refers to the instance of MyClass.
