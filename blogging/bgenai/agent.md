@@ -44,9 +44,13 @@ There are many agent-types listed in langchain.
 
 
 # Steps to create an Agent
+
 First step is to come up with a prompt which will drive our agent's behavior.
+
 To do that, we don't have to create a prompt from scratch.
+
 Thanks to Langchain, it gives us several prompts that are ready to use based on the use-case we are working on.
+
 Since we are going to use the ReAct type agent, we'll use the `ReAct` prompt that is already available in the langchain hub.
 
 ```
@@ -55,8 +59,11 @@ from langchain import hub
 prompt = hub.pull("hwchase17/react")
 ```
 Here's how the prompt looks : [hwchase17/react](https://smith.langchain.com/hub/hwchase17/react)
+
 In this prompt ,we can see
+
 we have the {tools} placeholder.
+
 Go through the prompt to see the placeholders and the structure.
 
 ### Code Setup for ReAct Example
