@@ -37,4 +37,11 @@ function App() {
 export default App;
 ```
 
+### Speed up Creation Tip
+If you're creating multiple React apps or doing it regularly, installing create-react-app globally might help because the global package is cached and doesn't need to be downloaded every time.
+
+```
+npm install -g create-react-app
+create-react-app my-app
+```
 
