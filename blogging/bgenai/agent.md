@@ -147,6 +147,8 @@ To see this code in action, run
 `streamlit run agent_demo.py`
 
 ### Non-Streamlit Version
+Sample hard-coded one:  
+agent_executor.invoke({"input": "what is LangChain?"})
 
 
 
