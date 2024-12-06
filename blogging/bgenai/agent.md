@@ -148,7 +148,9 @@ To see this code in action, run
 
 ### Non-Streamlit Version
 Sample hard-coded one:  
-agent_executor.invoke({"input": "what is LangChain?"})
+
+`agent_executor.invoke({"input": "what is LangChain?"})`
+
 
 
 
