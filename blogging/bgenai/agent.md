@@ -152,6 +152,7 @@ To see this code in action, run
 response = agent_executor.invoke({"input": "what is LangChain?"})
 print(response.content)
 ```
+In case wikipedia or duckduckgo doesn't work due to firewall issue, run the code in google-colab for learning purposes.
 
 
 
