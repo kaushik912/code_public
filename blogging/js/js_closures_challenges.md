@@ -173,6 +173,46 @@ console.log(double(5)); // Output: 10
 console.log(triple(5)); // Output: 15
 ```
 
+### Challenge
+
+A client wants to do following filtering operations on arrays: 
+- isEven : filter only even values
+- isOdd : filter only odd values
+- isGreaterThanFive : filter only values greater than 5
+  He wants it to be re-usable. 
+Use Concept of higher-order functions to achieve this.
+    
+#### Additional Hints
+  - Lets say we create the function , say `createFilter`
+  - It'll take `condition` as function argument ,and
+  - It'll *return a function* that takes an array as argument and checks array against this `condition`.
+  - Since we are returning function that is using `condition`, we are creating a closure here.
+
+    
+### Solution
+
+
+
+```
+function createFilter(condition) {
+  return function (array) {
+    return array.filter(condition); // Uses the closure to apply the condition
+  };
+}
+
+// Create specific filter functions
+const isEven = createFilter(num => num % 2 === 0);
+const isOdd = createFilter(num => num % 2 !== 0);
+const isGreaterThanFive = createFilter(num => num > 5);
+
+// Use the filters on an array
+const numbers = [1, 2, 3, 4, 5, 6, 7, 8];
+
+console.log(isEven(numbers));           // Output: [2, 4, 6, 8]
+console.log(isOdd(numbers));            // Output: [1, 3, 5, 7]
+console.log(isGreaterThanFive(numbers));// Output: [6, 7, 8]
+
+```
 
 ### Why Are Closures Useful?
 
