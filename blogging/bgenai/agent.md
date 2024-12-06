@@ -102,7 +102,7 @@ agent = create_react_agent(llm,tools,prompt);
 ```
 Now create an agent executor
 ```
-agent_executor = AgentExecutor(agent,tools,verbose=True)
+agent_executor = AgentExecutor(agent=agent,tools=tools,verbose=True)
 ```
 
 Finally, add some streamlit code for UI
@@ -133,7 +133,7 @@ prompt = hub.pull("hwchase17/react")
 tools = load_tools(["wikipedia","ddg-search"])
 agent = create_react_agent(llm,tools,prompt)
 
-agent_executor = AgentExecutor(agent,tools,verbose=True)
+agent_executor = AgentExecutor(agent=agent,tools=tools,verbose=True)
 
 st.title("This is a AI agent")
 task=st.text_input("assign me a task")
