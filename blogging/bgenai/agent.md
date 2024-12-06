@@ -1,8 +1,9 @@
-AI Agent:
+# AI Agent
 
-1. Its a software component that can do a task on its own.
-2. It does it using LLM intelligence and a set of Tools which we provide it.
+- Its a software component that can do a task on its own.
+- It does it using LLM intelligence and a set of Tools which we provide it.
 
+# High level Steps
 - When a user assigns a task to an agent, it'll use LLM as a "Reasoning" engine.
 - It'll take the task, reason and see which tools are available on hand to accomplish this particular task.
 - Then it'll take an action using the tool from the tool list which we provide.
