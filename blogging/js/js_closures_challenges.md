@@ -154,8 +154,11 @@ Choose whichever style suits you.
 
 ## Challenge 3
 
-- Create a multiplier function that takes `factor` as an argument.
-- Use closures where `factor` is remembered in the inner function.
+- A client wants to implement doubler, tripler on a given number.
+- Create a `multiplier` function that takes `factor` as an argument.
+- Return a function that takes `number` as an argument and applies `factor` to that number.
+- We are using closures here where `factor` is remembered in the inner function.
+
 
 ### Solution
 
@@ -173,7 +176,9 @@ console.log(double(5)); // Output: 10
 console.log(triple(5)); // Output: 15
 ```
 
-## Higher Order Function Challenge
+
+
+## Higher Order Function Challenge 2
 
 A client wants to do following filtering operations on arrays: 
 - isEven : filter only even values
@@ -185,10 +190,9 @@ Use Concept of higher-order functions to achieve this.
 #### Additional Hints
   - Lets say we create the function , say `createFilter`
   - It'll take `condition` as function argument ,and
-  - It'll *return a function* that takes an array as argument and checks array against this `condition`.
+  - It'll *return a function* that takes an `array` as argument and checks `array` against this `condition`.
   - Since we are returning function that is using `condition`, we are creating a closure here.
 
-    
 ### Solution
 
 
