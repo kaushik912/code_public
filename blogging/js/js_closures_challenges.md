@@ -178,7 +178,7 @@ console.log(triple(5)); // Output: 15
 
 
 
-## Higher Order Function Challenge 2
+## Higher Order Function Challenge
 
 A client wants to do following filtering operations on arrays: 
 - isEven : filter only even values
