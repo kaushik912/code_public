@@ -29,4 +29,4 @@ How science is involved in daily life?
 
 Reference
 - [Science-in-Everyday-Life_45040](https://www.brainkart.com/article/Science-in-Everyday-Life_45040/)
-- [power-point-on-science-in-day-to-day-life] (https://www.slideshare.net/slideshow/power-point-on-science-in-day-to-day-life/215136208#5)
+- [power-point-on-science-in-day-to-day-life](https://www.slideshare.net/slideshow/power-point-on-science-in-day-to-day-life/215136208#5)
