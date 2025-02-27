@@ -1,0 +1,7 @@
+beautifulsoup4==4.13.3
+docopt==0.6.2
+langchain==0.3.19
+langchain_ollama==0.2.3
+Markdown==3.7
+ollama==0.4.7
+python_docx==1.1.2
