@@ -1,7 +1,13 @@
 beautifulsoup4==4.13.3
+clang==19.1.7
 docopt==0.6.2
 langchain==0.3.19
+langchain_community==0.3.18
+langchain_core==0.3.40
+langchain_google_vertexai==2.0.14
 langchain_ollama==0.2.3
 Markdown==3.7
 ollama==0.4.7
+openai==1.64.0
 python_docx==1.1.2
+streamlit==1.42.2
