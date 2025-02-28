@@ -1,7 +1,9 @@
 
  
-# Getting Started 
-Consider the following snippet
+# Java8 -- Getting Started 
+Let's say we want to add an action listener to a button.
+
+We could do as follows:
 ```
 button.addActionListener(
     new ActionListener(){
@@ -11,52 +13,43 @@ button.addActionListener(
     }
 )
 ```
-As we can see, there are few observations
-- Lots of *boilerplate* code
+As we can see, 
+- It has lots of *boilerplate* code
 - It obscures the Programmer's intent
-- We are giving button an object that represents an action ( we are using code as data)
+- We are giving button an object that represents an action ( Think `code as data`)
 
 Now, consider the following declaration
 ```
-    button.addActionListener(
-        event -> System.out.println("Button Clicked"));
+    button.addActionListener(event -> System.out.println("Button Clicked"));
 ```
 It does the same job as before but we can see the following: 
 - Block of code - a function without a name
 - event is the name of the parameter
 - Instead of an object that implements an interface, we are passing in a *block of code*.
 - We don't provide the 'type' for event, *javac* infers it as an Action Event.
-- 
-Congrats! you've written your first *lambda* expression!
+  
+This is  precisely a *lambda* expression!
 
 
 ## Different ways of writing lambda expressions
-Lets explore what are the different ways of writing lambda expressions
+We could write lambda expression in a variety of ways. 
 
-- No arguments, Eg: Java Runnable
+Let's see a few:
+
+- No arguments, 
 ```
   () -> System.out.println("Hello World!");
 ```
-- One argument, Eg: ActionListener
+- One argument, 
 ```
   event -> System.out.println("Button Clicked");
 ```
-- Multi-statements, Eg: again Runnable!
+- Multi-statements,
 ```
      () -> {
             System.out.println("Hello");
             System.out.println("World!");
      }
-```
-- BinaryOperator: Specialization of BiFunction where two operands of same type produce result of the same type as operands. In other words, BiFunction<T,T,T>
-```
-BinaryOperator<Long> add  = (x,y)-> x+y;
-System.out.println(add.apply(1L,2L)); //Prints 3
-```
-- Two useful functions from the BiFunction
-```
-R apply( T t, T u)
-default <V> BiFunction<T,U,V> andThen(Function<? super R,? extends V> after)
 ```
 
 ## What is Functional Interface?
@@ -77,11 +70,15 @@ These functional interfaces need to be imported using
 ```
   import java.util.function.*;
 ```
-# Exercises
-## Exercise: We just now observed that ActionListener expects ActionEvent as an input and the method returns void. What is this type of Functional Interface?
-Solution: Since it takes in input as T and returns void , looking into the table above, we observe its a consumer function!
 
-## Exercise: Define a predicate such that it checks if a number is greater than 5.
+# Exercises
+**[Exercise]** ActionListener expects ActionEvent as an input and the method returns void. What is this type of Functional Interface?
+
+Solution:
+ - Since it takes in input as T and returns void , looking into the table above, we observe its a consumer function!
+
+**[Exercise]** Define a predicate such that it checks if a number is greater than 5.
+  
 Lets re-visit Predicate. Its an interface defined as shown below:
 ```
   public interface Predicate<T>{
@@ -107,7 +104,7 @@ Since we have defined our predicate using lambda expression, we could invoke the
   }
 ```
 
-## Exercise:Write a BinaryOperator lambda expression to multiply two longs
+**[Exercise]** :Write a BinaryOperator lambda expression to multiply two longs
 
 BinaryOperator extends BiFunction. It takes two arguments of the same type and returns result as same type as that of the arguments. 
 
@@ -126,7 +123,7 @@ However, the below snippet
 Its because Type isn't specified and it can't add Object, Object!
 So we need to specify type like BinaryOperator<Long> , BinaryOperator<Integer> etc.
 
-## Function Interface - Revisited
+[**Exercise**]Function Interface - Revisited
 Now, lets talk about an important interface i.e. Function.
 
 It is used a lot in Streaming API in Collections ( we'll discuss Streaming APIs in another post)
@@ -139,7 +136,7 @@ Its interface looks like:
 ```
     So Function expects an input of type T and method returns an object of type R.
 
-## Exercise: Write a Function lambda expression that calculates square-root of a number.
+**[Exercise]**: Write a Function lambda expression that calculates square-root of a number.
 Hint: Take input as integer and return a double.
 
 So we could create a lambda expression and then call *apply()* as shown below:
@@ -148,7 +145,7 @@ So we could create a lambda expression and then call *apply()* as shown below:
   System.out.println(sqrtFunction.apply(100)); //Prints 10
 ```
 
-## Exercise: Which of the following are valid Function<Long,Long> implementations?
+**[Exercise]**: Which of the following are valid Function<Long,Long> implementations?
 ```
   x -> x +1
   (x,y) -> x+1
@@ -160,7 +157,7 @@ Solution:
 - (x,y) -> x+1 --> invalid,This is actually a bi-function as it takes two arguments x and y instead of one
 - x -> x==1; --> invalid , its returning a boolean instead of a long, so its actually a predicate
 
-## Exercise:Implement a thread-safe DateFormat class. Hint: Explore ThreadLocal class.
+**[Exercise]**:Implement a thread-safe DateFormat class. Hint: Explore ThreadLocal class.
 
 Solution
 In ThreadLocal, we have a method withInitial() that takes a supplier function.
@@ -183,7 +180,7 @@ Map<String,String> map = new HashMap<>();
 ```
 As discussed before, Type in Lambda expression is auto-inferred by javac.
 
-## Exercise: Explicitly add Type to the argument in a Lambda Expression
+[**Exercise**] Explicitly add Type to the argument in a Lambda Expression
 
 We could do:
 ```
