@@ -7,7 +7,7 @@ model_name="qwen2.5-coder:3b"
 
 """
 Code to generate documentation for a java project using generativeAI
-tag:genai
+tag=genai
 """
 
 def read_file_chunks(file_path, chunk_size=4000):
