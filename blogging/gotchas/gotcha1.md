@@ -30,3 +30,4 @@ captured_output.show()
 
 If you import a library in one cell of a Jupyter Notebook, it will be available for use in any other cell within the same notebook, as long as the import cell has been run first.
 
+Tags: notebooks, python, repository, jpa
