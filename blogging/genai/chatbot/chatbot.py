@@ -6,6 +6,8 @@ from langchain.callbacks.streaming_stdout import StreamingStdOutCallbackHandler
 from langchain.chains import ConversationChain
 from langchain.memory import ConversationBufferMemory
 
+## Some of this may need to be updated as few classes are getting deprecated in future
+
 # Ollama should be up and running on your local system
 chat = ChatOllama(
     model="llama3.2:latest",  # change the model as needed
