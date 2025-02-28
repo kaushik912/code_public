@@ -1,10 +1,8 @@
 # Java8 Part2 Iterations
-- [Using External Iteration](#using-external-iteration)
-- [Internal Iteration Using Streams](#internal-iteration-using-streams)
-- [Lazy and Eager filters](#lazy-and-eager-filters)
+
 In this tutorial, we will explore different kinds of iterations using code examples
 
-## Using External Iteration
+## Java7 Way ( External Iteration)
 Lets say we want to count the liverpool based artists, we could do:
 ```
 int count=0;
@@ -50,15 +48,18 @@ allArtists
 .filter( artist -> artist.isFrom("liverpool"))
 .count();
 ```
-## Lazy and Eager filters
-Consider the above example again:
-```
-allArtists 
-.stream()
-.filter( artist -> artist.isFrom("liverpool"))
-.count();
-```
-Here filter is a  *lazy* method and count is an *eager* method.
+
+Lets understand two new terms , `lazy` and `eager` in context of streams.
+Here's the thumb-rule: 
+
+    1. if the method (or operation) returns you a Stream, its Lazy.
+    2. If it gives back a value or void, its eager
+
+
+`count()` returns back a value while `filter()` returns back a stream.
+
+So  `filter()` is a  *lazy* method and `count()` is an *eager* method.
+
 Since filter is lazy, if we add a print statement inside it, we won't see anything printed!!
 
 Lets try the following to test this!
@@ -69,8 +70,10 @@ List<String> allArtists = Arrays.asList("George","Paul","Ringo","John");
     return artist.contains("john");
 });
 ```
+
 As you can see above, "Hello World!" doesn't get printed.
-Now,if we add the count() which a eager method, it'll print Hello World!
+
+Now,if we add the count() which a eager method at the end of the chain, it'll print Hello World!
 
 ```
  List<String> allArtists = Arrays.asList("George","Paul","Ringo","John");
@@ -81,18 +84,12 @@ Now,if we add the count() which a eager method, it'll print Hello World!
 System.out.println(count); //Prints 1
 ```
 
-To be more specific, 
+- So, in Streams, we'll have a sequence of lazy operations chained together and a single eager operation at the end.
+- This is similar to the `builder` pattern!
 
-    1. if the method (or operation) returns you a Stream, its Lazy.
-    2. If it gives back a value or void, its eager
+We are only calling build operations and then getting back results as shown below:
 
-So, ideally we'll have a sequence of lazy operations chained together and a single eager operation at the end.
-
-This is similar to the builder pattern.
-So in case of Streams, its "internal" iteration. 
-We are only calling build operations and then getting back results.
-
-Below diagram explains the essence of "Internal" Migration
+Below diagram explains the essence of "Internal" Iteration
 ```mermaid
 sequenceDiagram
 box White Internal Iteration
