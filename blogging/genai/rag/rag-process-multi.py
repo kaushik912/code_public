@@ -1,4 +1,5 @@
 import os
+import re
 from docopt import docopt
 from bs4 import BeautifulSoup
 from docx import Document
@@ -13,8 +14,10 @@ from langchain_ollama import ChatOllama
 from langchain import hub
 from langchain.chains.combine_documents import create_stuff_documents_chain
 from langchain.chains.retrieval import create_retrieval_chain 
+import time
+from rag_tester import load_json 
 
-llm =ChatOllama(model="gemma:2b")
+llm =ChatOllama(model="gemma:7b")
 embed_model="ordis/jina-embeddings-v2-base-code:latest"
 
 """
@@ -153,15 +156,25 @@ def create_rag_system(vector_store):
     rag_chain = create_retrieval_chain(retriever, combine_docs_chain)
     return rag_chain
 
+import re
+
 
 if __name__ == "__main__":
     """
     Main script to process files, set up the RAG system, and answer queries interactively.
     """
     # Parse command-line arguments
-    chunk_size=500
-    chunk_overlap=50
-    input_dir="/home/kkailasnath/projects/agentive-workflow/kkailasnath-testing/paypal_rag/rag-data"
+    chunk_size=400
+    
+    """
+     Smaller chunks are better for detailed analysis, 
+     while larger chunks are suitable for broader understanding,
+    
+    """
+    chunk_overlap=100
+    
+    pwd = os.getcwd()
+    input_dir=pwd + "/paypal_rag/rag-data"
 
     # Step 1-2: Extract and process files
     documents = process_files(input_dir)
@@ -175,7 +188,7 @@ if __name__ == "__main__":
     # Step 5: Create RAG system
     qa_chain = create_rag_system(vector_store)
 
-    # Step 6: Query the RAG system
+    # # Step 6: Query the RAG system
     print("RAG System is ready! Type your query below (or type 'exit' to quit):")
     while True:
         query = input("Query: ")
@@ -184,3 +197,15 @@ if __name__ == "__main__":
             break
         result = qa_chain.invoke({"input": query})
         print("Answer:", result['answer'])
+
+    # Step 7: Validate the model performance
+    print("Running Tests!")
+    # Example usage
+    file_path = pwd + "/paypal_rag/rag-data/ladakh-questions.json"
+    qa_data = load_json(file_path)
+    if qa_data:
+        for key, value in qa_data.items():
+            print(f"Q{key}: {value['question']}")
+            print(f"Expected{key}: {value['answer']}\n")
+            result = qa_chain.invoke({"input": value['question']})
+            print(f"Actual: {result['answer']}\n")   
