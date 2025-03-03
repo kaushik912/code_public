@@ -2,7 +2,6 @@
 ## Challenge 1 
 
 - Try to guess what the below code prints.
-- Fix the code to print `John Doe`
 
 ```
 let person = {
@@ -28,6 +27,8 @@ Lets do some analysis
 - When `setTimeout` calls `person.getName`, it is invoked as a regular function, not as a method on the `person` object.
 - In this case, `this` inside `getName` no longer refers to the `person` object, but instead refers to the global object (`window`), which does not have a name property.
 - Therefore, console.log(this.name) outputs `undefined`.
+
+Follow-up: Fix the code so that it prints `John Doe`
 
 ## Solutions
 - Solution 1: Use .bind() to explicitly set the context of this:
