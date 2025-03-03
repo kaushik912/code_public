@@ -74,7 +74,6 @@ function MyClass() {
 
 ```
 - Try to guess what the below code prints.
-- Please fix the code below so that it prints 'John Doe'.
 
 ## Solutions
 If we observe the below logging statement, 
@@ -82,6 +81,9 @@ If we observe the below logging statement,
 `console.log(this.name);`
 
 here `this` will refer to the global object, not MyClass
+So it prints `undefined` again.
+
+Follow-up: Please fix the code below so that it prints 'John Doe'.
 
 ### Solution 1 
  If you're using a regular function (not an arrow function), and you want to preserve the value of `this`, using a variable like `self` or `that` to store the reference to the context of this (such as the object that owns the method) makes sense.
