@@ -1,2 +1,2 @@
-# blogger_pages
-blogger pages
+# Purpose
+Useful Code Samples and documentation for learning various topics
