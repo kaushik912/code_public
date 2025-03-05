@@ -1,5 +1,7 @@
-# Purpose
-- Useful Code Samples and documentation for learning various topics
-- Keep crisp code and examples
-- Keep it to the point, think "byte-sized" tutorials
-- Open-source code only
+- This is a learning repo
+- Keep it to the point
+- Do not dump information
+- Keep it simple
+- It should serve as a ready reckoner
+
+
