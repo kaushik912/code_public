@@ -23,4 +23,13 @@ NOTE: here console-getting-started.md is a file having some steps to get started
 // it should also use query_param with name as year and values as 2025
 // it should return response to user
 
+### Using @tool notation to make LLM give more focused results based on that tool
+@tool: langchain 
+@tool: openai 
+@tool: LCEL 
+@description: provide me a simple langchain example in python using openai.
+
+This helped me get decent results for the LCEL code. 
+In fact the code worked without problems!
+
 
