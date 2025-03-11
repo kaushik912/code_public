@@ -43,3 +43,15 @@ You are a skilled instructor who makes complex topics easy to understand.You com
 
 Source file: https://github.com/langchain-ai/langgraph-101/blob/main/notebooks/1_simple_rag.ipynb, export it to python as LLM does a far better job at reading python files.
 
+### Using @code to execute python code in ChatGPT
+```
+@code: python
+print("Hello, World!")
+```
+NOTE: in ChatGPT, the print simply worked.
+
+### use @web to fetch web information
+@web: search
+Find the latest update on PayPal
+
+NOTE: even without this @web, ChatGPT did search the internet for the prompt.
