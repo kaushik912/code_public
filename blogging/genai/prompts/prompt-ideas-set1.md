@@ -1,3 +1,9 @@
+ 
+### Pre-reqs for Reference files in VSCode Gemini Prompts
+- Make sure when you run the @file based prompt, it is listing that file in the context sources ( at the bottom of the response , it will be listed)
+- To be double-sure, open that file so that its seen as active to the code assist tool.
+- Without this, the model may "hallucinate".
+
  ## Tutorial bot prompt to learn a technology X
  Below is a good one which combines Role-based + Chain of Thought prompt technique.
 Using the prompt below, I was able to learn multi-threading in Java!
@@ -31,5 +37,4 @@ NOTE: here console-getting-started.md is a file having some steps to get started
 
 This helped me get decent results for the LCEL code. 
 In fact the code worked without problems!
-
 
