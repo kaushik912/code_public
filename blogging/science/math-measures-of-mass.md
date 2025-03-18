@@ -1,3 +1,4 @@
+### worksheet
 create a worksheet for topic "measures of mass"
 use the below questions as reference
 1. What is standard unit of mass = ?,  Answer: kilogram
@@ -9,3 +10,6 @@ use the below questions as reference
 7. Divide 54 kg 18 g by 9, Answer: 6 kg 2g
 8. Weight of one dozen bananas is 1200 g. What will be the weight of each banana? Answer: 100g
 9. Suraj bought 2kg 350g potatoes, 840g onions and 3 kg 725 g tomatoes. Find the total weight of vegetables bought. Answer: 6kg 915g
+
+## case based
+give simple questions that have tabulated data on the above topic. Give multiple questions on same table. Don't create multiple cases. Restrict the table to two rows.
