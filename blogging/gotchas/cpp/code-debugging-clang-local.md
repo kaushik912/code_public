@@ -99,3 +99,24 @@ In `tasks.json`,
     ]
 }
 ```
+
+### Some other useful notes
+
+1. installed clangd extension
+2. installed C/C++
+3. installed c/C++ extension pack
+4. disabled intellisense as per the popup ( clangd + intellisense are similar tools, so we need to disable one of them)
+5. If we use clang, it doesn't read from c_cpp_properties.json but instead from compile_commands.json
+6. Installed bear that helps in generating the compile_commands.json
+7. -stdlib=libc++ is used for clang , to be skipped for gcc
+8. fatal error: 'iostream' file not found, this could be fixed using -I/Library/Developer/CommandLineTools/usr/include/c++/v1
+
+So the command to generate compile_commands.json would be like:
+```
+bear -- sh -c "clang++ -I/Users/kkailasnath/projects/cpp/cpp_dep -I/Library/Developer/CommandLineTools/usr/include/c++/v1 -g -stdlib=libc++ -c main.cpp -o main.o && \
+clang++ -I/Users/kkailasnath/projects/cpp/cpp_dep -I/Library/Developer/CommandLineTools/usr/include/c++/v1 -g -stdlib=libc++ -c /Users/kkailasnath/projects/cpp/cpp_dep/math_utils.cpp -o math_utils.o && \
+clang++ -g -stdlib=libc++ -o main main.o math_utils.o"
+```
+I guess we could do a similar experiment with gcc.
+
+---
