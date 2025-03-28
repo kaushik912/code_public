@@ -18,6 +18,9 @@ This will avoid conflicts with dependencies.
     - It displayed `/Library/Frameworks/Python.framework/Versions/3.12/bin/python3`
 - Remember this path as it would be useful while specifying the environment in VSCode.
 
+### Python Extension
+- Make sure you have installed the Python extension in VS Code before proceeding to next steps.
+
 ## Running Python code using Visual Studio Code
 
 1. Now, press Ctrl + Shift + P > Python Create Environment
