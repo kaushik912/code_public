@@ -18,6 +18,11 @@ This will avoid conflicts with dependencies.
     - It displayed `/Library/Frameworks/Python.framework/Versions/3.12/bin/python3`
 - Remember this path as it would be useful while specifying the environment in VSCode.
 
+### Use profile
+- To make development easy, you can create a profile named "python-work" and install python related extensions to it.
+- Similarly we can create profile named "java-work" for java related work.
+- Keeping profiles helps us reduce loading unneccessary extensions.
+
 ### Python Extension
 - Make sure you have installed the Python extension in VS Code before proceeding to next steps.
 
