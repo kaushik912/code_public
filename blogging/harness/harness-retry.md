@@ -7,9 +7,9 @@
 - Below is a sample YAML
 - Key part is the `RetryStep` section where we define the failureStrategies.
 - Also, if we look at `onRetryFailure` section, we could mark action as :
-        - MarkAsFailure: Mark the step as Failed if retry failed
-        - Ignore : ignore the failure
-        - MarkAsSuccess: Still mark the step as success even if retry failed.
+    - MarkAsFailure: Mark the step as Failed if retry failed
+    - Ignore : ignore the failure
+    - MarkAsSuccess: Still mark the step as success even if retry failed.
  
 ```yaml
 pipeline:
