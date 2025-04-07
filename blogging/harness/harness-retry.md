@@ -5,7 +5,12 @@
 - We could configure it to repeat n- times before marking the step as failed.
 - This could be useful in Harness while we try to fix compile errors multiple times using AI.
 - Below is a sample YAML
-
+- Key part is the `RetryStep` section where we define the failureStrategies.
+- Also, if we look at `onRetryFailure` section, we could mark action as :
+        - MarkAsFailure: Mark the step as Failed if retry failed
+        - Ignore : ignore the failure
+        - MarkAsSuccess: Still mark the step as success even if retry failed.
+ 
 ```yaml
 pipeline:
   name: Retry Step Example
