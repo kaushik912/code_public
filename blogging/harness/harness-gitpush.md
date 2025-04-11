@@ -106,7 +106,7 @@ pipeline:
                       REPO="genaisamples"
                    
                       # Reconstruct the full string
-                      full_string="your_PAT"
+                      full_string="your_PAT_from_HarnessSecrets"
 
                       TARGET_BRANCH="main"
 
@@ -158,7 +158,7 @@ pipeline:
     
 
                       # Reconstruct the full string
-                      full_string="your_PAT"
+                      full_string="your_PAT_from_HarnessSecrets"
 
                       TARGET_BRANCH="main"
 
