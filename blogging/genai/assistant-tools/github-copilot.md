@@ -19,6 +19,10 @@
     - create one webpage to welcome user in website
     - create a css file with clean styling for the welcome page
     - Reference: https://youtu.be/McB52kJ4s8M?si=E1upYeDl_UnojTKB
+    - Not so useful
+
+## VSCode Useful feature demo
+ - https://www.youtube.com/watch?v=2pFPJYdPM7Q
 
 ## Differences
 - Copilot Edits is your go-to for fast, precise tweaks—think refactoring a function, squashing a bug, or applying consistent changes across files without losing your flow.
@@ -39,3 +43,21 @@ https://learn.microsoft.com/en-us/training/modules/generate-documentation-using-
 
 ## Documentation 
 @workspace document this project
+
+## gh copilot cli
+- generate alias using `gh copilot alias` and copy-paste them in ~/.zshrc
+- ghce : to ask AI to explain the command. e is for explain.
+- ghcs : use AI to suggest a command or create script etc. s is for suggest.
+    - ghce "docker image ls"
+        - Explains the command.
+    - ghce "docker container ls -a"
+    - ghcs "find all csv files in the directory"
+        - `find . -name "*.csv"`
+    - ghcs "maven install without tests and javadoc generation" 
+        - `mvn install -DskipTests -Dmaven.javadoc.skip=true `
+    - ghcs "write a script that keeps running maven clean install for n times. If the maven clean install is successful, then stop it. Otherwise keep trying till n times."
+    ```bash
+    for i in $(seq 1 n); do
+        mvn clean install && break || sleep 1;
+    done
+    ```
