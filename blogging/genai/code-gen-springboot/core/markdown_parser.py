@@ -10,10 +10,21 @@ def determine_java_file_path(code):
     package_match = re.search(r'package\s+([\w.]+);', code)
     package_path = package_match.group(1).replace('.', '/') if package_match else "default"
 
+    # First try finding a public class/interface/enum
     class_match = re.search(r'public\s+(class|interface|enum)\s+(\w+)', code)
-    file_name = f"{class_match.group(2)}.java" if class_match else "Unknown.java"
-
-    return os.path.join("src/main/java", package_path, file_name)
+    
+    # If no public class is found, look for any class/interface/enum declaration
+    if not class_match:
+        class_match = re.search(r'(class|interface|enum)\s+(\w+)', code)
+    
+    class_name = class_match.group(2) if class_match else "Unknown"
+    file_name = f"{class_name}.java"
+    
+    # Check if it's a test class (ends with "Test" or "Tests")
+    if class_name.endswith("Test") or class_name.endswith("Tests"):
+        return os.path.join("src/test/java", package_path, file_name)
+    else:
+        return os.path.join("src/main/java", package_path, file_name)
 
 def save_file(parent_directory, relative_path, content):
     """Creates directories and saves the content in a file."""
