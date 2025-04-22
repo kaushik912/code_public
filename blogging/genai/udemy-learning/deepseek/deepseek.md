@@ -6,7 +6,7 @@
 
 # Why use it?
 - Most of LLMs struggle with reasoning
-- However, it "overthinks", say for simple tasks like 2+3
+- However, it sometimes "overthinks", say for simple tasks like 2+3
 - Useful for AI agents and chatbots.
 - Useful for Code Generation
 
@@ -53,7 +53,8 @@ Available in black, blue, and white colors.
 
 We can use regex to remove the think tag as follows:
 ```python
-response = llm.invoke(question)
+## langchain chat with history example
+response = chain_with_history.invoke({"input": question},{"configurable":{"session_id":"abc124"}})
 final_response = re.sub(r'<think>.*?</think>','',response['answer'],flags=re.DOTALL).strip()
 st.write(final_response)
 ```
