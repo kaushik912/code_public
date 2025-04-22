@@ -62,7 +62,7 @@ if question:
 - We also need to install the dependencies.
 
 
-## Streaming Response Example
+# Streaming Response Example
 - Streaming often improves responsiveness of the application.
 - langchain has the `stream=True` parameter that can be used.
 - Also, it provides a stream() method
