@@ -18,7 +18,7 @@
     - In this case of `what is AI`, it was straight-forward ,so <think> tags are empty.
     - In complex queries, it will also populate the <think> tag.
 
-## Programmatically
+## Using Langchain
 ```python
 from langchain_community.chat_models import ChatOllama
 ## The LLM piece is now changing to gemma
@@ -49,4 +49,12 @@ A 4000mAh battery
 Available in black, blue, and white colors.
 ```
 
+## Removing the think tag
+
+We can use regex to remove the think tag as follows:
+```python
+response = llm.invoke(question)
+final_response = re.sub(r'<think>.*?</think>','',response['answer'],flags=re.DOTALL).strip()
+st.write(final_response)
+```
 
