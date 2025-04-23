@@ -1115,3 +1115,15 @@ java -cp target/agentiveai-0.1.jar com.organization.agentiveai.code.App
 git fetch
 git branch -r
 ```
+
+---
+
+### How to trace a file in github 
+
+- The below command will tell you the history of the file, what changed.
+- Very useful in case you want to trace any deleted file which isn't locatable in github.
+```bash
+git log --follow -- A.java
+```
+
+---
