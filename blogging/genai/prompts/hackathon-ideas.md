@@ -36,5 +36,5 @@ prompts = [
     "You are a Skeptic. Review the attached C++ code and ask some serious questions.",
 ]
 
-## Documentation Fetching in AI Assist tool
+## Response File Redirection in AI Assist tool
 I liked above response. Is it possible to copy this response with formatting included to a file? I am losing all formatting when i copy-paste the response.
