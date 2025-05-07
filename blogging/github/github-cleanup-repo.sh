@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Optional: for GitHub Enterprise
-export GH_HOST=github.paypal.com
+export GH_HOST=github.organization.com
 
 DELETED_LOG="deleted_repos.log"
 SKIPPED_LOG="skipped_repos.log"

@@ -1,4 +1,4 @@
-### for the legacy paypal code, i did the following:
+### for the legacy organization code, i did the following:
 
 - c/c++
 - c/c++ extension pack

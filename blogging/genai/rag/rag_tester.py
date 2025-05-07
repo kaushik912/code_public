@@ -17,7 +17,7 @@ def load_json(file_path):
 
 # Example usage
 # pwd = os.getcwd()
-# file_path = pwd + "/paypal_rag/rag-data/ladakh-questions.json"
+# file_path = pwd + "/organization_rag/rag-data/ladakh-questions.json"
 # qa_data = load_json(file_path)
 
 # if qa_data:

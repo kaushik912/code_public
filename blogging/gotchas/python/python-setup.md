@@ -8,7 +8,7 @@ This will avoid conflicts with dependencies.
 
 ### Install Python from Self -Service
 
-- First install the PayPal official supported Python version. 
+- First install the organization official supported Python version. 
 - At the time of writing this, it was version=3.12.8
 - This version already has pip settings to function over zscalar proxy.
 - Also, install Python Proxy configs.

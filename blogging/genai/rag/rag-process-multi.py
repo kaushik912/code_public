@@ -174,7 +174,7 @@ if __name__ == "__main__":
     chunk_overlap=100
     
     pwd = os.getcwd()
-    input_dir=pwd + "/paypal_rag/rag-data"
+    input_dir=pwd + "/organization_rag/rag-data"
 
     # Step 1-2: Extract and process files
     documents = process_files(input_dir)
@@ -201,7 +201,7 @@ if __name__ == "__main__":
     # Step 7: Validate the model performance
     print("Running Tests!")
     # Example usage
-    file_path = pwd + "/paypal_rag/rag-data/ladakh-questions.json"
+    file_path = pwd + "/organization_rag/rag-data/ladakh-questions.json"
     qa_data = load_json(file_path)
     if qa_data:
         for key, value in qa_data.items():
