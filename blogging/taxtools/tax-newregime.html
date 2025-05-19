@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Tax Calculator - New Slabs</title>
+<style>
+  body { font-family: Arial, sans-serif; max-width: 700px; margin: 20px auto; }
+  input[type=number] { width: 120px; }
+  table, th, td { border: 1px solid #ccc; border-collapse: collapse; padding: 8px; }
+  th { background-color: #eee; }
+</style>
+</head>
+<body>
+
+<h2>Income Tax Calculator (New Regime Slabs)</h2>
+
+<label>Gross Salary (₹): <input type="number" id="salary" value="3000000" /></label><br /><br />
+
+<h3>Deductions</h3>
+<label>Corporate NPS (₹): <input type="number" id="npsEmployer" value="250000" /></label><br />
+<label>Loss from House Property (Interest) (₹): <input type="number" id="homeLoan" value="200000" /></label><br />
+<label>Standard Deduction (₹): <input type="number" id="standardDeduction" value="75000" /></label><br /><br />
+
+<button onclick="calculateTax()">Calculate Tax</button>
+
+<h3>Results</h3>
+<div id="result"></div>
+
+<script>
+function calculateTax() {
+  let salary = parseFloat(document.getElementById('salary').value) || 0;
+  let npsEmployer = parseFloat(document.getElementById('npsEmployer').value) || 0;
+  let homeLoan = parseFloat(document.getElementById('homeLoan').value) || 0;
+  let standardDeduction = parseFloat(document.getElementById('standardDeduction').value) || 0;
+
+  // Calculate taxable income
+  let totalDeductions = npsEmployer + homeLoan + standardDeduction;
+  let taxableIncome = salary - totalDeductions;
+  if (taxableIncome < 0) taxableIncome = 0;
+
+  const slabs = [
+  { limit: 400000, rate: 0 },
+  { limit: 800000, rate: 5 },
+  { limit: 1200000, rate: 10 },
+  { limit: 1600000, rate: 15 },
+  { limit: 2000000, rate: 20 },
+  { limit: 2400000, rate: 25 },
+  { limit: Infinity, rate: 30 },  // Open-ended last slab
+];
+
+  // Calculate tax slab-wise
+  let remainingIncome = taxableIncome;
+  let prevLimit = 0;
+  let tax = 0;
+  let slabDetails = [];
+
+  for (let i = 0; i < slabs.length; i++) {
+    let slabAmount = 0;
+    if (remainingIncome > 0) {
+      let slabIncome = Math.min(remainingIncome, slabs[i].limit - prevLimit);
+      slabAmount = slabIncome * slabs[i].rate / 100;
+      tax += slabAmount;
+      slabDetails.push({
+        slabRange: `${prevLimit.toLocaleString()} - ${slabs[i].limit.toLocaleString()}`,
+        amountTaxed: slabIncome,
+        rate: slabs[i].rate,
+        tax: slabAmount,
+      });
+      remainingIncome -= slabIncome;
+      prevLimit = slabs[i].limit;
+    }
+  }
+
+  // Format output
+  let resultHTML = `<table>
+    <tr><th>Slab Range (₹)</th><th>Amount Taxed (₹)</th><th>Tax Rate (%)</th><th>Tax (₹)</th></tr>`;
+
+  slabDetails.forEach(row => {
+    resultHTML += `<tr>
+      <td>${row.slabRange}</td>
+      <td>${row.amountTaxed.toLocaleString(undefined, {maximumFractionDigits: 2})}</td>
+      <td>${row.rate}</td>
+      <td>${row.tax.toLocaleString(undefined, {maximumFractionDigits: 2})}</td>
+    </tr>`;
+  });
+  resultHTML += `</table>`;
+
+  // Add summary
+  resultHTML += `<p><b>Gross Salary:</b> ₹${salary.toLocaleString()}</p>`;
+  resultHTML += `<p><b>Total Deductions:</b> ₹${totalDeductions.toLocaleString()}</p>`;
+  resultHTML += `<p><b>Taxable Income:</b> ₹${taxableIncome.toLocaleString()}</p>`;
+  resultHTML += `<p><b>Total Tax before Cess (₹):</b> ${tax.toLocaleString(undefined, {maximumFractionDigits: 2})}</p>`;
+
+  // Add 4% health & education cess
+  let cess = tax * 0.04;
+  let totalTax = tax + cess;
+  resultHTML += `<p><b>Health & Education Cess (4%):</b> ₹${cess.toLocaleString(undefined, {maximumFractionDigits: 2})}</p>`;
+  resultHTML += `<p style="font-size: 1.2em; font-weight: bold;">Total Tax Payable: ₹${totalTax.toLocaleString(undefined, {maximumFractionDigits: 2})}</p>`;
+
+  document.getElementById('result').innerHTML = resultHTML;
+}
+</script>
+
+</body>
+</html>
