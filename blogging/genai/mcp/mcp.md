@@ -15,5 +15,11 @@ https://github.com/amidabuddha/console-chat-gpt
 - unified markdown documentation : https://github.com/RichardHightower/create_project_markdown/tree/main
 - List of Awesome MCP servers: https://github.com/punkpeye/awesome-mcp-servers?tab=readme-ov-file#tutorials
 
+# MCP Inspector:
+- Install & Run MCP Inspector: `npx @modelcontextprotocol/inspector`
+- This command starts both a client UI (default port 5173) and an MCP proxy server (default port 3000).
+- Connect to Your MCP Server:
+    - Enter the URL of your local or remote MCP server in the Inspector's UI to start testing.
+
 
 
