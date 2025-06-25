@@ -1127,3 +1127,8 @@ git log --follow -- A.java
 ```
 
 ---
+
+### Git useful commands to know files that were modified in the commits
+- git show --name-status <sha>
+- git diff --name-only <sha>..HEAD
+- git diff --name-only <sha1>..<sha2>
