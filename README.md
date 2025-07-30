@@ -1,7 +1,3 @@
-- This is a learning repo
-- Keep it to the point
-- Do not dump information
-- Keep it simple
-- It should serve as a ready reckoner
-
+# General Blogging
+- Has interesting notes on various topics like Harness, Generative AI, Python, Java and more.
 
