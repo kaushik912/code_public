@@ -11,6 +11,8 @@ When reversing a subarray **in-place**, you're always using the **two-pointer te
 
 This continues **until `start >= end`**, which means you've reached (or passed) the **middle** of the subarray.
 
+---
+
 ## Rotate Array
 Given an array arr[]. Rotate the array to the left (counter-clockwise direction) by d steps, where d is a positive integer. 
 Do the mentioned change in the array in place.
@@ -36,6 +38,8 @@ Length `n = 5`, so `d = 7 % 5 = 2`
 
 \=> Rotate left by 2 steps → `[3, 4, 5, 1, 2]`
 
+---
+
 ## Plus One
 Given a non-negative number represented as a list of digits, add 1 to the number (increment the number represented by the digits). The digits are stored such that the most significant digit is first element of array.
 
@@ -46,6 +50,7 @@ Given a non-negative number represented as a list of digits, add 1 to the number
 * Repeat till carry is `0` or start of array.
 * If carry remains, insert it at front.
 
+---
 
 ## Longest Consecutive Subsequence
 Given an array arr[] of non-negative integers. Find the length of the longest sub-sequence such that elements in the subsequence are consecutive integers, the consecutive numbers can be in any order.
