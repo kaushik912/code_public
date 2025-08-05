@@ -1,4 +1,16 @@
-## Rearrange Array Alternately
+## Rearrange Array Alternately (with extra space)
+Given an array of positive integers. Your task is to rearrange the array elements alternatively i.e. first element should be the max value, the second should be the min value, the third should be the second max, the fourth should be the second min, and so on.
+
+🔹 **Flash Hint: Rearrange Array Alternately (with Extra Space)**
+
+1. **Sort** the array.
+2. Use two pointers: `i = 0` (start), `j = n - 1` (end).
+3. Build a new array: pick from `arr[j]` (max), then `arr[i]` (min), alternate.
+4. Copy new array back to original.
+
+---
+
+## Rearrange Array Alternately (without extra space)
 Given an array of positive integers. Your task is to rearrange the array elements alternatively i.e. first element should be the max value, the second should be the min value, the third should be the second max, the fourth should be the second min, and so on.
 Note: Modify the original array itself. Do it without using any extra space. You do not have to return anything.
 
