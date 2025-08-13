@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Secure Expense Tracker</title>
+
+<!-- Firebase SDKs -->
+<script defer src="https://www.gstatic.com/firebasejs/10.3.1/firebase-app-compat.js"></script>
+<script defer src="https://www.gstatic.com/firebasejs/10.3.1/firebase-auth-compat.js"></script>
+<script defer src="https://www.gstatic.com/firebasejs/10.3.1/firebase-firestore-compat.js"></script>
+
+<!-- Your app logic -->
+<script defer src="app.js?v=3"></script>
+
+<style>
+    body {
+        font-family: sans-serif;
+      max-width: 800px;
+      margin: auto;
+      padding: 20px;
+    }
+
+    input,
+    button {
+      width: 100%;
+      padding: 10px;
+      margin: 5px 0;
+      font-size: 16px;
+    }
+
+    #appSection,
+    #loginSection {
+      margin-top: 20px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+    }
+
+    table,
+    th,
+    td {
+      border: 1px solid #ccc;
+    }
+
+    th,
+    td {
+      padding: 10px;
+      text-align: left;
+    }
+
+    .totals {
+      margin-top: 20px;
+      padding: 10px;
+      background-color: #f4f4f4;
+      border: 1px solid #ddd;
+    }
+
+    .totals h4 {
+      margin: 10px 0 5px;
+    }
+
+    .filter-controls {
+      margin: 20px 0;
+    }
+
+    .reset-btn {
+      background-color: #f44336;
+      color: white;
+      border: none;
+      cursor: pointer;
+    }
+
+    .reset-btn:hover {
+      background-color: #d32f2f;
+    }
+
+    .edit-btn, .delete-btn {
+      padding: 5px 10px;
+      margin: 0 2px;
+      cursor: pointer;
+      border: none;
+      border-radius: 3px;
+      width: auto;
+    }
+
+    .edit-btn {
+      background-color: #2196F3;
+      color: white;
+    }
+
+    .edit-btn:hover {
+      background-color: #0b7dda;
+    }
+
+    .delete-btn {
+      background-color: #f44336;
+      color: white;
+    }
+
+    .delete-btn:hover {
+      background-color: #d32f2f;
+    }
+    
+    .import-export-controls {
+      margin: 15px 0;
+      display: flex;
+      gap: 10px;
+    }
+    
+    .export-btn, .import-btn {
+      padding: 8px 12px;
+      cursor: pointer;
+      border: none;
+      border-radius: 3px;
+      width: auto;
+    }
+    
+    .export-btn {
+      background-color: #4CAF50;
+      color: white;
+    }
+    
+    .export-btn:hover {
+      background-color: #45a049;
+    }
+    
+    .import-btn {
+      background-color: #ff9800;
+      color: white;
+    }
+    
+    .import-btn:hover {
+      background-color: #e68a00;
+    }
+    
+    .user-controls {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 15px;
+    }
+    
+    .password-btn {
+      background-color: #2196F3;
+      color: white;
+      border: none;
+      cursor: pointer;
+      padding: 8px 12px;
+      border-radius: 3px;
+    }
+    
+    .password-btn:hover {
+      background-color: #0b7dda;
+    }
+</style>
+</head>
+
+<body>
+<!-- Login & Signup Section -->
+  <div id="loginSection">
+    <h2>Login to Expense Tracker</h2>
+    <input type="email" id="email" placeholder="Email" />
+    <input type="password" id="password" placeholder="Password" />
+    <button onclick="login()">Login</button>
+    <button onclick="signup()">Sign Up</button>
+    <p id="authMsg" style="color: red;"></p>
+  </div>
+
+<!-- App Section -->
+  <div id="appSection" style="display: none;">
+    <h2>Expense Tracker</h2>
+    <div class="user-controls">
+      <button onclick="logout()">Logout</button>
+      <button onclick="openPasswordModal()" class="password-btn">Update Password</button>
+      </div>
+
+    <form id="expenseForm">
+      <input type="number" id="amount" placeholder="Amount" required />
+      <input type="date" id="date" required />
+      <input type="text" id="category" placeholder="Category" required />
+      <button type="submit">Add Expense</button>
+    </form>
+
+    <!-- Month Filter -->
+    <div class="filter-controls">
+      <label for="monthFilter">Filter by Month:</label>
+      <input type="month" id="monthFilter" onchange="filterByMonth()">
+      <button onclick="resetFilter()" class="reset-btn">Show All</button>
+    </div>
+
+    <!-- Import/Export Controls -->
+    <div class="import-export-controls">
+      <button onclick="exportData()" class="export-btn">Export Data</button>
+      <button onclick="openImportModal()" class="import-btn">Import Data</button>
+    </div>
+
+    <div class="totals">
+    <h4>Selected Month Total: Rs.<span id="selectedMonthTotal">0</span></h4>
+    </div>
+
+    
+    <h3>Transactions</h3>
+    <table>
+        <thead>
+            <tr>
+                <th>Date</th>
+                <th>Amount (Rs.)</th>
+                <th>Category</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody id="expenseList"></tbody>
+    </table>
+    <!-- Edit Expense Modal -->
+    <div id="editModal"
+      style="display: none; position: fixed; z-index: 1; left: 0; top: 0; width: 100%; height: 100%; overflow: auto; background-color: rgba(0,0,0,0.4);">
+      <div
+        style="background-color: white; margin: 15% auto; padding: 20px; border: 1px solid #888; width: 80%; max-width: 500px;">
+        <h3>Edit Expense</h3>
+        <form id="editForm">
+          <input type="hidden" id="editId">
+          <input type="number" id="editAmount" placeholder="Amount" required />
+          <input type="date" id="editDate" required />
+          <input type="text" id="editCategory" placeholder="Category" required />
+          <button type="submit">Save Changes</button>
+          <button type="button" onclick="closeEditModal()">Cancel</button>
+        </form>
+      </div>
+    </div>
+    <!-- Import Data Modal -->
+    <div id="importModal"
+      style="display: none; position: fixed; z-index: 1; left: 0; top: 0; width: 100%; height: 100%; overflow: auto; background-color: rgba(0,0,0,0.4);">
+      <div
+        style="background-color: white; margin: 15% auto; padding: 20px; border: 1px solid #888; width: 80%; max-width: 500px;">
+        <h3>Import Data</h3>
+        <p>Paste your exported JSON data below:</p>
+        <textarea id="importData" rows="10" style="width: 100%; margin-bottom: 10px;"></textarea>
+        <div>
+          <button onclick="importData()">Import</button>
+          <button type="button" onclick="closeImportModal()">Cancel</button>
+        </div>
+      </div>
+    </div>
+    <!-- Password Update Modal -->
+    <div id="passwordModal"
+      style="display: none; position: fixed; z-index: 1; left: 0; top: 0; width: 100%; height: 100%; overflow: auto; background-color: rgba(0,0,0,0.4);">
+      <div
+        style="background-color: white; margin: 15% auto; padding: 20px; border: 1px solid #888; width: 80%; max-width: 500px;">
+        <h3>Update Password</h3>
+        <p id="passwordMsg" style="color: red;"></p>
+        <input type="password" id="currentPassword" placeholder="Current Password" required />
+        <input type="password" id="newPassword" placeholder="New Password" required />
+        <input type="password" id="confirmPassword" placeholder="Confirm New Password" required />
+        <div style="margin-top: 15px;">
+          <button onclick="updatePassword()">Update Password</button>
+          <button type="button" onclick="closePasswordModal()">Cancel</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+
+</html>

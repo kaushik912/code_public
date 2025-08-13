@@ -1,0 +1,14 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    
+    match /expenses/{docId} {
+      allow read, write: if request.auth != null && request.auth.uid == resource.data.uid;
+    }
+
+    // Allow signed-in users to create new expenses
+    match /expenses/{docId} {
+      allow create: if request.auth != null && request.resource.data.uid == request.auth.uid;
+    }
+  }
+}

@@ -1,0 +1,122 @@
+[
+  {
+    "uid": "mock-user-123",
+    "date": "2025-07-19",
+    "amount": "273.08",
+    "category": "Bills"
+  },
+  {
+    "uid": "mock-user-123",
+    "date": "2025-08-02",
+    "amount": "585.84",
+    "category": "Food"
+  },
+  {
+    "uid": "mock-user-123",
+    "date": "2025-07-17",
+    "amount": "238.05",
+    "category": "Health"
+  },
+  {
+    "uid": "mock-user-123",
+    "date": "2025-07-27",
+    "amount": "604.75",
+    "category": "Health"
+  },
+  {
+    "uid": "mock-user-123",
+    "date": "2025-07-19",
+    "amount": "922.54",
+    "category": "Food"
+  },
+  {
+    "uid": "mock-user-123",
+    "date": "2025-08-02",
+    "amount": "555.26",
+    "category": "Food"
+  },
+  {
+    "uid": "mock-user-123",
+    "date": "2025-08-11",
+    "amount": "637.56",
+    "category": "Food"
+  },
+  {
+    "uid": "mock-user-123",
+    "date": "2025-07-27",
+    "amount": "851.46",
+    "category": "Shopping"
+  },
+  {
+    "uid": "mock-user-123",
+    "date": "2025-08-02",
+    "amount": "420.71",
+    "category": "Shopping"
+  },
+  {
+    "uid": "mock-user-123",
+    "date": "2025-08-04",
+    "amount": "477.04",
+    "category": "Entertainment"
+  },
+  {
+    "uid": "mock-user-123",
+    "date": "2025-08-09",
+    "amount": "401.37",
+    "category": "Entertainment"
+  },
+  {
+    "uid": "mock-user-123",
+    "date": "2025-07-30",
+    "amount": "713.78",
+    "category": "Entertainment"
+  },
+  {
+    "uid": "mock-user-123",
+    "date": "2025-07-20",
+    "amount": "879.0",
+    "category": "Food"
+  },
+  {
+    "uid": "mock-user-123",
+    "date": "2025-08-08",
+    "amount": "510.66",
+    "category": "Bills"
+  },
+  {
+    "uid": "mock-user-123",
+    "date": "2025-08-02",
+    "amount": "861.24",
+    "category": "Food"
+  },
+  {
+    "uid": "mock-user-123",
+    "date": "2025-07-16",
+    "amount": "707.32",
+    "category": "Entertainment"
+  },
+  {
+    "uid": "mock-user-123",
+    "date": "2025-08-01",
+    "amount": "312.96",
+    "category": "Travel"
+  },
+  {
+    "uid": "mock-user-123",
+    "date": "2025-08-06",
+    "amount": "229.08",
+    "category": "Travel"
+  },
+  {
+    "uid": "mock-user-123",
+    "date": "2025-08-09",
+    "amount": "710.15",
+    "category": "Entertainment"
+  },
+  {
+    "uid": "mock-user-123",
+    "date": "2025-07-18",
+    "amount": "425.86",
+    "category": "Entertainment"
+  }
+]
