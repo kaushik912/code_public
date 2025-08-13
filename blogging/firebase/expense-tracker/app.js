@@ -1,8 +1,8 @@
 // Firebase config
 const firebaseConfig = {
-  apiKey: "AIzaSyCwuecN31ufhSUQTx1MSgM9YJNfQP2He4w",
+  apiKey: "<your_key>",
   authDomain: "expenses-tracker-3352f.firebaseapp.com",
-  projectId: "expenses-tracker-3352f",
+  projectId: "<project_id>",
   storageBucket: "expenses-tracker-3352f.firebasestorage.app",
   messagingSenderId: "924419386388",
   appId: "1:924419386388:web:dd7901678415da486fcb01",
