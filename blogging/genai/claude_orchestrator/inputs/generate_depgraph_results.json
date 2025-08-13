@@ -1,0 +1,128 @@
+{
+  "description": "Dependency Graph Analysis Pipeline - Runs all analysis scripts in sequence",
+  "input_parameters": {
+    "input_json": "method_hierarchy_file.json",
+    "description": "Path to the input method hierarchy JSON file"
+  },
+  "tasks": [
+    {
+      "name": "Create Method Reference",
+      "command": ["python3", "tools/dep_graph_analyzer/method_hierarchy/create_method_ref.py", "${input_json}"],
+      "description": "Create method_ref.json containing input JSON path reference",
+      "timeout": 60,
+      "continue_on_failure": false,
+      "expected_outputs": ["analysis/method_ref.json"]
+    },
+    {
+      "name": "Substitute Code Conversion Template",
+      "command": ["python3", "substitute-from-json.py", "resolved/dep_graph_flow/raptor_code_conversion/0_code_conversion.md", "analysis/method_ref.json", "resolved/dep_graph_flow/raptor_code_conversion/0_code_conversion.md"],
+      "description": "Substitute placeholders in code conversion template with method reference data",
+      "timeout": 30,
+      "continue_on_failure": true,
+      "expected_outputs": []
+    },
+    {
+      "name": "Clean Method Hierarchy",
+      "command": ["python3", "tools/dep_graph_analyzer/method_hierarchy/clean_method_hierarchy.py", "${input_json}"],
+      "description": "Clean method hierarchy by removing unresolved entries",
+      "timeout": 120,
+      "continue_on_failure": false,
+      "expected_outputs": ["analysis/${input_json_stem}_pruned.json"]
+    },
+    {
+      "name": "Extract VO Dependencies",
+      "command": ["python3", "tools/dep_graph_analyzer/vo_extraction/extract_vo_dependencies.py", "${input_json}"],
+      "description": "Extract VO dependencies from method hierarchy",
+      "timeout": 90,
+      "continue_on_failure": false,
+      "expected_outputs": ["analysis/dep_list.json"]
+    },
+    {
+      "name": "Transform VO Dependencies",
+      "command": ["python3", "tools/dep_graph_analyzer/vo_extraction/vo_reuse_transformer.py"],
+      "description": "Transform VO dependencies to filename list format",
+      "timeout": 60,
+      "continue_on_failure": false,
+      "expected_outputs": ["analysis/vo_filenames_list.json"]
+    },
+    {
+      "name": "Process DAO Files",
+      "command": ["python3", "tools/dep_graph_analyzer/db_extraction/process_all_dao_files.py"],
+      "description": "Process all DAO files and extract database information",
+      "timeout": 180,
+      "continue_on_failure": true,
+      "expected_outputs": ["analysis/dao_master_data.json"]
+    },
+    {
+      "name": "Extract DAO from Hierarchy",
+      "command": ["python3", "tools/dep_graph_analyzer/db_extraction/extract_dao_from_hierarchy.py", "${input_json}"],
+      "description": "Extract DAO patterns from method hierarchy",
+      "timeout": 90,
+      "continue_on_failure": true,
+      "expected_outputs": []
+    },
+    {
+      "name": "Generate Hierarchy Tree",
+      "command": ["python3", "tools/dep_graph_analyzer/method_hierarchy/hierarchy_tree_printer.py", "${input_json}", "--save-tree", "${input_json_stem}_tree.txt"],
+      "description": "Print method hierarchy tree to file",
+      "timeout": 60,
+      "continue_on_failure": true,
+      "expected_outputs": ["analysis/${input_json_stem}_tree.txt"]
+    },
+    {
+      "name": "Extract AMQ Files",
+      "command": ["python3", "tools/dep_graph_analyzer/amq_extraction/extract_amq_from_deps.py"],
+      "description": "Extract AMQ files from dependency list",
+      "timeout": 60,
+      "continue_on_failure": true,
+      "expected_outputs": ["analysis/amq_files.json"]
+    },
+    {
+      "name": "Generate VO Reuse Analysis",
+      "command": ["python3", "tools/vo/vo_reuse_generator.py"],
+      "description": "Generate VO reuse analysis",
+      "timeout": 120,
+      "continue_on_failure": true,
+      "expected_outputs": ["analysis/vo_reuse.json"]
+    },
+    {
+      "name": "Generate VO Dependencies",
+      "command": ["python3", "tools/vo/generate_vo_dependencies.py"],
+      "description": "Generate VO dependencies",
+      "timeout": 90,
+      "continue_on_failure": true,
+      "expected_outputs": ["analysis/dependencies/vo_dependencies.md"]
+    },
+    {
+      "name": "Generate AMQ Message Types",
+      "command": ["python3", "tools/amq_publish/messagetype_generation.py", "analysis/amq_files.json"],
+      "description": "Generate AMQ message types from AMQ files",
+      "timeout": 120,
+      "continue_on_failure": true,
+      "expected_outputs": ["analysis/amq_topic_analysis.json"]
+    },
+    {
+      "name": "Generate AMQ Raptor Dependencies",
+      "command": ["python3", "tools/amq_publish/generate_amq_raptor_dependencies.py", "analysis/amq_files.json"],
+      "description": "Generate AMQ Raptor dependencies from AMQ files",
+      "timeout": 90,
+      "continue_on_failure": true,
+      "expected_outputs": ["analysis/dependencies/amq_dependencies.md"]
+    },
+    {
+      "name": "Generate Java Placeholder Template",
+      "command": ["python3", "tools/dep_graph_analyzer/code_generation_tools/generate_java_placeholder_template.py", "${input_json}"],
+      "description": "Generate Java placeholder template from method hierarchy",
+      "timeout": 120,
+      "continue_on_failure": true,
+      "expected_outputs": ["analysis/java_placeholder_template_${input_json_stem}.json"]
+    }
+  ],
+  "usage_notes": [
+    "This configuration replicates the functionality of generate_depgraph_results.py",
+    "Variable substitution needed for ${input_json} and ${input_json_stem}",
+    "Run with: python3 tools/dep_graph_analyzer/pipeline/deterministic_task_pipeline.py --config template/dep_graph_flow/generate_depgraph_results.json",
+    "The pipeline will create an 'analysis' directory and populate it with results",
+    "Some tasks are marked continue_on_failure=true for non-critical dependencies"
+  ]
+}

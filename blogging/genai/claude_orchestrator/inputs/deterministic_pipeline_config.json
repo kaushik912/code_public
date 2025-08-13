@@ -1,0 +1,35 @@
+{
+  "description": "Deterministic Task Pipeline Configuration",
+  "tasks": [
+    {
+      "name": "Generate App Skeleton",
+      "command": [
+        "bash",
+        "tools/skeleton/generate_app.sh"
+      ],
+      "description": "Generate Raptor application skeleton using Maven archetype",
+      "timeout": 300,
+      "continue_on_failure": false
+    },
+    {
+      "name": "Extract Downstream Interfaces",
+      "command": [
+        "python3",
+        "tools/downstream_interfaces/extract_downstream_interfaces.py"
+      ],
+      "description": "Extract downstream interface definitions",
+      "timeout": 120,
+      "continue_on_failure": true
+    },
+    {
+      "name": "Run DB Generator",
+      "command": [
+        "bash",
+        "tools/db/run_db_generator.sh"
+      ],
+      "description": "Run database code generation",
+      "timeout": 180,
+      "continue_on_failure": true
+    }
+  ]
+}

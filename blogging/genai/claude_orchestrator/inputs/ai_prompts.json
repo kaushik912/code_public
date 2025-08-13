@@ -1,0 +1,34 @@
+{
+"ai_prompts":[
+    {
+        "type":"dir",
+        "value":"resolved/dep_graph_flow/raptor_amq_consumer_generation",
+        "order":1,
+        "timeout": 900
+    },
+    {
+        "type":"dir",
+        "value":"resolved/dep_graph_flow/raptor_amq_publisher_generation",
+        "order":2,
+        "timeout": 900
+    },
+    {
+        "type":"dir",
+        "value":"resolved/raptor_dependency_addition",
+        "order":3,
+        "timeout": 900
+    },
+    {
+        "type":"file",
+        "value":"resolved/raptor_database_generation/2_database_dal_dsimports.md",
+        "order":4,
+        "timeout": 900
+    },
+    {
+        "type":"dir",
+        "value":"resolved/dep_graph_flow/raptor_code_conversion",
+        "order":5,
+        "timeout": 900
+    }
+]
+}

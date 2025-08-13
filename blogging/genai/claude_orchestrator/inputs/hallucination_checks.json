@@ -1,0 +1,35 @@
+{
+  "description": "Hallucination Checks Pipeline Configuration",
+  "tasks": [
+    {
+      "name": "Basic Hallucination Check",
+      "command": [
+        "python3",
+        "tools/dep_graph_analyzer/code_generation_tools/check_basic_hallucination.py"
+      ],
+      "description": "Run basic hallucination validation checks",
+      "timeout": 120,
+      "continue_on_failure": false
+    },
+    {
+      "name": "Advanced Hallucination Check",
+      "command": [
+        "python3",
+        "tools/dep_graph_analyzer/code_generation_tools/check_advanced_hallucination.py"
+      ],
+      "description": "Run advanced hallucination validation checks",
+      "timeout": 180,
+      "continue_on_failure": false
+    },
+    {
+      "name": "Placeholder Evaluator",
+      "command": [
+        "python3",
+        "tools/dep_graph_analyzer/code_generation_tools/placeholder_evaluator.py"
+      ],
+      "description": "Run placeholder evaluation checks",
+      "timeout": 120,
+      "continue_on_failure": false
+    }
+  ]
+}

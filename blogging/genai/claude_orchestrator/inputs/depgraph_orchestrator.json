@@ -1,0 +1,63 @@
+{
+  "workflow_steps": [
+    {
+      "command": [
+        "bash",
+        "tools/skeleton/initialize_git.sh"
+      ],
+      "description": "Initialize Git"
+    },
+    {
+      "command": [
+        "python3",
+        "tools/dep_graph_analyzer/pipeline/deterministic_task_pipeline.py",
+        "--config",
+        "resolved/dep_graph_flow/generate_depgraph_results.json"
+      ],
+      "description": "Generate dependency graph results using pipeline"
+    },
+    {
+      "command": [
+        "python3",
+        "tools/dep_graph_analyzer/pipeline/ai_workflow_runner.py",
+        "--file",
+        "resolved/cpp_vo_analysis/1_vo_interfaces_generation.md"
+      ],
+      "description": "Run VO interfaces generation workflow"
+    },
+    {
+      "command": [
+        "python3",
+        "tools/dep_graph_analyzer/pipeline/deterministic_task_pipeline.py",
+        "--config",
+        "resolved/dep_graph_flow/deterministic_pipeline_config.json"
+      ],
+      "description": "Execute deterministic task pipeline"
+    },
+    {
+      "command": [
+        "python3",
+        "tools/dep_graph_analyzer/pipeline/ai_workflow_runner.py",
+        "--json",
+        "resolved/dep_graph_flow/aiprompts.json"
+      ],
+      "description": "Run AI workflow from JSON prompts"
+    },
+    {
+      "command": [
+        "python3",
+        "tools/dep_graph_analyzer/pipeline/deterministic_task_pipeline.py",
+        "--config",
+        "resolved/dep_graph_flow/hallucination_checks.json"
+      ],
+      "description": "Execute hallucination validation checks pipeline"
+    },
+    {
+      "command": [
+        "python3",
+        "tools/extras/analysis_cleanup.py"
+      ],
+      "description": "Clean up analysis files and move to processed directory"
+    }
+  ]
+}
