@@ -1,0 +1,10 @@
+{
+  "ai_prompts": [
+    {
+      "type": "dir",
+      "value": "samples",
+      "order": 3,
+      "timeout": 120
+    }
+  ]
+}
