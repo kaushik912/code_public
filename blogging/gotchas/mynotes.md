@@ -1132,3 +1132,15 @@ git log --follow -- A.java
 - git show --name-status <sha>
 - git diff --name-only <sha>..HEAD
 - git diff --name-only <sha1>..<sha2>
+
+---
+
+## Make your branch a single commit
+
+git checkout convertconfig_json2
+git fetch origin
+git reset --soft $(git merge-base origin/main HEAD)
+git commit -m "Your concise, descriptive commit message"
+git push --force-with-lease origin convertconfig_json2
+
+---
