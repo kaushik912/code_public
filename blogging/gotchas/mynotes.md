@@ -1136,11 +1136,11 @@ git log --follow -- A.java
 ---
 
 ## Make your branch a single commit
-
+```
 git checkout convertconfig_json2
 git fetch origin
 git reset --soft $(git merge-base origin/main HEAD)
 git commit -m "Your concise, descriptive commit message"
 git push --force-with-lease origin convertconfig_json2
-
+```
 ---
