@@ -352,9 +352,14 @@ curl http://127.0.0.1:8000/quotes/random
 
 ---
 
+Here’s a cleanly reformatted version under a single heading with two concise points:
+
+---
+
 ## 6) Optional niceties
 
-* Add `.gitignore` to keep `.venv/` and build artifacts out of Git:
+* **Add a `.gitignore` file**
+  Keep virtual environments, caches, and build artifacts out of Git:
 
   ```
   .venv/
@@ -370,6 +375,20 @@ curl http://127.0.0.1:8000/quotes/random
   .DS_Store
   .vscode/
   .idea/
+  ```
+
+* **Bonus (for VSCode users): Configure `extraPaths`**
+  Helps Pylance find your `src/` packages. Create or edit `.vscode/settings.json` at the **multi-quote** root:
+
+  ```json
+  {
+    "python.defaultInterpreterPath": "${workspaceFolder}/.venv/bin/python",
+    "python.analysis.extraPaths": [
+      "${workspaceFolder}/packages/quotes-core/src",
+      "${workspaceFolder}/packages/quotes-list/src",
+      "${workspaceFolder}/packages/quotes-file/src"
+    ]
+  }
   ```
 
 ---
@@ -447,19 +466,5 @@ so Python now knows:
 * Your `quotes_core` uses it dynamically when discovering or loading plugins.
 * When you set `QUOTE_PROVIDER=file`, you’re *selecting* that plugin by its name.
 
-## Quick Fix for VSCode
+---
 
-### Add `extraPaths` (helps Pylance find your `src/` packages)
-
-Create (or edit) `.vscode/settings.json` at the **multi-quote** root:
-
-```json
-{
-  "python.defaultInterpreterPath": "${workspaceFolder}/.venv/bin/python",
-  "python.analysis.extraPaths": [
-    "${workspaceFolder}/packages/quotes-core/src",
-    "${workspaceFolder}/packages/quotes-list/src",
-    "${workspaceFolder}/packages/quotes-file/src"
-  ]
-}
-```
