@@ -447,3 +447,19 @@ so Python now knows:
 * Your `quotes_core` uses it dynamically when discovering or loading plugins.
 * When you set `QUOTE_PROVIDER=file`, you’re *selecting* that plugin by its name.
 
+# VSCode tips
+
+### Add `extraPaths` (helps Pylance find your `src/` packages)
+
+Create (or edit) `.vscode/settings.json` at the **multi-quote** root:
+
+```json
+{
+  "python.defaultInterpreterPath": "${workspaceFolder}/.venv/bin/python",
+  "python.analysis.extraPaths": [
+    "${workspaceFolder}/packages/quotes-core/src",
+    "${workspaceFolder}/packages/quotes-list/src",
+    "${workspaceFolder}/packages/quotes-file/src"
+  ]
+}
+```
