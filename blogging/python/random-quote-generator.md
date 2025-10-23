@@ -447,7 +447,7 @@ so Python now knows:
 * Your `quotes_core` uses it dynamically when discovering or loading plugins.
 * When you set `QUOTE_PROVIDER=file`, you’re *selecting* that plugin by its name.
 
-# VSCode tips
+## Quick Fix for VSCode
 
 ### Add `extraPaths` (helps Pylance find your `src/` packages)
 
