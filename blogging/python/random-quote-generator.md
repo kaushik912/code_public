@@ -373,6 +373,8 @@ curl http://127.0.0.1:8000/quotes/random
   ```
 
 ---
+
+# 🧭 Multi-Quote Project Configuration Summary
 ### 🏗 project overview
 
 | package         | role                                                | depends on                                 | entry-points group                             | provides                                                         |
