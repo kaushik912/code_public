@@ -382,3 +382,66 @@ curl http://127.0.0.1:8000/quotes/random
 | **quotes-file** | file-based provider                                 | `quotes-core>=0.1.0`                       | `random_quotes.providers`                      | `file = quotes_file.provider:FileQuoteProvider`                  |
 | **quotes-api**  | REST API using FastAPI, dynamically loads providers | `quotes-core>=0.1.0`, `fastapi`, `uvicorn` | *(none — it consumes, not provides)*           | REST endpoints `/quotes/random` and `/providers`                 |
 
+---
+
+
+## 🧩 recap of what’s declared
+
+in your `quotes-file` package’s `pyproject.toml` you have:
+
+```toml
+[project.entry-points."random_quotes.providers"]
+file = "quotes_file.provider:FileQuoteProvider"
+```
+
+and similar for the list provider:
+
+```toml
+[project.entry-points."random_quotes.providers"]
+list = "quotes_list.provider:ListQuoteProvider"
+```
+
+---
+
+## 🧠 what’s really happening
+
+the **left-hand side** (`file`, `list`, etc.)
+is **not** a Python variable in your code.
+
+instead, it’s an **entry-point name** — a *key* in a registry that Python packaging builds at install time.
+
+---
+
+## 🗂️ when you install the package
+
+when you run:
+
+```bash
+pip install -e packages/quotes-file
+```
+
+pip writes metadata to your environment:
+
+```
+.../site-packages/quotes_file-0.1.0.dist-info/entry_points.txt
+```
+
+and it contains:
+
+```
+[random_quotes.providers]
+file = quotes_file.provider:FileQuoteProvider
+```
+
+so Python now knows:
+
+> “in the group `random_quotes.providers`, there’s a plugin named `file` that loads from `quotes_file.provider:FileQuoteProvider`.”
+
+
+## ✅ TL;DR
+
+* `file` is not a normal variable — it’s a **plugin name**.
+* It’s stored as metadata when your package is installed.
+* Your `quotes_core` uses it dynamically when discovering or loading plugins.
+* When you set `QUOTE_PROVIDER=file`, you’re *selecting* that plugin by its name.
+
