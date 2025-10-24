@@ -1,0 +1,61 @@
+# This is for corporate where we need to import certs etc.
+# 1) build stage
+FROM maven:3.9-eclipse-temurin-21 AS build
+
+# --- Install CA certs and import organization bundle properly (Debian-based image) ---
+USER root
+RUN apt-get update && apt-get install -y --no-install-recommends ca-certificates && rm -rf /var/lib/apt/lists/*
+
+# Copy your two PEM-formatted .crt files next to the Dockerfile
+COPY org1.crt /usr/local/share/ca-certificates/organization-root.crt
+COPY org2.crt /usr/local/share/ca-certificates/organization-intermediate.crt
+RUN update-ca-certificates
+
+# Import each cert into Java truststore as well (for Maven/Java HTTPS)
+RUN for f in /usr/local/share/ca-certificates/organization-*.crt; do \
+      echo "Importing $f into Java cacerts"; \
+      keytool -importcert -noprompt -storepass changeit \
+        -alias "$(basename "$f" .crt)" \
+        -file "$f" \
+        -keystore "${JAVA_HOME}/lib/security/cacerts" || true; \
+    done
+
+WORKDIR /app
+COPY pom.xml .
+COPY src ./src
+
+# (Optional) If you want Maven to use corporate mirrors/proxies, uncomment:
+COPY settings.xml /root/.m2/settings.xml
+
+# Build the application (so the runtime stage can copy the JAR)
+RUN mvn -q -DskipTests package
+
+
+# 2) runtime stage (small JRE)
+FROM eclipse-temurin:21-jre-alpine
+
+# --- Add organization bundle properly on Alpine runtime (so app HTTPS calls trust corp endpoints) ---
+USER root
+RUN apk add --no-cache ca-certificates
+
+COPY org1.crt /usr/local/share/ca-certificates/organization-root.crt
+COPY org2.crt /usr/local/share/ca-certificates/organization-intermediate.crt
+RUN update-ca-certificates
+
+# Import into Java truststore used by the runtime JRE as well
+RUN for f in /usr/local/share/ca-certificates/organization-*.crt; do \
+      echo "Importing $f into Java cacerts"; \
+      keytool -importcert -noprompt -storepass changeit \
+        -alias "$(basename "$f" .crt)" \
+        -file "$f" \
+        -keystore "${JAVA_HOME}/lib/security/cacerts" || true; \
+    done
+
+WORKDIR /app
+# optional: add non-root user
+RUN addgroup -S spring && adduser -S spring -G spring
+USER spring
+
+COPY --from=build /app/target/*.jar app.jar
+EXPOSE 8080
+ENTRYPOINT ["java","-jar","/app/app.jar"]

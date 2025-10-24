@@ -56,13 +56,13 @@ docker system df
 ### Commit an Existing Container to an Image
 
 ```bash
-docker container commit 1f26240ecaff dockerhub.paypalcorp.com/nodemaven:v0.2
+docker container commit 1f26240ecaff dockerhub.orgcorp.com/nodemaven:v0.2
 ```
 
 ### Build an Image from a Dockerfile
 
 ```bash
-docker image build -t dockerhub.paypalcorp.com/nodemvn:v0.1 .
+docker image build -t dockerhub.orgcorp.com/nodemvn:v0.1 .
 ```
 
 ### Tag an Existing Image with a New Name
@@ -76,20 +76,20 @@ docker image tag d583c3ac45fd myname/server:latest
 ### Run an Image Interactively
 
 ```bash
-docker run -it dockerhub.paypalcorp.com/alpine:latest /bin/ash
-docker container run -it dockerhub.paypalcorp.com/ubuntu:16.04 /bin/bash
+docker run -it dockerhub.orgcorp.com/alpine:latest /bin/ash
+docker container run -it dockerhub.orgcorp.com/ubuntu:16.04 /bin/bash
 ```
 
 ### Pull an Image from a Registry
 
 ```bash
-docker image pull dockerhub.paypalcorp.com/ubuntu:16.04
+docker image pull dockerhub.orgcorp.com/ubuntu:16.04
 ```
 
 ### Push an Image to a Registry
 
 ```bash
-docker push dockerhub.paypalcorp.com/nodemaven:v0.2
+docker push dockerhub.orgcorp.com/nodemaven:v0.2
 ```
 
 ### List All Images
@@ -107,7 +107,7 @@ docker container ls -a
 ### Run a Container in Detached Mode (Daemon)
 
 ```bash
-docker container run --detach --publish 8080:8080 dockerhub.paypalcorp.com/tomcat:8.0-jre8
+docker container run --detach --publish 8080:8080 dockerhub.orgcorp.com/tomcat:8.0-jre8
 ```
 
 > This will run Tomcat and expose it on port `8080`.

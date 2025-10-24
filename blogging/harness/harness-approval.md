@@ -23,7 +23,7 @@ pipeline:
               serviceAccountName: harness-service-account
               automountServiceAccountToken: true
               nodeSelector: {}
-              harnessImageConnectorRef: account.pypldockerhub
+              harnessImageConnectorRef: account.orgdockerhub
               os: Linux
           execution:
             steps:
@@ -32,7 +32,7 @@ pipeline:
                   name: hellostep
                   identifier: mockexit
                   spec:
-                    connectorRef: account.pypldockerhub
+                    connectorRef: account.orgdockerhub
                     image: developerexperience-r/jdk-maven:latest
                     shell: Bash
                     command: echo "Hi"
