@@ -116,6 +116,7 @@ alias dcv='docker volume ls'
 Think of it like this( `docker compose stop` versus `docker compose down`):
 
 > `stop` = press **pause** ⏸️
+
 > `down` = press **eject** ⏏️ (containers gone, volume optional)
 
 ---
