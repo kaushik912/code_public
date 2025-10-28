@@ -184,5 +184,50 @@ org.openrewrite.java.migrate.util.JavaUtilAPIs
 * `-Drewrite.recipeArtifactCoordinates` can reference multiple recipe artifacts (comma-separated). ([docs.openrewrite.org][1])
 * `-Drewrite.exportDatatables=true` enables report tables for this run. ([docs.openrewrite.org][2])
 
+---
+
+### Using the `OpenRewriteRecipeBestPractices` Recipe in Maven
+
+Refer to the [official documentation](https://docs.openrewrite.org/recipes/recipes/rewrite/openrewriterecipebestpractices) for details on the `OpenRewriteRecipeBestPractices` recipe.
+
+If you want to include this recipe in your Maven build, refer to the **Maven-specific section** of the OpenRewrite docs. For example, you can add the following configuration to your `pom.xml`:
+
+```xml
+<project>
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.openrewrite.maven</groupId>
+        <artifactId>rewrite-maven-plugin</artifactId>
+        <version>6.22.1</version>
+        <configuration>
+          <exportDatatables>true</exportDatatables>
+          <activeRecipes>
+            <recipe>org.openrewrite.recipes.rewrite.OpenRewriteRecipeBestPractices</recipe>
+          </activeRecipes>
+        </configuration>
+        <dependencies>
+          <dependency>
+            <groupId>org.openrewrite.recipe</groupId>
+            <artifactId>rewrite-rewrite</artifactId>
+            <version>0.14.1</version>
+          </dependency>
+        </dependencies>
+      </plugin>
+    </plugins>
+  </build>
+</project>
+```
+
+Here, the required recipe dependency is added under the `rewrite-maven-plugin`.
+
+After updating your `pom.xml`, run:
+
+```bash
+mvn rewrite:discover
+```
+
+You should now see the additional recipes available, including the `OpenRewriteRecipeBestPractices` recipe, ready for analysis and application.
+
 
 
