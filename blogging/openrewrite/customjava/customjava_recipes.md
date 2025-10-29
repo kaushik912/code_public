@@ -1,8 +1,3 @@
-Here’s an improved, **ready-reckoner version** of your *OpenRewrite Recipe Development Guide*.
-It’s restructured for clarity, adds practical “quick checks,” and highlights what you need for fast Java recipe testing.
-
----
-
 # 🧩 OpenRewrite Recipe Development Ready-Reckoner
 
 This guide helps you **create, test, and troubleshoot Java recipes quickly** using the OpenRewrite Maven plugin.
