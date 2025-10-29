@@ -14,7 +14,7 @@ The starter comes pre-configured with all necessary dependencies.
 ```
 
 ### 3. Create Test Folder
-Create `src/testsamples/` for viewing recipe outputs:
+Create `src/testsamples/` for viewing recipe outputs for specific files:
 ```
 src/
 ├── main/java/
@@ -24,7 +24,8 @@ src/
     └── Test.java
 ```
 
-**Note:** Recipes run on all files in `src/`, regardless of `<includes>` configuration.
+**Note:** Recipes run on all files in `src/`, regardless of `<includes>` configuration. This step is to optionally see your expected results.
+- Refer to `samplefiles` folder for sample files to test.
 
 ## Maven Plugin Configuration
 
