@@ -24,6 +24,8 @@ src/
     └── Test.java
 ```
 
+**Note:** Recipes run on all files in `src/`, regardless of `<includes>` configuration. This step is to optionally see your expected results.
+- Refer `samplefiles` folder for sample files to test.
 **Note:** Recipes run on all files in `src/`, regardless of `<includes>` configuration. 
 - This step is to optionally see your expected results.
 - Refer to `samplefiles` folder for sample files to test.
