@@ -1,191 +1,227 @@
+# **Java 8 — Getting Started**
 
- 
-# Java8 -- Getting Started 
-Let's say we want to add an action listener to a button.
+## **1. The Problem with Anonymous Classes**
 
-We could do as follows:
-```
+Suppose we want to add an `ActionListener` to a button. Traditionally, we might write:
+
+```java
 button.addActionListener(
-    new ActionListener(){
-        public void actionPerformed(ActionEvent e){
+    new ActionListener() {
+        public void actionPerformed(ActionEvent e) {
             System.out.println("Button Clicked");
         }
     }
-)
-```
-As we can see, 
-- It has lots of *boilerplate* code
-- It obscures the Programmer's intent
-- We are giving button an object that represents an action ( Think `code as data`)
-
-Now, consider the following declaration
-```
-    button.addActionListener(event -> System.out.println("Button Clicked"));
-```
-It does the same job as before but we can see the following: 
-- Block of code - a function without a name
-- event is the name of the parameter
-- Instead of an object that implements an interface, we are passing in a *block of code*.
-- We don't provide the 'type' for event, *javac* infers it as an Action Event.
-  
-This is  precisely a *lambda* expression!
-
-
-## Different ways of writing lambda expressions
-We could write lambda expression in a variety of ways. 
-
-Let's see a few:
-
-- No arguments, 
-```
-  () -> System.out.println("Hello World!");
-```
-- One argument, 
-```
-  event -> System.out.println("Button Clicked");
-```
-- Multi-statements,
-```
-     () -> {
-            System.out.println("Hello");
-            System.out.println("World!");
-     }
-```
-
-## What is Functional Interface?
-A functional interface is an interface with a single abstract method that is used as a type of a lambda expression.
-
-## Functional Interfaces in Java8.
-
-| Function          	| Arguments 	| Returns 	| Method     	| Example                                    	|
-|-------------------	|-----------	|---------	|------------	|--------------------------------------------	|
-| Predicate<T>      	| T         	| boolean 	| test()     	| Is Album Released?                         	|
-| Consumer<T>       	| T         	| void    	| accept()   	| Print out all track titles from this album 	|
-| Supplier<T>       	| None      	| T       	| get()      	| A factory method                           	|
-| UnaryOperator<T>  	| T         	| T       	| identity() 	| Logical not(!)                             	|
-| BinaryOperator<T> 	| T,T       	| T       	| apply()    	| Multiply two nums                          	|
-| Function<T,R>     	| T         	| R       	| apply()    	| Get name from Artist object                	|
-
-These functional interfaces need to be imported using 
-```
-  import java.util.function.*;
-```
-
-# Exercises
-**[Exercise]** ActionListener expects ActionEvent as an input and the method returns void. What is this type of Functional Interface?
-
-Solution:
- - Since it takes in input as T and returns void , looking into the table above, we observe its a consumer function!
-
-**[Exercise]** Define a predicate such that it checks if a number is greater than 5.
-  
-Lets re-visit Predicate. Its an interface defined as shown below:
-```
-  public interface Predicate<T>{
-      boolean test(T t);
-  }
-```
-So it expects an input of type T and the *test()* method implementation should return a boolean.
-Lets now define our predicate as: 
-```
-  Predicate<Integer> greaterThan5 = x -> x > 5;
-```
-Since we have defined our predicate using lambda expression, we could invoke the test() method like below: 
-```
-  import java.util.function.*;
-  import java.util.stream.*;
-  import static java.util.stream.Collectors.*;
-  class Main {
-      public static void main(String[] args) {
-          Predicate<Integer> greaterThan5 = x -> x > 5;
-          System.out.println(greaterThan5.test(10));//True
-          System.out.println(greaterThan5.test(2));//False
-      }
-  }
-```
-
-**[Exercise]** :Write a BinaryOperator lambda expression to multiply two longs
-
-BinaryOperator extends BiFunction. It takes two arguments of the same type and returns result as same type as that of the arguments. 
-
-So, in this case, we could do:
-```
-  BinaryOperator<Long> multiplyLongs = (x,y)->x*y;
-```
-Since it extends a BiFunction, we can call the *apply()* method.
-```
-  System.out.println(multiplyLongs.apply(10L,20L));//Prints 200
-```
-However, the below snippet
-```
-  BinaryOperator multiplyLongs = (x,y) -> x*y; // This wont' compile!
-```
-Its because Type isn't specified and it can't add Object, Object!
-So we need to specify type like BinaryOperator<Long> , BinaryOperator<Integer> etc.
-
-[**Exercise**]Function Interface - Revisited
-Now, lets talk about an important interface i.e. Function.
-
-It is used a lot in Streaming API in Collections ( we'll discuss Streaming APIs in another post)
-
-Its interface looks like:
-```
-  public interface Function<T,R>{
-      R apply(T t);
-  }
-```
-    So Function expects an input of type T and method returns an object of type R.
-
-**[Exercise]**: Write a Function lambda expression that calculates square-root of a number.
-Hint: Take input as integer and return a double.
-
-So we could create a lambda expression and then call *apply()* as shown below:
-```
-  Function<Integer,Double> sqrtFunction = (x) -> Math.sqrt(x);
-  System.out.println(sqrtFunction.apply(100)); //Prints 10
-```
-
-**[Exercise]**: Which of the following are valid Function<Long,Long> implementations?
-```
-  x -> x +1
-  (x,y) -> x+1
-  x -> x==1; 
-```
-Solution:
-
-- x -> x +1 --> Valid, it takes x and returns x+1
-- (x,y) -> x+1 --> invalid,This is actually a bi-function as it takes two arguments x and y instead of one
-- x -> x==1; --> invalid , its returning a boolean instead of a long, so its actually a predicate
-
-**[Exercise]**:Implement a thread-safe DateFormat class. Hint: Explore ThreadLocal class.
-
-Solution
-In ThreadLocal, we have a method withInitial() that takes a supplier function.
-
-Below is the sample code that creates a thread-safe DateFormat class :
-```
-ThreadLocal<DateFormatter> dfm = 
-ThreadLocal.withInitial(
-    ()-> new DateFormatter()
 );
 ```
-We can extend this ThreadLocal logic to create other thread-safe instances.
 
+While this works, it has some drawbacks:
 
-# Type Inference
-In the below code, we can see the diamond <> operator.
-It automatically infers the type based on the left side in Java8!
-```
-Map<String,String> map = new HashMap<>();
-```
-As discussed before, Type in Lambda expression is auto-inferred by javac.
+* Too much **boilerplate code**.
+* It **obscures the intent** of the programmer.
+* We are giving the button an **object** that represents an action — think of it as *“code as data.”*
 
-[**Exercise**] Explicitly add Type to the argument in a Lambda Expression
+---
 
-We could do:
+## **2. Enter Lambda Expressions**
+
+With Java 8, the same logic can be expressed much more concisely:
+
+```java
+button.addActionListener(event -> System.out.println("Button Clicked"));
 ```
-    button.addActionListener(
-(ActionEvent) event -> System.out.println("Button Clicked"));
+
+What’s happening here?
+
+* It defines a **block of code** — a function without a name.
+* `event` is the **parameter**.
+* Instead of passing an object that implements an interface, we’re passing a **block of executable code**.
+* We don’t specify the type of `event`; the compiler (**`javac`**) infers it as `ActionEvent`.
+
+This concise syntax is called a **lambda expression**.
+
+---
+
+## **3. Different Forms of Lambda Expressions**
+
+Lambdas in Java can take many forms depending on parameters and logic:
+
+| Case                    | Example                                                                                        | Description                         |
+| ----------------------- | ---------------------------------------------------------------------------------------------- | ----------------------------------- |
+| **No arguments**        | `() -> System.out.println("Hello World!")`                                                     | Executes a statement without inputs |
+| **Single argument**     | `event -> System.out.println("Button Clicked")`                                                | Takes one parameter                 |
+| **Multiple statements** | <pre>() -> {<br>   System.out.println("Hello");<br>   System.out.println("World!");<br>}</pre> | Encloses multiple lines in braces   |
+
+---
+
+## **4. Functional Interfaces**
+
+A **Functional Interface** is an interface with a **single abstract method (SAM)**.
+Lambda expressions provide an implementation for that single method.
+
+### Common Functional Interfaces in Java 8
+
+| Interface           | Arguments | Returns | Method     | Example Use Case              |
+| ------------------- | --------- | ------- | ---------- | ----------------------------- |
+| `Predicate<T>`      | T         | boolean | `test()`   | Check if an album is released |
+| `Consumer<T>`       | T         | void    | `accept()` | Print track titles            |
+| `Supplier<T>`       | None      | T       | `get()`    | Factory method                |
+| `UnaryOperator<T>`  | T         | T       | `apply()`  | Logical NOT, increment, etc.  |
+| `BinaryOperator<T>` | T, T      | T       | `apply()`  | Multiply two numbers          |
+| `Function<T,R>`     | T         | R       | `apply()`  | Extract name from an artist   |
+
+Import all at once using:
+
+```java
+import java.util.function.*;
 ```
- As you can see, in certain cases, it increases **readability and reduces ambiguity** by explicitly specifying the type.
+
+---
+
+## **5. Exercises**
+
+### **Exercise 1: Identify Functional Interface**
+
+> **Question:** `ActionListener` takes an `ActionEvent` as input and returns `void`.
+> Which functional interface does this correspond to?
+
+**Answer:**
+`Consumer<T>` — since it accepts an input (T) and returns nothing (`void`).
+
+---
+
+### **Exercise 2: Predicate Example**
+
+> Define a predicate to check if a number is greater than 5.
+
+A `Predicate<T>` is defined as:
+
+```java
+public interface Predicate<T> {
+    boolean test(T t);
+}
+```
+
+Implementation:
+
+```java
+Predicate<Integer> greaterThan5 = x -> x > 5;
+```
+
+Usage:
+
+```java
+System.out.println(greaterThan5.test(10)); // true
+System.out.println(greaterThan5.test(2));  // false
+```
+
+---
+
+### **Exercise 3: BinaryOperator Example**
+
+> Write a `BinaryOperator` to multiply two `Long` values.
+
+```java
+BinaryOperator<Long> multiplyLongs = (x, y) -> x * y;
+System.out.println(multiplyLongs.apply(10L, 20L)); // Prints 200
+```
+
+⚠️ Note:
+You must specify the type explicitly — this will **not compile**:
+
+```java
+BinaryOperator multiplyLongs = (x, y) -> x * y; // Error: Type inference fails
+```
+
+---
+
+### **Exercise 4: Function Interface**
+
+The `Function<T,R>` interface looks like this:
+
+```java
+public interface Function<T,R> {
+    R apply(T t);
+}
+```
+
+It’s widely used in **Stream APIs**.
+
+> Write a `Function` that computes the square root of an integer.
+
+```java
+Function<Integer, Double> sqrtFunction = x -> Math.sqrt(x);
+System.out.println(sqrtFunction.apply(100)); // Prints 10.0
+```
+
+---
+
+### **Exercise 5: Validate Function Implementations**
+
+Which of these are valid `Function<Long, Long>` implementations?
+
+```java
+x -> x + 1
+(x, y) -> x + 1
+x -> x == 1
+```
+
+**Answer:**
+
+| Expression        | Valid? | Reason                        |
+| ----------------- | ------ | ----------------------------- |
+| `x -> x + 1`      | ✅      | Takes one arg, returns a long |
+| `(x, y) -> x + 1` | ❌      | Takes two args → BiFunction   |
+| `x -> x == 1`     | ❌      | Returns boolean → Predicate   |
+
+---
+
+### **Exercise 6: Thread-Safe DateFormat**
+
+> Implement a thread-safe `DateFormat` using `ThreadLocal`.
+
+```java
+ThreadLocal<DateFormatter> dfm =
+    ThreadLocal.withInitial(() -> new DateFormatter());
+```
+
+Here, `withInitial()` accepts a **Supplier**, providing a new instance for each thread.
+
+---
+
+## **6. Type Inference**
+
+Java 8 improves type inference in many contexts.
+
+For example:
+
+```java
+Map<String, String> map = new HashMap<>();
+```
+
+The compiler automatically infers the type parameters on the right-hand side.
+
+Similarly, in lambdas, parameter types can often be inferred:
+
+```java
+button.addActionListener(event -> System.out.println("Button Clicked"));
+```
+
+You can, however, **explicitly specify** them for clarity:
+
+```java
+button.addActionListener((ActionEvent event) -> System.out.println("Button Clicked"));
+```
+
+Explicit typing can **improve readability and reduce ambiguity** in complex expressions.
+
+---
+
+✅ **Summary**
+
+* Lambdas make Java more expressive by eliminating anonymous class boilerplate.
+* Functional Interfaces form the foundation of the **Java 8 functional programming model**.
+* `Predicate`, `Consumer`, `Supplier`, and `Function` are key building blocks.
+* Type inference simplifies syntax but explicit types can aid readability.
+
+---
 
