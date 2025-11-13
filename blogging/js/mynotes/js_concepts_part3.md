@@ -204,6 +204,7 @@ Hello
 ## 🌐 JSON and Object Literals
 
 **JSON: JavaScript Object Notation**
+
 It is **inspired by JavaScript Object Literal Syntax.**
 
 ### Concept
