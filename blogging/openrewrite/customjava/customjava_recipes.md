@@ -203,9 +203,19 @@ During build, OpenRewrite generates `SimplifyTernaryRecipe.java` automatically.
 ---
 
 ## Follow ups
-- Try to implement 'placeholder' code mentioned in the [rewrite-recipe-starter](https://github.com/moderneinc/rewrite-recipe-starter) repo.
+- Try to implement 'placeholder' code mentioned in the [rewrite-recipe-starter](https://github.com/moderneinc/rewrite-recipe-starter) repo to practice writing recipes.
   - Examples
     - src/main/java/com/yourorg/StringIsEmpty.java
     - src/main/java/com/yourorg/UseIntegerValueOf.java
     - More complex example: src/main/java/com/yourorg/TrackJavaTodosFile.java
 
+## 🔚 How to choose which style
+
+* **YAML composite**
+  Use when built-in recipes already cover what you need (“lego-block” composition).
+
+* **Refaster**
+  Use when you have **simple, structural** “before/after” patterns and want to write minimal code.
+
+* **Custom Java**
+  Use when you need **complex or context-aware** transformations, or want reusable internal libraries.
