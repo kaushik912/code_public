@@ -203,5 +203,5 @@ During build, OpenRewrite generates `SimplifyTernaryRecipe.java` automatically.
 ---
 
 ## Follow ups
-- Try to implement 'placeholder' code mentioned in the [rewrite-recipe-starter](https://github.com/moderneinc/rewrite-recipe-starter) reop.
+- Try to implement 'placeholder' code mentioned in the [rewrite-recipe-starter](https://github.com/moderneinc/rewrite-recipe-starter) repo.
 
