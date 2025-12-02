@@ -204,4 +204,8 @@ During build, OpenRewrite generates `SimplifyTernaryRecipe.java` automatically.
 
 ## Follow ups
 - Try to implement 'placeholder' code mentioned in the [rewrite-recipe-starter](https://github.com/moderneinc/rewrite-recipe-starter) repo.
+  - Examples
+    - src/main/java/com/yourorg/StringIsEmpty.java
+    - src/main/java/com/yourorg/UseIntegerValueOf.java
+    - More complex example: src/main/java/com/yourorg/TrackJavaTodosFile.java
 
