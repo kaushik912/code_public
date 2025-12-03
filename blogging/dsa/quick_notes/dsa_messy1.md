@@ -203,6 +203,3 @@ System.out.println(new ArrayList<>(maxHeap)); //[110, 10, 15, 5]
 - calculate the string length so far using (right-left+1)
 - if this new length is greater than maxLen, update maxString and maxLen.
 - maxString is the str.substring(left,right+1)
-
-
-
