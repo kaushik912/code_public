@@ -98,7 +98,7 @@ if (minHeap.size() < k) {
 }
 ```
 
-
+![alt text](median.png)
 # find k-largest numbers (add and then poll strategy)
 - It seems counter-intuitive to use a min-heap for largest numbers!
   - First insert 'k' numbers into a min-heap
