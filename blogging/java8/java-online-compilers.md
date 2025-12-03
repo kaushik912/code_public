@@ -10,3 +10,7 @@ Online Java IDEs
 [2]: https://www.onlinegdb.com/online_java_compiler?utm_source=chatgpt.com "Online Java Compiler - online editor"
 [3]: https://onecompiler.com/java?utm_source=chatgpt.com "Java Online Compiler"
 [4]: https://replit.com/languages/java10?utm_source=chatgpt.com "Java Online Compiler & Interpreter - Replit"
+
+## Design and Drawing tools
+https://app.diagrams.net/
+https://friendlyboard.com/
