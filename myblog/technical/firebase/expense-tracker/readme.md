@@ -1,3 +1,13 @@
+## Suggested Prompt in GPT
+
+I want to write a expense tracker app in firebase. it should use free-tier. It should have authentication and allow user store the transaction information : date, amount , category. 
+
+Provided detailed step by step procedure to achieve this. 
+
+I would like to store it in Firebase DB. 
+
+For Authentication, I prefer to use username+password ( email + password).
+
 ## General Steps
 
 1. npm install -g firebase-tools
@@ -29,19 +39,7 @@
 
 ## Testing
 - For quick testing, try `testMode=true` in app.js. This avoids all calls and we can quickly test the UI.
-- As such, we can use `VS Live Preview Extension` to view the changes locally.
-- Once we are satisified
-  
-
-## Suggested Prompt in GPT
-
-I want to write a expense tracker app in firebase. it should use free-tier. It should have authentication and allow user store the transaction information : date, amount , category. 
-
-Provided detailed step by step procedure to achieve this. 
-
-I would like to store it in Firebase DB. 
-
-For Authentication, I prefer to use username+password ( email + password). 
+- As such, we can use `VS Live Preview Extension` to view the changes locally. 
 
 ---
 
