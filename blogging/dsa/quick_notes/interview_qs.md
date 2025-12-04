@@ -8,7 +8,7 @@ List of Questions that come to my mind:
 
 4. Word breaker problem - See if you can Split a sentence into words given in the dictionary - Amazon
 
-5. How much water is contained in a area having different walls.- Amazon
+5. Trapping rain water: How much water is contained in a area having different walls.- Amazon
 
 6. Stock prices - Buy/sell k stocks across n days and find out maximum profit.- Amazon
 
