@@ -1,0 +1,3 @@
+- In Google Colab, the best approach to write new notebooks is to re-save any of the existing notebooks in github with a different name and then edit it.
+- Always disconnect and delete runtime once you have finished executing your code in `google colab`
+- In a Jupyter Notebook, the "%%capture" magic function allows you to capture the entire output of a cell, including print statements and any visual output, and store it in a variable, effectively suppressing the output from being displayed directly in the notebook while still allowing you to access it later if needed.
