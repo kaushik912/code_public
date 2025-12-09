@@ -120,3 +120,113 @@ while left < right
     // so, mid+1..right will contain min element
     // we choose `mid+1`  because arr[mid] itself is greater than arr[right] and so can't be a min element
 ```
+
+### Trapping Rain water
+You’re given an array height[] where each element represents the height of a bar in a histogram.
+After raining, how much water is trapped between the bars?
+height= [0,1,0,2,1,0,1,3,2,1,2,1]
+
+For this problem, better to draw first to visualize the problem.
+
+#### Intuition 
+For each index, the water trapped depends on the tallest bar to the left and tallest bar to the right.
+
+```
+let's populate an array leftMax[] that indicates max height seen to the left so far.
+
+leftMax[i] = max height seen from left upto i.
+
+for index 0, left there is nothing before, so its 0
+for index 1, its max(prev, currentHeight) = max(0,1) = 1
+for index 2, max(1,0) = 1
+for index 3, max(1,2) = 2
+and so on.
+
+leftMax = [0,1,1,2,2,2,2,3,3,3,3,3] // max left heights
+
+similarly, max height seen from right so far.
+rightMax[i] = max height seen from right upto i
+for nth index, its 1
+for n-1 index, its max(2,prev) = max(2,1)= 2
+for n-2, its max(1,prev)= max(1,2)=2
+rightMax= [3,3,3,3,3,3,3,3,2,2,2,1] // fill from right to left
+
+We calculate min of leftMax,rightMax because water is bound by the lower of these two values.
+Imagine they are largest "walls" to either side of current "i" where water is stored.
+
+min(leftMax,rightMax)  =  [0,1,1,2,2,2,2,3,2,2,2,1]
+height=                   [0,1,0,2,1,0,1,3,2,1,2,1]
+
+water += min(leftMax[i],rightMax[i])-height[i] 
+
+water                  =  [0,0,1,0,1,2,1,0,0,1,0,0] = 6
+
+```
+---
+### Followup - Trapping Rain Water using O(1) space
+Instead of building two arrays, use another intuition
+
+##### Intuition
+```
+use four pointers: left, right, leftMax, rightMax.
+initially leftMax=0, rightMax=0, left=0, right=arr.length-1
+
+calculate leftMax = max(leftMax, arr[left]);
+// tallest wall seen so far from the left
+
+calculate rightMax = max(rightMax, arr[right]);
+// tallest wall seen so far from the right
+
+- Same as before, water stored is limited by the minimum of the leftMax,rightMax values.
+- Whichever side has a smaller max determines the water there. So we compute water at that index and move the pointer forward. (Two Pointer approach)
+
+So, 
+if leftMax <= rightMax
+    - we can calculate water stored for whichever "wall" is lower.
+    - So, water + = (leftMax - height[i])
+    - Just to make it tigher, we can add a max to 0 in case of negative.
+    - So, water + = max(leftMax - height[i],0)
+    - Since leftMax was considered, 
+    - left++
+else
+    - rightMax < leftMax
+    - water + = max(rightMax - height[i],0)
+    - right--
+This way we keep moving as long as left< right
+
+#### Working Example
+
+height= [2,1,0,1,3]
+left=0, right = 4, leftMax=0, rightMax=0
+
+leftMax = max(0,2) = 2
+rightMax = max(0,3)=3
+here leftMax < rightMax
+so, water = (leftMax - height[left] ) = 2 -2 =0
+left++
+
+left=1, right=4, leftMax=2, rightMax=3
+leftMax = max(2,1) = 2
+rightMax = max(3,3)= 3 
+again, leftMax < rightMax
+so water = (2 - 1) = 1
+left++
+
+left=2, right=4, leftMax=2, rightMax=3
+leftMax=2
+rightMax=3
+again leftMax < rightMax
+water = 2-0 = 2
+left ++
+
+left=3, right=4, leftMax=2,rightMax=3
+leftMax=2
+rightMax=3
+water = 2-1 = 1
+left++
+
+left=4, right=4, leftMax=2,rightMax=3
+
+so water = 1+2+1 = 4
+
+```
