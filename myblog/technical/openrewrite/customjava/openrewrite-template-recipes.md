@@ -201,7 +201,7 @@ mvn clean rewrite:run -Drewrite.activeRecipes=com.yourorg.EqualsAvoidsNullRecipe
 
 ### **Example 3: PrintHello (Simple Single-Recipe Pattern)**
 
-**File:** [PrintHello.java](../src/main/java/com/yourorg/PrintHello.java)
+**File:** [PrintHello.java]
 
 The `PrintHello` recipe demonstrates the **simplest form** of a Refaster template recipe — a single transformation without nested classes.
 
