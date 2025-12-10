@@ -1,6 +1,6 @@
 
 # Exercise
-Implement [StringIsEmpty.java](../src/main/java/com/yourorg/StringIsEmpty.java)
+Implement [StringIsEmpty.java]
 
 Run the recipe using:
 ```bash
