@@ -41,7 +41,7 @@ src/
 
 ## 🧱 Maven Plugin Configuration
 
-Add to your `pom.xml`:
+Add the following recipes to your `pom.xml`:
 
 ```xml
 <plugin>
@@ -68,7 +68,7 @@ Add to your `pom.xml`:
       <version>0.14.1</version>
     </dependency>
 
-    <!-- ⚠️ Important: Include the project itself -->
+    <!-- ⚠️ Important: Include the project itself as generated recipes are present in project itself in this case-->
     <dependency>
       <groupId>${project.groupId}</groupId>
       <artifactId>${project.artifactId}</artifactId>
@@ -78,144 +78,202 @@ Add to your `pom.xml`:
 </plugin>
 ```
 
-### ✅ Quick Checks
-
-* ✅ Class ends with `Recipe` (e.g., `SimplifyTernaryRecipe`)
-* ✅ Nested recipes use `$` (e.g., `OuterRecipe$InnerRecipe`)
-* ✅ Project itself is listed as a dependency
-
 ---
 
-## 🧪 Testing Recipes
+## 🚀 Running Recipes
 
-### Run All Active Recipes
+Once you've configured the plugin, execute your recipes:
 
 ```bash
 mvn rewrite:run
 ```
 
-### Preview Without Modifying Code
+This command will:
+- Apply all recipes listed in `<activeRecipes>`
+- Modify files in place based on the transformations
+- Fail the build if `<failOnDryRunResults>true` and changes are detected
 
+**Dry-run mode** (preview changes without applying):
 ```bash
 mvn rewrite:dryRun
 ```
 
-### Run a Specific Recipe
+---
 
-```bash
-mvn rewrite:run -Drewrite.activeRecipes=com.yourorg.YourRecipeName
+## 📚 Recipe Examples Explained
+
+The following sections explain the recipes referenced in the Maven configuration above.
+
+### **Example 1: SimplifyTernary (Multi-Recipe Pattern)**
+
+**File:** [SimplifyTernary.java](../src/main/java/com/yourorg/SimplifyTernary.java)
+
+**Understanding the SimplifyTernary Recipe Structure:**
+
+The `SimplifyTernary.java` file demonstrates a **multi-recipe pattern** using Refaster templates. Here's how it works:
+
+#### 1. **Class-Level `@RecipeDescriptor`**
+```java
+@RecipeDescriptor(
+    name = "Simplify ternary expressions",
+    description = "Simplifies various types of ternary expressions to improve code readability."
+)
+public class SimplifyTernary {
+```
+- This annotation defines metadata for the **parent recipe**
+- The class itself does **not** extend `Recipe` — OpenRewrite generates a `SimplifyTernaryRecipes` class for you
+- This becomes the umbrella recipe that groups related transformations
+
+#### 2. **Nested Static Classes for Individual Recipes**
+```java
+@RecipeDescriptor(
+    name = "Replace `booleanExpression ? true : false` with `booleanExpression`",
+    description = "Replace ternary expressions like `booleanExpression ? true : false` with `booleanExpression`."
+)
+public static class SimplifyTernaryTrueFalse {
+```
+- Each nested class represents a **separate recipe**
+- Each has its own `@RecipeDescriptor` with specific name and description
+- These become individual recipes you can reference independently
+
+#### 3. **Template Methods: `@BeforeTemplate` and `@AfterTemplate`**
+```java
+@BeforeTemplate
+boolean before(boolean expr) {
+    return expr ? true : false;
+}
+
+@AfterTemplate
+boolean after(boolean expr) {
+    return expr;
+}
+```
+- `@BeforeTemplate`: Defines the **pattern to match** in existing code
+- `@AfterTemplate`: Defines what the code **should look like** after transformation
+- OpenRewrite uses pattern matching to find code matching the `before` template and replaces it with the `after` template
+- Parameters (like `expr`) are bound during matching and substituted in the replacement
+
+#### 4. **Generated Recipe Naming Convention**
+When you have nested recipes, OpenRewrite generates:
+- `SimplifyTernaryRecipes` (note the plural "Recipes")
+  - `SimplifyTernaryRecipes$SimplifyTernaryTrueFalseRecipe`
+  - `SimplifyTernaryRecipes$SimplifyTernaryFalseTrueRecipe`
+
+Each nested class gets `Recipe` appended to its name in the generated code.
+
+#### 5. **How It Transforms Code**
+Example transformation by `SimplifyTernaryTrueFalse`:
+```java
+// Before
+boolean result = isValid() ? true : false;
+
+// After
+boolean result = isValid();
 ```
 
-### Run on a Specific Module
+Example transformation by `SimplifyTernaryFalseTrue`:
+```java
+// Before
+boolean result = isValid() ? false : true;
 
-```bash
-mvn -pl module-name rewrite:run
+// After
+boolean result = !isValid();
 ```
 
-| Task           | Command                                                          |
-| -------------- | ---------------------------------------------------------------- |
-| Dry-run all    | `mvn rewrite:dryRun`                                             |
-| Run all active | `mvn rewrite:run`                                                |
-| Run one recipe | `mvn rewrite:run -Drewrite.activeRecipes=com.yourorg.RecipeName` |
-| On module      | `mvn -pl my-module rewrite:run`                                  |
 
 ---
 
-## 🧰 Example Recipes
+### **Example 2: EqualsAvoidsNull**
 
-### **Example 1 – SimplifyTernary**
+**File:** [EqualsAvoidsNull.java](../src/main/java/com/yourorg/EqualsAvoidsNull.java)
 
-**Source:** [SimplifyTernary.java](https://github.com/moderneinc/rewrite-recipe-starter/blob/main/src/main/java/com/yourorg/SimplifyTernary.java)
+This recipe demonstrates another common pattern for improving code safety.
 
-**Activate in `pom.xml`:**
-
-```xml
-<activeRecipes>
-  <recipe>com.yourorg.SimplifyTernaryRecipes$SimplifyTernaryTrueFalseRecipe</recipe>
-  <recipe>com.yourorg.SimplifyTernaryRecipes$SimplifyTernaryFalseTrueRecipe</recipe>
-</activeRecipes>
-```
-
-**Run:**
-
-```bash
-mvn rewrite:run
-```
-
----
-
-### **Example 2 – EqualsAvoidsNull**
-
-**Source:** [EqualsAvoidsNull.java](https://github.com/moderneinc/rewrite-recipe-starter/blob/main/src/main/java/com/yourorg/EqualsAvoidsNull.java)
-
-**Run directly:**
+**Run this recipe directly from command line:**
 
 ```bash
 mvn clean rewrite:run -Drewrite.activeRecipes=com.yourorg.EqualsAvoidsNullRecipe
 ```
 
+> 💡 **Tip:** Use `-Drewrite.activeRecipes` to run a specific recipe without modifying `pom.xml`
+
 ---
 
-## 🧩 Recipe Authoring Essentials
+### **Example 3: PrintHello (Simple Single-Recipe Pattern)**
 
-### Key Annotations
+**File:** [PrintHello.java](../src/main/java/com/yourorg/PrintHello.java)
 
-| Annotation          | Purpose                                  |
-| ------------------- | ---------------------------------------- |
-| `@RecipeDescriptor` | Describes the recipe (name, description) |
-| `@BeforeTemplate`   | Defines pattern to match                 |
-| `@AfterTemplate`    | Defines replacement code                 |
+The `PrintHello` recipe demonstrates the **simplest form** of a Refaster template recipe — a single transformation without nested classes.
 
-### Example
+### **Recipe Structure**
 
 ```java
 @RecipeDescriptor(
-    name = "Simplify ternary expressions",
-    description = "Replaces redundant ternary operations with simpler expressions."
+    name = "Say Hello Recipe",
+    description = "Replaces a simple print statement with a configurable greeting message."
 )
-public class SimplifyTernary {
+@SuppressWarnings("unused")
+public class PrintHello {
 
     @BeforeTemplate
-    boolean before(boolean expr) {
-        return expr ? true : false;
+    void before() {
+        System.out.println("Hello!");
     }
 
     @AfterTemplate
-    boolean after(boolean expr) {
-        return expr;
+    void after() {
+        System.out.println("Hello from " + "Kaushik !");
     }
 }
 ```
 
-**Result:**
-During build, OpenRewrite generates `SimplifyTernaryRecipe.java` automatically.
+### **Key Differences from SimplifyTernary**
+
+| Aspect | SimplifyTernary | PrintHello |
+|--------|----------------|------------|
+| **Structure** | Multiple nested static classes | Single flat class |
+| **Recipes Generated** | Multiple (`SimplifyTernaryRecipes$*`) | One (`PrintHelloRecipe`) |
+| **Use Case** | Grouping related transformations | Single, specific transformation |
+| **Reference Name** | `com.yourorg.SimplifyTernaryRecipes$SimplifyTernaryTrueFalseRecipe` | `com.yourorg.PrintHelloRecipe` |
+
+### **How It Works**
+
+1. **Pattern Matching**: OpenRewrite scans your code for exact matches of:
+   ```java
+   System.out.println("Hello!");
+   ```
+
+2. **Replacement**: When found, it replaces with:
+   ```java
+   System.out.println("Hello from " + "Kaushik !");
+   ```
+
+3. **Generated Recipe**: OpenRewrite generates `PrintHelloRecipe` (note: singular "Recipe", not "Recipes")
+
+### **Running PrintHello**
+
+Add to your `pom.xml` activeRecipes:
+```xml
+<activeRecipes>
+  <recipe>com.yourorg.PrintHelloRecipe</recipe>
+</activeRecipes>
+```
+
+Or run directly:
+```bash
+mvn clean rewrite:run -Drewrite.activeRecipes=com.yourorg.PrintHelloRecipe
+```
+
+### **When to Use Each Pattern**
+
+- **Use Nested Classes (like SimplifyTernary)** when:
+  - You have multiple related transformations
+  - You want to group recipes logically
+  - Users might want to apply recipes individually or as a group
+
+- **Use Single Class (like PrintHello)** when:
+  - You have one specific transformation
+  - The recipe is standalone and self-contained
+  - Simplicity is preferred
 
 ---
-
-## 🛠 Auto-Generated Recipe Files
-
-| Stage  | Example File                 | Purpose                          |
-| ------ | ---------------------------- | -------------------------------- |
-| Source | `SimplifyTernary.java`       | You write annotated recipe       |
-| Build  | *Auto-generated*             | Created by annotation processing |
-| Output | `SimplifyTernaryRecipe.java` | Used at runtime by OpenRewrite   |
-
----
-
-## Follow ups
-- Try to implement 'placeholder' code mentioned in the [rewrite-recipe-starter](https://github.com/moderneinc/rewrite-recipe-starter) repo to practice writing recipes.
-  - Examples
-    - src/main/java/com/yourorg/StringIsEmpty.java
-    - src/main/java/com/yourorg/UseIntegerValueOf.java
-    - More complex example: src/main/java/com/yourorg/TrackJavaTodosFile.java
-
-## 🔚 How to choose which style
-
-* **YAML composite**
-  Use when built-in recipes already cover what you need (“lego-block” composition).
-
-* **Refaster**
-  Use when you have **simple, structural** “before/after” patterns and want to write minimal code.
-
-* **Custom Java**
-  Use when you need **complex or context-aware** transformations, or want reusable internal libraries.
