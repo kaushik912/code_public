@@ -1,4 +1,4 @@
-# Replace System.out with Logger.info
+# Replace System.out with Logger.info - Manual Approach
 
 ### Step 1:
 Manually add Slf4j Logger to the class (usually at the top).
@@ -21,7 +21,7 @@ Here is where the magic happens!
 The System.out.println() get replaced with logger.info()
 
 
-## Below works without manual adding logger
+## Below works without manual adding logger - Automated
 
 We need to pass addLogger=true with other options and the magic happens!
 
