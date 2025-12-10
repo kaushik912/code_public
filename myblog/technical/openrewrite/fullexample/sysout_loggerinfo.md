@@ -42,6 +42,7 @@ mvn rewrite:run \
   -DloggingFramework=SLF4J \
   -Dlevel=info
 ```
+> Basically we need to play around with the option in the recipe based on the open rewrite docs.
 
 #### Better to use YAML
 
