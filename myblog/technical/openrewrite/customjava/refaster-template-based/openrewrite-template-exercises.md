@@ -2,11 +2,6 @@
 # Exercise
 Implement [StringIsEmpty.java](https://github.com/moderneinc/rewrite-recipe-starter/blob/main/src/main/java/com/yourorg/StringIsEmpty.java)
 
-Run the recipe using:
-```bash
-mvn clean rewrite:run -Drewrite.activeRecipes=com.yourorg.StringIsEmptyRecipe
-```
-
 ## Implementation Details
 
 The `StringIsEmpty` recipe uses Google's Refaster framework to replace verbose string length checks with the more idiomatic `isEmpty()` method.
@@ -44,10 +39,9 @@ When the recipe runs, OpenRewrite will:
 2. Replace them with the after pattern
 3. Generate a patch file showing the changes
 
-### Testing:
-Run the tests to verify the recipe works correctly:
-```bash
-mvn test
-```
+### Run the recipe
 
-All tests in `StringIsEmptyTest` should pass when the recipe is correctly implemented.
+```bash
+mvn clean rewrite:run -Drewrite.activeRecipes=com.yourorg.StringIsEmptyRecipe
+```
+Look for @StringIsEmpty in `recipes` folder for a sample code.
