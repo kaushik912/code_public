@@ -188,5 +188,21 @@ Output: 11
 - Special case: If all numbers are negative, we need to handle separately in the beginning itself. 
     - eg: [-5,-2,-3], then maximum sum of subarray is max in that array: -2
 
-    
 
+# Stock buy and sell
+Given an array arr[] denoting the cost of stock on each day, the task is to find the maximum total profit if we can buy and sell the stocks any number of times.
+
+Note: We can only sell a stock which we have bought earlier and we cannot hold multiple stocks on any day.
+Input: arr[] = [100, 180, 260, 310, 40, 535, 695]
+Output: 865
+
+- Idea is to maximize the diff 
+- First comes 100 (left=0)
+- Then 180, runDiff = 80, positive, store maxDiff = 80
+- Comes 260, runDiff = 160, maxDiff= 160
+- Comes 310, runDiff = 210, maxDiff= 210
+- Comes 40, runDiff =-60 < 0, reset left to 40's index.
+    - Add it to profit , profit +=maxDiff = 210
+- Comes 535, runDiff = 495, maxDiff = 495
+- Comes 695, runDiff = 655, maxDiff = 655
+- End of array, profit+=655 = 865
