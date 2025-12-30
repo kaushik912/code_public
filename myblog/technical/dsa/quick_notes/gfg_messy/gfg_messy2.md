@@ -163,10 +163,30 @@ Output: 8
 - We use a Map that stores <key,Node> information. 
 - Java's LinkedList has O(n) for removing a node. So we need to implement custom DLL.
 - LinkedList implements several interfaces: List, Deque, and Queue.
+- Some useful linked list operations: addFirst(),addLast(),removeFirst(), removeLast(),remove(Object)
+- list.add(index, value); // inserts node at particular index, 
+- list.set(index, value); // replaces node at particular index with new value
 
 
+# Max subarray sum
+You are given an integer array arr[]. You need to find the maximum sum of a subarray (containing at least one element) in the array arr[].
+Input: arr[] = [2, 3, -8, 7, -1, 2, 3]
+Output: 11
+- calculate running sum 
+- If the running sum ever becomes below 0, reset the runningSum to 0.
+- If running sum is increasing, update the maxSum. 
 
-   
+### Working Example
+- Comes 2 , RS=2, MS=2
+- Comes 3, RS=5, MS = 5
+- Comes -8, RS=-3=>0, MS = 5 (remains old good sum)
+- Comes 7, RS=7, MS = 7 (updated!)
+- Comes -1, RS=6, MS= 7
+- Comes 2, RS = 8, MS=8
+- Comes 3, RS=11, MS=11
 
+- Special case: If all numbers are negative, we need to handle separately in the beginning itself. 
+    - eg: [-5,-2,-3], then maximum sum of subarray is max in that array: -2
 
+    
 
