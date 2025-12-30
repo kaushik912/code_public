@@ -263,3 +263,58 @@ Output: [17, 5, 2]
     - 16 < leader, so cannot be a new leader
 
 Now , to match output, we can reverse our list: {17,5,2}
+
+# Alternative Positive Negative
+Given an unsorted array arr containing both positive and negative numbers. Your task is to rearrange the array and convert it into an array of alternate positive and negative numbers without changing the relative order.
+
+- NOTE: 0 is to be treated as positive
+
+Input: arr[] = [9, 4, -2, -1, 5, 0, -5, -3, 2]
+Output: [9, -2, 4, -1, 5, -5, 0, -3, 2]
+Time Complexity: O(n)
+Auxiliary Space: O(1)
+
+### Easier approach with O(n) space
+- collect all positives in one array
+- collect all negatives in another array
+- now update array with alternate positive and negative
+- if positive is left behind, update the array with the remaining ones
+- if negative is left behind, update the array with those remaining ones.
+
+
+### Another approach with O(1) space
+- Assume all even indices should have positive numbers
+- All odd indices should have negative numbers
+- we see 9 is positive at index 0
+- we see 4 at index 1 but it expects negative.
+    - 4 needs to be "replaced" with a negative number
+    - we find -2 
+    - In order to preserve order we need to rotate the array by 1
+    - eg: if array is [9,4,6,-2]
+    - rotate [4,6,-2] -> [-2,4,6]
+    - final array is [9,-2,4,6]
+    - Each Rotation takes O(n) as we need to shift values to right and insert the value in the beginning
+    - We may do multiple rotations
+- So overall complexity of this approach is O(n^2)
+
+### Key take-away
+- In case of extra space, its about using two arrays : one positive and one negative
+    - Then fill up the original list/array with alternate pos and negative as long as they exist
+    - This takes O(n) time complexity
+- In case of O(1), we use **rotation** and not swaps
+    - When we rotate, we preserve the order of the elements. Swapping does not guarantee that.
+    - It takes O(n^2) in worst case for entire array due to multiple rotations.
+
+### How do we rotate entire array by 1?
+    - eg: [9,4,6,-2]
+    - first copy the last element(-2) to some variable, say temp
+    - shift elements from right to left
+        - arr[j]=arr[j-1]
+        - we get: [9,9,4,6]
+        - Now replace first element with temp
+        - [-2,9,4,6]
+- If we wish to rotate a sub-array[start..end], then indices constraints apply.
+    - since our formula is arr[j]=arr[j-1]
+    - we need to only go down until [start+1]
+    - so loop down from `end` until `start+1`
+    
