@@ -197,12 +197,129 @@ Input: arr[] = [100, 180, 260, 310, 40, 535, 695]
 Output: 865
 
 - Idea is to maximize the diff 
-- First comes 100 (left=0)
-- Then 180, runDiff = 80, positive, store maxDiff = 80
-- Comes 260, runDiff = 160, maxDiff= 160
-- Comes 310, runDiff = 210, maxDiff= 210
-- Comes 40, runDiff =-60 < 0, reset left to 40's index.
-    - Add it to profit , profit +=maxDiff = 210
-- Comes 535, runDiff = 495, maxDiff = 495
-- Comes 695, runDiff = 655, maxDiff = 655
-- End of array, profit+=655 = 865
+
+Arr: [1, 5, 3, 6]
+- capture profit at every local **peak** before a drop
+- comes 1,(left=0), 
+- comes 5,(i=1)
+    - arr[i] > arr[i-1], 
+    - increasing sequence
+    - update maxDiff =arr[i]-arr[i-1]=4
+- comes 3, 
+    - Here, arr[i] < arr[i-1]
+    - There is a drop now after the peak
+    - So Book Profit
+    - profit + = maxDiff = 4
+    - maxDiff is reset to 0
+    - left = 3's index = i = 2
+- comes 6, maxDiff = arr[i]-arr[left]=3
+- End of array
+    - profit + = maxDiff =  4+3 =7
+
+### Key Points with maxDiff
+- Use two pointers to solve this problem
+    - one is left, other is i from 1 to n-1
+- identify the pattern when there is a local **peak** before a drop.
+- Inside the loop, i from 1 to n-1 
+    - if arr[i] > arr[i-1],
+        - update maxDiff = arr[i]-arr[left]
+    - if arr[i] < arr[i-1],
+        - we see a drop after a **local** peak and hence we should sell and book profit
+        - profit += maxDiff
+        - left = i, maxDiff=0
+- Once we exit the loop, 
+    - since we didn't see a drop as we reached end, we still need to book the "left-over" profit
+    - profit += maxDiff
+
+
+### Key Points without maxDiff
+- We don't need maxDiff if we can use indices smartly.
+- Inside the loop, i from 1 to n-1 
+    - The moment arr[i] < arr[i-1], we see a drop after a peak and hence we should sell and book profit
+    - profit += arr[i-1]-arr[left], 
+    - we use arr[i-1] here because arr[i-1] > arr[i] and hence that's the best profit.
+    - left = i, 
+- Once we exit the loop, 
+    - since we didn't see a drop as we reached end, we still need to book the "left-over" profit
+    - profit += arr[n-1] - arr[left]
+- In previous approach, arr[i-1]-arr[left] was getting captured in maxDiff variable.
+ 
+ # Who has the majority?
+Given an array arr[] and two elements x and y, return the element that occurs more frequently. If both elements have the same frequency, return the smaller one.
+
+Input: arr[] = [1, 1, 2, 2, 3, 3, 4, 4, 4, 4, 5], x = 4, y = 5
+Output: 4
+Explanation: frequency of 4 is 4.frequency of 5 is 1.Since 4>1 so return 4
+
+- Pick x and search linearly for it in array , whenever its found, increment count
+- same for y
+- check 
+    - if xCount > yCount, return x, 
+    - else if xCount < yCount, return y
+    - both have same count, if x< y ? x : y
+
+# Frequencies in limited array
+You are given an array arr[] containing positive integers. The elements in the array arr[] range from  1 to n (where n is the size of the array), and some numbers may be repeated or absent. Your have to count the frequency of all numbers in the range 1 to n and return an array of size n such that result[i] represents the frequency of the number i (1-based indexing).
+
+Input: arr[] = [2, 3, 2, 3, 5]
+Output: [0, 2, 2, 0, 1]
+Explanation: We have: 1 occurring 0 times, 2 occurring 2 times, 3 occurring 2 times, 4 occurring 0 times, and 5 occurring 1 time.
+
+Time Complexity: O(n)
+Auxiliary Space: O(1)
+
+- one option is to use another int array of size n
+    - int[] map = new int[n]
+    - update map[arr[i]-1]++, 
+        - essentially 1's count is stored at 0, 2's count at 1 and so on.
+    - for 2, [0,1,0,0,0]
+    - for 3, [0,1,1,0,0]
+    - for 2, [0,2,1,0,0]
+    - for 3, [0,2,2,0,0]
+    - for 5, [0,2,2,0,1]
+    - [0,2,2,0,1] is the final answer (1-based counts).
+- I can extend this approach to ArrayList
+    - First create a dummy arraylist with 'n' 0s added
+    - then use the set to update the indices with counts as before.
+
+## in-place Index math
+- Input: arr[] = [2, 3, 2, 3, 5]
+- for the in-place trick to work,
+    - we need to have values in range 0..n-1
+    - subtract every value by 1
+    - [1, 2, 1, 2, 4]
+
+- working arr: [1, 2, 1, 2, 4]
+- i=0,
+    - index = (arr[i])%n = 1
+    - So we do arr[index]+=n
+    - We are adding a n every time we get the same index for the value.
+    - So it becomes (2 + n)
+    - [ 1, 2+n, 1,2, 4]
+- i=1,
+    - index = (arr[i])%n = 2,
+    - Here we are doing %n to remove any multiplers to get back the original value.
+        - eg: if earlier it got updated to (1+n), then (1+n) %n would give back 1
+    - arr[index]+=n
+    - so it becomes (1 + n)
+    - in other words:
+        - [ 1, 2+n, 1+n, 2, 4]
+- i=2, arr[i]=1, index =1
+    - So again add a n at that index 1
+        - [1, 2 +2n, 1+n, 2, 4]
+- i=3, arr[i]=2, index = 2
+    - So adding add a n at index 2
+        - [1, 2+2n , 1+2n, 2, 4]
+- i=4, arr[4]=4, index =4
+    - [1, 2+2n ,1+2n, 2, 4+n]
+
+ Now to get the frequency counts   
+ - We simply divide each entry by n
+    - we get [0, 2, 2, 0, 1]
+
+### Central idea:
+- use **n** as a multipler to update array's index for the value
+    - make values in array in [0..n-1]
+    - index = (arr[i])%n
+    - arr[index]+=n
+- Divide by n to get the frequency count
