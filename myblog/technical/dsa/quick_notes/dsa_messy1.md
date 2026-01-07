@@ -4,31 +4,59 @@
 - For quick testing or validation, use online IDE like: https://www.onlinegdb.com/online_java_compiler
 
 ### write program to print all permutations of {1,2,3}
-permute(arr, l ,r) , initially l=0, r=arr.length-1
-- iterate i from l to r
-    - swap(arr,l,i)
-    - permute(arr,l+1,r), // l is fixed, so we permute on the rest of array
-    - again swap(arr,l,i),  //why? backtracking it to original state
 
-- base case(when to break recursion): 
-     l==r, you have reached one end of permutation, print the array
+## Permute two numbers
+```    
+[1,2]
+swap 0 with 0
+swap 0 with 1
+[1,2]
+[2,1]
+```
 
-Example iteration
-- [1,2,3]
-    - initial pass, 
-        - now it'll permute on (2,3) keeping 1 fixed
-            - [1,2,3]
-            - [1,3,2]
-    - second pass, [2,1,3]
-    - now it'll permute on (1,3) keeping 2 fixed.
-        - [2,1,3] 
-        - [2,3,1] 
-        - backtracked to [1,2,3]
-    - third pass, [3,2,1]
-        - permute on (2,1) keeping 3 fixed
-        - [3,2,1] 
-        - [3,1,2] 
-    
+### Extend to 3 numbers 
+```
+[1,2,3]
+ swap 0 with 0, permute on remaining
+ [1],permute(2,3)
+ we already solved this before for two numbers,
+    [1], [2,3]
+    [1], [3,2]
+    Now, we need to revert this back to original
+    [1][2,3] , achieved by a re-swap
+ //technically there is also a re-swap at outer layer but since its 0,0 , it has no effect
+
+ swap 0 with 1, permute on remaining
+ [2], permute(1,3)
+ We again already solved this before for 2 numbers
+    [2], [1,3]
+    [2], [3,1]
+    again, we re-swap to get back to original order 
+    [2][1,3] -> inner re-swap
+ [1][2,3] -> outer re-swap
+
+swap 0 with 2, permute on remaining
+ [3], permute(2,1)
+We again already solved this before for 2 numbers
+    [3], [2,1]
+    [3], [1,2]
+    again, we re-swap to get back to original order 
+    [3], [2,1]-> inner re-swap
+[1,2,3] -> outer re-swap
+```
+
+So there is a pattern
+- if l==r
+    - print the array
+
+- otherwise 
+    - iterate i from l to r
+        - swap(arr,l,i), //assume we swap 'i' with leftmost always
+        - permute(arr,l+1,r) // permute on the remaining..
+        - swap(arr,l,i), re-swap to restore back
+
+- I admit this is a bit of abstract thinking as it involves recursion + backtracking!
+
 
 
 # find median in a stream of numbers
@@ -53,10 +81,15 @@ Example iteration
                 - upper : [10]
                 - lower: [7,5]
                 - Now median is 7, since array is odd , so simply peek() the lower.
-        - Eg2: if upper heap had [7,10], lower heap had [5] and a new number came as [3]
-            - since 3<5, it'll go to lower
-            - lower : [5,3]
-            - upper: [7,10]
+        - Eg2: if upper heap had [12], lower heap had [7,5] and a new number came as [3]
+            - since 3<7, it'll go to lower
+            - lower : [7,5,3]
+            - upper: [12]
+            - Now lower.size - upper.size = 2
+            - We need to balance by moving from lower to upper.
+                - pop out the lower and insert into upper
+                - lower : [5,3]
+                - upper: [7,12] 
             - Since array is now even, it'll be average of peeks. So (5+7)/2 = 6.
 
 
