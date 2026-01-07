@@ -32,6 +32,7 @@ Example iteration
 
 
 # find median in a stream of numbers
+- ![alt text](median.png)
 - Suppose we have a array like below :
    - [   lower half  | middle | upper half    ]
     - If array length is odd, middle element is the median
@@ -59,46 +60,6 @@ Example iteration
             - Since array is now even, it'll be average of peeks. So (5+7)/2 = 6.
 
 
-# find k-largest numbers (check and add strategy)
-- It seems counter-intuitive to use a min-heap for largest numbers!
-  - First insert 'k' numbers into a min-heap
-  - min-heap is one where every node is lower than its children.
-- eg: k=3, arr= [10,4,2,6,5,1]
-    - we insert 3 numbers to our min-heap
-    - [10] 
-    - [4,10]
-    - [2,4,10]
-- Now, comes 6
-    - since 6 > heap's peek, we remove peek/top element and insert 6
-    - Say, its now [4,6,10]
-- Now comes 5
-    - Since 5 > 4, we knock off 4 and insert 5
-    - [5,6,10]
-- Now comes 1
-    - Since 1 < top/peek element, we simply ignore
-- So the k-largest elements are 5,6,10
-
-- Additionally Now to print k-largest elements, we need to do poll()
- - Because the min-heap could have [5,10,6] as well 
-    - since 5 < both 10 and 6 and its not a BST but just a binary tree
-    - poll() removes the element and then adjust the heap to have the next min element at the top
-
-```java
-if (minHeap.size() < k) {
-    // Still filling the heap up to k elements
-    minHeap.add(n);
-} else {
-    
-    if (n > minHeap.peek()) {
-    // Heap already has k elements and n is larger than the smallest
-    minHeap.poll();   // remove current smallest among k-largest
-    minHeap.add(n);   // insert the new candidate
-    }
-    
-}
-```
-
-![alt text](median.png)
 # find k-largest numbers (add and then poll strategy)
 - It seems counter-intuitive to use a min-heap for largest numbers!
   - First insert 'k' numbers into a min-heap
