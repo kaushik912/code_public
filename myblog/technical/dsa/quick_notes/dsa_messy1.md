@@ -128,7 +128,7 @@ if (minHeap.size() < k) {
     - poll() removes the element and then adjust the heap to have the next min element at the top    
 
 - Here since we add every element irrespective of whether its required or not, so it takes more heapify() operations.
-- But this approach is **simple** to code with less conditionals.
+- But this approach is **simple** to code with **less conditionals**.
 
 ```java
 for (int n : nums) {
