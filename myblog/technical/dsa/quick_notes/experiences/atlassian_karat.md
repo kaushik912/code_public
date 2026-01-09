@@ -205,30 +205,7 @@ public class SongPairPractice {
      * - sum of durations equals target within tolerance
      */
     private static boolean validatePair(String[][] input, String title1, String title2, double target) {
-        // Find all matching rows for title1/title2 (titles may repeat)
-        List<Integer> idx1 = new ArrayList<>();
-        List<Integer> idx2 = new ArrayList<>();
-
-        for (int i = 0; i < input.length; i++) {
-            if (input[i] == null || input[i].length < 2) continue;
-            if (Objects.equals(input[i][0], title1)) idx1.add(i);
-            if (Objects.equals(input[i][0], title2)) idx2.add(i);
-        }
-
-        if (idx1.isEmpty() || idx2.isEmpty()) return false;
-
-        // Try all combinations of distinct rows
-        for (int i : idx1) {
-            for (int j : idx2) {
-                if (i == j) continue;
-
-                Double d1 = parseDuration(input[i][1]);
-                Double d2 = parseDuration(input[j][1]);
-                if (d1 == null || d2 == null) continue;
-
-                if (Math.abs((d1 + d2) - target) < EPS) return true;
-            }
-        }
+       //Write your code here
         return false;
     }
 
