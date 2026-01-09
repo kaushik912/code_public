@@ -161,3 +161,10 @@ public class FirstScrambledWord {
     - Use maps to track counts
     - For every character c in the word, noteCount[c] >= wordCount[c], only then note fully "contains" the word.
 
+### Small Improvements
+- Instead of building the whole word map,
+    - Copy the noteCount map, say noteCountCopy
+    - if we ever find a character missing in noteCount, we can exit early.
+    - also, if we find the character in noteCountCopy, decrement its count
+    - if noteCountCopy's character count becomes <0 , then exit early.
+    - This avoids building the whole word map.
