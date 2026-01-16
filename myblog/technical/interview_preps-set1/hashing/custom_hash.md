@@ -35,12 +35,11 @@ A good hash function should:
 - Use **all characters** (not just length or first character).  
 
 ### Polynomial Rolling Hash (common for strings):
-\[
-\text{hash}(s) = (s_0 \cdot p^0 + s_1 \cdot p^1 + s_2 \cdot p^2 + \dots) \mod m
-\]
+    hash(s) = (s0 * p^0 + s1 * p^1 + s2 * p^2 + ...) mod m
 
-- \(p\) = prime base (e.g., 31).  
-- \(m\) = large prime modulus (e.g., \(10^9+7\)).  
+- \(s_i\) = ASCII (or Unicode) value of the \(i\)-th character  
+- \(p\) = a prime base (like 31 or 53)  
+- \(m\) = a large prime modulus (to keep values in range)  
 - Ensures both **content** and **order** matter.
 
 ---
