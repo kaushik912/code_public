@@ -108,3 +108,41 @@ END
         - No compensation needed
         - Still "eventually" consistent.
         
+
+# Google Cloud Tasks
+- A reliable execution mechanism used by the orchestrator.
+- It handles delivery, retries, applies rate limits, guarantees atleast once delivert.
+- Its a managed task queue often used by orchestrator to reliably execute workflow steps
+
+# Orchestrator points 
+- Typically, orchestrator doesn't wait in `memory`. It waits via `state`
+- Eg: 
+- Command -> Event -> State Transition
+    - Step1: Orchestrator send command (via queue/say cloud tasks)
+        - enqueue: authorize_payment
+        - task queue delivers request to service A
+        - orchestrator immediately returns, goes IDLE
+        - State is NOW: PAYMENT_AUTH_IN_PROGRESS
+    - Step2: Service A finishes 
+        - emits an event PaymentAuthorized
+        - or calls back an endpoint (/payment/result)
+        - or updates a shared record
+        - This is a **signal**, not a return value
+    - Step3: Orchestrator reacts to the signal
+        - receives the event or callback
+        - validates it (idempotency!)
+        - updates state, STATE is AUTHORIZED
+    - Then, enqueue: capture_payment
+- This makes it non-blocking.
+- To make it crash-safe, it should store like:
+    - current step
+    - step results
+    - timestamps
+    - retry count
+
+- Its not like, Orchestrator is doing:  
+    - call Service A
+    - wait 30s
+    - call Service B
+    - wait 30s
+
