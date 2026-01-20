@@ -111,8 +111,8 @@ END
 
 # Google Cloud Tasks
 - A reliable execution mechanism used by the orchestrator.
-- It handles delivery, retries, applies rate limits, guarantees atleast once delivert.
-- Its a managed task queue often used by orchestrator to reliably execute workflow steps
+- It handles delivery, retries, applies rate limits, guarantees atleast once delivery.
+- Its a managed task queue often used by orchestrator to reliably execute workflow steps.
 
 # Orchestrator points 
 - Typically, orchestrator doesn't wait in `memory`. It waits via `state`
@@ -151,3 +151,9 @@ END
 - `Orchestrator`: sends commands, tracks state
 - `Services`: do work, emit fact( events)
 - `Event bus`: routes facts to whoever cares.
+
+## Orchestrator in short in Google context
+- Orchestrator
+    - Cloud Tasks -> createPet (Command)
+    - Listen to Pub/Sub -> PetCreated (event)
+- That's a clean separation
