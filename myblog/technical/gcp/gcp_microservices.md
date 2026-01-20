@@ -157,3 +157,8 @@ END
     - Cloud Tasks -> createPet (Command)
     - Listen to Pub/Sub -> PetCreated (event)
 - That's a clean separation
+
+Summary
+- Google Cloud Tasks: its a fully managed service for creating distributed task queues.
+- Cloud Scheduler is a fully managed cron job service for scheduling your workloads
+- Eventarc lets you build event-driven architectures without building infrastructure.
