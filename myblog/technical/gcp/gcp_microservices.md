@@ -146,3 +146,8 @@ END
     - call Service B
     - wait 30s
 - The above approach makes it robust and non-blocking.
+
+### One-liners!
+- `Orchestrator`: sends commands, tracks state
+- `Services`: do work, emit fact( events)
+- `Event bus`: routes facts to whoever cares.
