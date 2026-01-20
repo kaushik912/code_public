@@ -145,4 +145,4 @@ END
     - wait 30s
     - call Service B
     - wait 30s
-
+- The above approach makes it robust and non-blocking.
