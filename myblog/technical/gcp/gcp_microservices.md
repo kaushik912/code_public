@@ -50,7 +50,61 @@
 - Unlike Service Choreography, Service orchestration has a single point of failure.
 - If orchestrator is not operable, the orchestrated processes cannot run.
 
+## Google Pub/Sub
 - Pub/Sub is one of the services in google cloud to choreograph services.
 - Events are delivered to targets using the standard `CNCF` CloudEvent format, regardless of event source.
 
-- Google Cloud's workflow platform to implement the orchestration platform.
+## Google Workflow
+- Google Cloud's `workflow` platform to implement the orchestration platform.
+- You can use Google's eventarc to send events between the services.
+
+- Most systems do a mix of Orchestration and Choreography.
+    - For core payment, we can use orchestration
+        - eg: 
+            1. fraud checks
+            2. payment gateway
+            3. order service
+            4. ledger service
+    - For side-effects, we can use choreography.
+        - eg: email, analytics, loyalty points 
+### Saga Pattern
+- Saga is a distributed transaction pattern that replaces rollback with compensation
+
+```
+BEGIN TRANSACTION
+    createOrder()
+    chargePayment()
+    reserveInventory()
+END
+```
+- Here createOrder could be a separate microservice and talking to its DB.
+- Similarly chargePayment and reserveInventory could be different microservices.
+
+- So, what if step 3 fails but Step1 and Step2 succeeded?
+- in Saga, you compensate.
+
+- So, here createOrder -> chargePayment -> reserveInventory
+- In case reserveInventory fails, you `compensate`
+    - RefundPayment
+    - CancelOrder
+
+# Benefits
+ - Central Control
+ - Clear State Machine
+ - Easier to reason about.
+ - Eventual Consistency
+
+# What is eventual consistency?
+- User performs an action
+    - Transaction DB is updated
+    - Analytics dashboard updates later ( say batch job)
+    - Reports lag by minutes or hours
+- User places an order and immediately checks profile page
+    - Orders page: shows order
+    - Shipping page: not yet visible
+    - Email confirmation: arrives later
+    - Points:
+        - No transaction failed
+        - No compensation needed
+        - Still "eventually" consistent.
+        
