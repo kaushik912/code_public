@@ -4,34 +4,34 @@
 
 ```mermaid
 graph TB
-    subgraph "Client"
-        Client[HTTP Client]
+    subgraph ClientLayer["Client"]
+        HTTPClient[HTTP Client]
     end
 
-    subgraph "Spring Boot Application"
-        subgraph "API Layer"
+    subgraph SpringApp["Spring Boot Application"]
+        subgraph APILayer["API Layer"]
             Controller[AppController<br/>POST /apps]
         end
 
-        subgraph "Orchestrator Layer"
+        subgraph OrchestratorLayer["Orchestrator Layer"]
             OrchestratorService[OrchestratorService<br/>- createApp<br/>- onGitRepoCreated<br/>- onAppRegistered]
             OrchestratorEventListener[OrchestratorEventListener<br/>Listens to Events]
         end
 
-        subgraph "Worker Layer"
+        subgraph WorkerLayer["Worker Layer"]
             WorkerCommandListener[WorkerCommandListener<br/>Listens to Commands]
         end
 
-        subgraph "Data Layer"
+        subgraph DataLayer["Data Layer"]
             AppRepo[AppRepo]
             HistoryRepo[AppStateHistoryRepo]
         end
     end
 
-    subgraph "Infrastructure"
+    subgraph Infra["Infrastructure"]
         MySQL[(MySQL Database<br/>- apps table<br/>- app_state_history)]
 
-        subgraph "RabbitMQ"
+        subgraph RabbitMQ["RabbitMQ"]
             CmdExchange[Commands Exchange<br/>orchestrator.commands]
             EvtExchange[Events Exchange<br/>orchestrator.events]
 
@@ -42,7 +42,7 @@ graph TB
         end
     end
 
-    Client -->|POST| Controller
+    HTTPClient -->|POST| Controller
     Controller --> OrchestratorService
     OrchestratorService --> AppRepo
     OrchestratorService --> HistoryRepo
@@ -64,7 +64,7 @@ graph TB
     Q4 --> OrchestratorEventListener
     OrchestratorEventListener --> OrchestratorService
 
-    style Client fill:#e1f5ff
+    style HTTPClient fill:#e1f5ff
     style Controller fill:#fff4e1
     style OrchestratorService fill:#ffe1f5
     style WorkerCommandListener fill:#e1ffe1
