@@ -334,6 +334,8 @@ We’ll do **one topic exchange for commands** and **one for events**.
 package com.example.orchestrator.messaging;
 
 import org.springframework.amqp.core.*;
+import org.springframework.amqp.support.converter.Jackson2JsonMessageConverter;
+import org.springframework.amqp.support.converter.MessageConverter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -380,6 +382,11 @@ public class RabbitConfig {
   Binding bindEvtAppRegistered(Queue qEvtAppRegistered, TopicExchange eventsExchange) {
     return BindingBuilder.bind(qEvtAppRegistered).to(eventsExchange).with("evt.appRegistered");
   }
+
+  @Bean
+  public MessageConverter messageConverter() {
+    return new Jackson2JsonMessageConverter();
+  }
 }
 ```
 
@@ -423,6 +430,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.support.TransactionSynchronization;
+import org.springframework.transaction.support.TransactionSynchronizationManager;
 
 import java.util.UUID;
 
@@ -454,10 +463,18 @@ public class OrchestratorService {
 
     log.info("[corr={}] App created: id={}, name={}, state={}", correlationId, app.getId(), appName, app.getState());
 
-    // kick off step1
-    var cmd = new Messages.CreateGitRepoCommand(app.getId(), app.getAppName(), correlationId);
-    rabbit.convertAndSend(RabbitConfig.CMD_EXCHANGE, "cmd.createGitRepo", cmd);
-    log.info("[corr={}] Published cmd.createGitRepo for appId={}", correlationId, app.getId());
+    // kick off step1 - publish AFTER transaction commits
+    final Long appId = app.getId();
+    final String appNameFinal = app.getAppName();
+    final String corrId = correlationId;
+    TransactionSynchronizationManager.registerSynchronization(new TransactionSynchronization() {
+      @Override
+      public void afterCommit() {
+        var cmd = new Messages.CreateGitRepoCommand(appId, appNameFinal, corrId);
+        rabbit.convertAndSend(RabbitConfig.CMD_EXCHANGE, "cmd.createGitRepo", cmd);
+        log.info("[corr={}] Published cmd.createGitRepo for appId={} (after commit)", corrId, appId);
+      }
+    });
 
     return app;
   }
@@ -486,9 +503,18 @@ public class OrchestratorService {
     recordTransition(app.getId(), from, AppState.REGISTERING, "startRegistering", evt.correlationId());
     log.info("[corr={}] Transition: appId={} {} -> {}", evt.correlationId(), app.getId(), from, app.getState());
 
-    var cmd = new Messages.RegisterAppCommand(app.getId(), app.getAppName(), evt.correlationId());
-    rabbit.convertAndSend(RabbitConfig.CMD_EXCHANGE, "cmd.registerApp", cmd);
-    log.info("[corr={}] Published cmd.registerApp for appId={}", evt.correlationId(), app.getId());
+    // Publish command AFTER transaction commits to ensure state change is visible
+    final Long appId = app.getId();
+    final String appNameFinal = app.getAppName();
+    final String corrId = evt.correlationId();
+    TransactionSynchronizationManager.registerSynchronization(new TransactionSynchronization() {
+      @Override
+      public void afterCommit() {
+        var cmd = new Messages.RegisterAppCommand(appId, appNameFinal, corrId);
+        rabbit.convertAndSend(RabbitConfig.CMD_EXCHANGE, "cmd.registerApp", cmd);
+        log.info("[corr={}] Published cmd.registerApp for appId={} (after commit)", corrId, appId);
+      }
+    });
   }
 
   @Transactional
