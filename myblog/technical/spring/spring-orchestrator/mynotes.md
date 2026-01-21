@@ -18,7 +18,7 @@
 # Key point 
  - In this design, 
     - The worker doesn't do any state updates. It reads commands from queue and publishes events (based on success/failure)
-    - The orchestrator solely does the state updates.
+    - The orchestrator solely does the state transitions and updates.
 
 # Follow-up (Optional)
 - What if we want to have multiple states?. How can we make this state transitions more configurable? 
