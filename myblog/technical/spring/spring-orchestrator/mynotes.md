@@ -7,12 +7,12 @@
         - Worker (aka. WorkerCommandListener) picks up this message and does some processing
         - Post that, it publishes a "event" gitRepoCreated to the Event-Queue. 
 - OrchestratorListener listens to this event and calls the next corresponding Orchestrator method.
-        - It does 2 state transitions: 
-            - one from APP_INITIATED to GIT_REPO_CREATED
-            - second from GIT_REPO_CREATED to REGISTERING
-        - Then save the state in the DB
-        - Only post commit, it publishes the next command : cmd.registerApp
-        - The process continues..
+    - It does 2 state transitions: 
+        - one from APP_INITIATED to GIT_REPO_CREATED
+        - second from GIT_REPO_CREATED to REGISTERING
+    - Then save the state in the DB
+    - Only post commit, it publishes the next command : cmd.registerApp
+    - The process continues..
     - For clarity, we are also auditing the state changes in a separate table.
 
 # Key point 
