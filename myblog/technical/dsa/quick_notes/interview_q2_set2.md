@@ -985,3 +985,8 @@ Good luck with your preparation! 🚀
 ---
 
 **Note:** Additional system design problems like payroll system design, vending machine design, and pet store design are covered in the system design practice recommendations above.
+
+---
+
+## Useful Links
+- https://neetcode.io/problems/word-break/question?list=neetcode150
