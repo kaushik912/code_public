@@ -1,7 +1,3 @@
-Nice — great list. I’ve answered each point directly (kept answers compact and interview-friendly). After this I’ll give a few one-line “hint/cheat” sentences you can glance at before solving or explaining a problem in an interview.
-
----
-
 # System design: 1M requests/hour, JSON with 10–15 fields, client wants status "tomorrow"
 
 **Targets / numbers**
