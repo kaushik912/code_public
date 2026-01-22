@@ -78,6 +78,7 @@
 
    * **Only 2 consumers** (at most one consumer per partition in that consumer group) will be assigned partitions and receive messages. The other 6 (assuming 8 total?) will be idle.
    * If you need more parallelism, increase partitions. If consumers are in **different consumer groups**, each group receives a full copy of messages.
+   * In short , Partition = Parallelism
 
 3. **Spring transaction and modifying an entity without calling save — any warning?**
 
