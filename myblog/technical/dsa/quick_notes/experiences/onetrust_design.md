@@ -74,6 +74,20 @@
      * If you must copy a singleton, implement `Cloneable` or a copy/`copyConstructor`, but watch thread-safety and shared mutable state.
    * Safeguards: prefer immutable state in singletons; avoid shared mutable fields, or synchronize access. Use prototype beans for per-request state.
 
+### ✅  Prevent cloning explicitly
+
+```java
+@Component
+public class SafeSingleton {
+    @Override
+    protected Object clone() throws CloneNotSupportedException {
+        throw new CloneNotSupportedException("Cloning not allowed");
+    }
+}
+```
+- Use when singleton semantics must be enforced.
+
+
 2. **Kafka: one topic, 2 partitions, each partition having 4 consumers; all consumers in same consumer group — how many consumers receive messages?**
 
    * **Only 2 consumers** (at most one consumer per partition in that consumer group) will be assigned partitions and receive messages. The other 6 (assuming 8 total?) will be idle.
