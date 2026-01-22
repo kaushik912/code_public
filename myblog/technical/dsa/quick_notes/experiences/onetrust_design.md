@@ -1,5 +1,8 @@
-# System design: 1M requests/hour, JSON with 10–15 fields, client wants status "tomorrow"
+# System design Onetrust 
 
+## Requirements loosely 
+- 1M requests/hour, JSON with 10–15 fields, client wants status "tomorrow"
+- 
 **Targets / numbers**
 
 * 1M req/hour ≈ **278 req/sec** (steady). If bursts, design for higher peak (x2–3).
