@@ -123,3 +123,178 @@ Nice — great list. I’ve answered each point directly (kept answers compact a
 
 ---
 
+Great set of **core Spring fundamentals** — these are *very* commonly probed. I’ll answer each clearly, with **what actually happens internally** and an **interview-ready phrasing**.
+
+---
+
+## 1️⃣ How do beans get initialized in Spring?
+
+### High-level lifecycle (simplified but accurate)
+
+```
+Application starts
+↓
+Spring creates ApplicationContext
+↓
+Bean definitions are read
+   (XML / @Configuration / @ComponentScan)
+↓
+Bean instances are created
+↓
+Dependencies are injected
+↓
+Aware interfaces called (if any)
+↓
+BeanPostProcessors applied
+↓
+Initialization callbacks executed
+↓
+Bean ready for use
+```
+
+### Detailed steps (important ones)
+
+1. **Bean definition loading**
+
+   * Spring reads metadata: class, scope, dependencies, lifecycle methods.
+2. **Instantiation**
+
+   * Constructor is called (default or autowired constructor).
+3. **Dependency Injection**
+
+   * `@Autowired`, constructor injection, setter injection.
+4. **Aware callbacks (optional)**
+
+   * `BeanNameAware`, `ApplicationContextAware`, etc.
+5. **BeanPostProcessor (before init)**
+6. **Initialization**
+
+   * `@PostConstruct`
+   * `InitializingBean.afterPropertiesSet()`
+   * custom `init-method`
+7. **BeanPostProcessor (after init)**
+
+### Interview one-liner
+
+> “Spring initializes beans by loading definitions, instantiating them, injecting dependencies, applying post-processors, and then invoking initialization callbacks before the bean is ready.”
+
+---
+
+## 2️⃣ For `prototype` scope, what is the default number of beans created?
+
+### Answer
+
+👉 **Zero by default.**
+
+### Explanation
+
+* Prototype beans are **created only when requested** (`getBean()` or injected).
+* Spring **does not pre-create** prototype beans at startup.
+* Each request creates **a new instance**.
+
+```java
+@Bean
+@Scope("prototype")
+MyBean bean;
+```
+
+```java
+context.getBean(MyBean.class); // new instance
+context.getBean(MyBean.class); // another new instance
+```
+
+### Important nuance (interview trap)
+
+* If a prototype bean is injected into a singleton, it is created **once at injection time**, unless you use:
+
+  * `ObjectFactory`
+  * `Provider<T>`
+  * `@Lookup`
+
+### Interview one-liner
+
+> “Prototype beans are created on demand; by default zero are created at startup, and each request produces a new instance.”
+
+---
+
+## 3️⃣ Is Spring eager or lazy initialization by default?
+
+### Default behavior
+
+✅ **Singleton beans are eagerly initialized by default**
+
+That means:
+
+* All singleton beans are created **when the ApplicationContext starts**
+* Exceptions appear early (fail-fast)
+
+### Exceptions
+
+* Beans marked with `@Lazy`
+* Prototype beans
+* Beans created conditionally
+
+```java
+@Lazy
+@Component
+class MyBean {}
+```
+
+### Why eager by default?
+
+* Detect configuration errors early
+* Predictable startup behavior
+
+### Interview one-liner
+
+> “Spring eagerly initializes singleton beans by default, while prototype beans and `@Lazy` beans are created only when requested.”
+
+---
+
+## 4️⃣ Different kinds of bean scopes in Spring
+
+### Core scopes (most important)
+
+| Scope           | Description                                 |
+| --------------- | ------------------------------------------- |
+| **singleton**   | One instance per Spring container (default) |
+| **prototype**   | New instance every time requested           |
+| **request**     | One instance per HTTP request (web apps)    |
+| **session**     | One instance per HTTP session               |
+| **application** | One instance per ServletContext             |
+| **websocket**   | One instance per WebSocket session          |
+
+### Example
+
+```java
+@Scope("singleton")  // default
+@Scope("prototype")
+@Scope("request")
+```
+
+### Interview-safe categorization
+
+* **Core**: singleton, prototype
+* **Web-aware**: request, session, application, websocket
+
+### Important warning (advanced)
+
+* Spring manages the **full lifecycle** of singleton beans
+* For prototype beans:
+
+  * Spring creates them
+  * **Does NOT manage destruction**
+  * You must clean up manually if needed
+
+### Interview one-liner
+
+> “Spring supports singleton and prototype scopes at the core level, and request/session/application scopes for web applications.”
+
+---
+
+## Final 30-second summary (excellent to memorize)
+
+> “Spring initializes beans by loading definitions, instantiating them, injecting dependencies, applying post-processors, and invoking init callbacks. Singleton beans are eagerly created by default, while prototype beans are created on demand with zero instances at startup. Spring supports multiple scopes like singleton, prototype, request, session, and application.”
+
+---
+
