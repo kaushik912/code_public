@@ -73,3 +73,8 @@ Design
 2. Design a vending machine - Zoom
 
 3. Design a thread pool - PayPal
+
+
+# Good practice Questions:
+- https://neetcode.io/problems/word-break/question?list=neetcode150
+- GFG courses
