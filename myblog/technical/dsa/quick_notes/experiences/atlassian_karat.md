@@ -40,183 +40,91 @@
 
 # Question 2
 ```java
-import java.util.*;
-
-/**
- * Practice problem:
- * Given String[][] input where each row is: {songTitle, durationString}
- * durationString is a decimal with up to 2 places (e.g., "2.25", "3", "0.10").
- *
- * Implement findPair(String[][] input) to return a String[2] containing TWO song titles
- * whose durations sum to TARGET (defined below).
- *
- * Requirements for your implementation:
- * - Return exactly 2 titles if a valid pair exists, otherwise return an empty array new String[0].
- * - Do NOT use the same row/song twice.
- * - Durations are decimals; you must handle floating-point safely. (Hint: scaling to cents is common.)
- * - Assume input may contain duplicates (same duration / same title).
- */
 public class SongPairPractice {
 
-    // Each testcase sets this before calling findPair(input).
-    static double TARGET = 0.0;
+    static final double TARGET = 8.0;
 
-    // Tolerance only used by the test harness validator (not a solution hint for your approach).
-    static final double EPS = 1e-9;
-
-    /**
-     * TODO: Implement this.
-     * @param input array of {title, durationString}
-     * @return String[2] with the pair of song titles that sum to TARGET, else empty array
-     */
     public static String[] findPair(String[][] input) {
-        // DO NOT IMPLEMENT HERE (for your practice)
-        throw new UnsupportedOperationException("TODO: implement findPair");
+       //Implement this
+        return new String[0];
     }
-
-    // ---------------------- Test Harness (main) ----------------------
 
     public static void main(String[] args) {
-        int passed = 0;
-        int total = 0;
 
-        // Test 1: simple exact decimals (should find a pair)
-        total++;
-        TARGET = 4.00;
+        // ---------- Positive Test 1 (single valid pair) ----------
         String[][] t1 = {
                 {"A", "2.25"},
-                {"B", "1.75"},
-                {"C", "0.50"},
-                {"D", "3.50"}
+                {"B", "5.75"}, // ✅ only valid pair
+                {"C", "1.10"},
+                {"D", "6.20"},
+                {"E", "3.30"},
+                {"F", "4.40"}
         };
-        if (runTest("Test 1 (exact .25/.75)", t1, true)) passed++;
+        System.out.println(Arrays.toString(findPair(t1)));
+        // Expected: [A, B]
 
-        // Test 2: classic floating-point trap values (0.10 + 0.20 = 0.30)
-        // With naive double hashing/equality, many solutions fail. With proper normalization, it passes.
-        total++;
-        TARGET = 0.30;
+
+        // ---------- Positive Test 2 (leading zeros) ----------
         String[][] t2 = {
-                {"S1", "0.10"},
-                {"S2", "0.20"},
-                {"S3", "0.40"},
-                {"S4", "0.30"}
+                {"M", "01.20"},
+                {"N", "6.80"}, // ✅ only valid pair
+                {"O", "0.50"},
+                {"P", "2.10"},
+                {"Q", "3.40"},
+                {"R", "7.30"}
         };
-        if (runTest("Test 2 (0.10 + 0.20)", t2, true)) passed++;
+        System.out.println(Arrays.toString(findPair(t2)));
+        // Expected: [M, N]
 
-        // Test 3: multiple possible pairs (any valid pair is acceptable)
-        total++;
-        TARGET = 3.00;
+
+        // ---------- Positive Test 3 (duplicate durations) ----------
         String[][] t3 = {
-                {"P", "1.00"},
-                {"Q", "2.00"},
-                {"R", "1.50"},
-                {"S", "1.50"},
-                {"T", "3.00"} // note: single song equals target, but you must return a pair of TWO songs
+                {"X1", "4.00"},
+                {"X2", "4.00"}, // ✅ only valid pair
+                {"Y",  "1.25"},
+                {"Z",  "6.60"},
+                {"W",  "2.35"}
         };
-        if (runTest("Test 3 (multiple valid pairs)", t3, true)) passed++;
+        System.out.println(Arrays.toString(findPair(t3)));
+        // Expected: [X1, X2]
 
-        // Test 4: duplicates + ensure you don't reuse the same song row twice
-        total++;
-        TARGET = 2.00;
+
+        // ---------- Positive Test 4 (0.xx values) ----------
         String[][] t4 = {
-                {"X1", "1.00"},
-                {"X2", "1.00"},
-                {"Y",  "0.50"},
-                {"Z",  "1.50"}
+                {"S", "0.10"},
+                {"T", "7.90"}, // ✅ only valid pair
+                {"U", "0.20"},
+                {"V", "7.70"},
+                {"W", "3.33"},
+                {"X", "4.44"}
         };
-        if (runTest("Test 4 (duplicate durations, distinct rows)", t4, true)) passed++;
+        System.out.println(Arrays.toString(findPair(t4)));
+        // Expected: [S, T]
 
-        // Test 5: no solution
-        total++;
-        TARGET = 10.00;
-        String[][] t5 = {
-                {"AA", "1.25"},
-                {"BB", "2.50"},
-                {"CC", "3.75"}
+
+        // ---------- Negative Test (no valid pair) ----------
+        String[][] tNeg = {
+                {"A", "1.25"},
+                {"B", "2.40"},
+                {"C", "3.35"},
+                {"D", "4.10"},
+                {"E", "5.60"},
+                {"F", "6.75"}
         };
-        if (runTest("Test 5 (no pair)", t5, false)) passed++;
-
-        // Test 6: durations with 2 decimals, includes leading/trailing zeros
-        total++;
-        TARGET = 6.20;
-        String[][] t6 = {
-                {"LZ", "01.20"},
-                {"TZ", "5.00"},
-                {"M1", "3.10"},
-                {"M2", "3.10"}
-        };
-        if (runTest("Test 6 (format variations)", t6, true)) passed++;
-
-        // Summary
-        System.out.println("\n==============================");
-        System.out.println("Passed " + passed + " / " + total + " tests.");
-        System.out.println("==============================");
-    }
-
-    /**
-     * Runs a testcase and validates the returned pair.
-     *
-     * This validator checks correctness without forcing you into a specific algorithm.
-     * It will accept ANY pair of two titles that sums to TARGET (within a tiny tolerance).
-     */
-    private static boolean runTest(String name, String[][] input, boolean expectPair) {
-        System.out.println("\n--- " + name + " | TARGET=" + TARGET + " ---");
-        try {
-            String[] ans = findPair(input);
-
-            if (!expectPair) {
-                if (ans == null || ans.length == 0) {
-                    System.out.println("OK: returned empty as expected.");
-                    return true;
-                } else {
-                    System.out.println("FAIL: expected empty, got: " + Arrays.toString(ans));
-                    return false;
-                }
-            }
-
-            // expectPair == true
-            if (ans == null || ans.length != 2) {
-                System.out.println("FAIL: expected String[2], got: " + Arrays.toString(ans));
-                return false;
-            }
-
-            if (!validatePair(input, ans[0], ans[1], TARGET)) {
-                System.out.println("FAIL: invalid pair " + Arrays.toString(ans));
-                return false;
-            }
-
-            System.out.println("OK: valid pair found: " + Arrays.toString(ans));
-            return true;
-
-        } catch (UnsupportedOperationException e) {
-            System.out.println("TODO: Implement findPair to run tests.");
-            return false;
-        } catch (Exception e) {
-            System.out.println("FAIL with exception: " + e);
-            e.printStackTrace(System.out);
-            return false;
-        }
-    }
-
-    /**
-     * Validates:
-     * - titles exist in input (as rows)
-     * - uses two DISTINCT rows (cannot reuse the same row)
-     * - sum of durations equals target within tolerance
-     */
-    private static boolean validatePair(String[][] input, String title1, String title2, double target) {
-       //Write your code here
-        return false;
-    }
-
-    private static Double parseDuration(String s) {
-        if (s == null) return null;
-        try {
-            return Double.parseDouble(s.trim());
-        } catch (NumberFormatException e) {
-            return null;
-        }
+        System.out.println(Arrays.toString(findPair(tNeg)));
+        // Expected: []
     }
 }
 ```
+- This problem is the classic two-sum problem (we could solve using Hash or two-pointer based approach)
+- Two-pointer approach: we sort the array and move the pointer from either ends.
+- Hash Approach: Since also need the titles back, we need a hash-map.
+    - Store a Duration,Title map
+    - When we get the complement Duration, we use the map to get the corresponding title and return
+- Few caveats:
+    - Floating point arithmetic may cause issues.
+    - Best is to convert durations to BigDecimal and use those APIs rather than raw math.
+    - Another option is to scale it to 100. (in case values are always 2 decimal points)
+        - so, 0.10 becomes 10, 7.90 becomes 790 and target becomes 800 ( 10 + 790)
+        
 
