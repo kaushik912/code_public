@@ -64,7 +64,7 @@ import java.util.*;
 public class FirstScrambledWord {
 
     // Return the first word that can be formed from note; else ""
-    public static String firstMatch(String[] words, String note) {
+    public static String firstMatch(List<String> words, String note) {
        
         return "";
     }
