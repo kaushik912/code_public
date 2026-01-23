@@ -135,7 +135,7 @@ public class FirstScrambledWord {
 * `note = "xxaetppbyz"`
 * output is "bat"
 
-### Key concept
+### Approach
 ```
     // Its a note to word puzzle
     // to form a particular word, all char-freqs in word must be present in note.
@@ -165,10 +165,6 @@ public class FirstScrambledWord {
     
 ```
 
-### Small Improvements
-- Instead of building the whole word map,
-    - Copy the noteCount map, say noteCountCopy
-    - if we ever find a character missing in noteCount, we can exit early.
-    - also, if we find the character in noteCountCopy, decrement its count
-    - if noteCountCopy's character count becomes <0 , then exit early.
-    - This avoids building the whole word map.
+## Key Concepts
+    - Use char-freq maps for words and note
+    - Use "reduction" logic to rule out cases when word can't be made from note.
