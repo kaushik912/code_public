@@ -134,32 +134,36 @@ public class FirstScrambledWord {
 * `words = ["peep", "bat", "peat", "tan", "pet"]`
 * `note = "xxaetppbyz"`
 * output is "bat"
-- Build first the freq map of the note characters: {a:1,b:1,e:1,p:2,t:1,x:2,y:1,z:1}
-- now, pick each word and build its freq map: 
-    - eg: "peep", wordMap: {p:2, e:2}
-    - We want all characters of word (with freq) to be present in note.
-    - So, p:2 is present in both
-    - e:2 in word but noteMap contains e:1
-        - so its a miss!
-        - wordMap.ch.count > noteMap.ch.count, then its a miss
-        - So some character-counts in word are not available in note.
-    - eg: "bat", {a:1,b:1,t:1}
-        - all freq counts in "bat" are present in note
-    - eg: "peat", wordMap = {p:1,e:1,a:1,t:1}
-        - all characters of word are present in the note.
-        - so "peat" is also a valid answer.
-    - eg: "tan", wordMap = {t:1,a:1,n:1}
-        - again n is not present in the noteMap. So its a miss.
-        - noteMap.n==null here.
-    - for a char ch in word,
-        - if(noteMap.ch==null || (wordMap.ch.count > noteMap.ch.count ))
-            - its a miss
-        - otherwise that word is a pass. Why?
-            - noteMap.ch is not null and it'll have count >=wordMap.ch.count.
-            - So we would be able to obtain that word from the note.
+
 ### Key concept
-    - Use maps to track counts
-    - For every character c in the word, noteCount[c] >= wordCount[c], only then note fully "contains" the word.
+```
+    // Its a note to word puzzle
+    // to form a particular word, all char-freqs in word must be present in note.
+    // if any char-freq of word is missing in note, that word cannot be formed.
+     // if this rule doesn't break, then word can be formed from the note.
+
+    // Approach1: 
+    // we create a char-freq map of the note
+    // for each word
+        // start with a fresh copy of the note map (since we decrement on seeing char matches for each fresh word)
+        // check if its char is present in note map
+            // if not, reject, move to next word
+            // if present,
+                // decrement the freq-count in the map
+                // if count reaches 0, remove that key from map
+            // if you have reach the end of word without getting rejected, you found the match!
+   
+    // Approach2 ( Two freq maps, this is also neat)
+    // eg: note: "bata", words=["bat","battalion","cat"]
+    // we create a char-freq map of the note
+        // for each word
+        // Build a word-freq map
+        // for each character ch in word
+            // note-freq.ch.count should be >= word-freq.ch.count
+            // otherwise you can't make the word from the note!
+            // special case: note-freq.ch could be null ( that character itself isn't present in note but present in word)
+    
+```
 
 ### Small Improvements
 - Instead of building the whole word map,
