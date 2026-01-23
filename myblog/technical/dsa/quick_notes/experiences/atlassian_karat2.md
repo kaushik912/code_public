@@ -168,3 +168,4 @@ public class FirstScrambledWord {
 ## Key Concepts
     - Use char-freq maps for words and note
     - Use "reduction" logic to rule out cases when word can't be made from note.
+- Single line to compute freqcount quickly: `map.compute( s, (k,v)-> v==null?1:v+1);`
