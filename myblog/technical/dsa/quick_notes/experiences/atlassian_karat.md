@@ -51,68 +51,7 @@ public class SongPairPractice {
 
     public static void main(String[] args) {
 
-        // ---------- Positive Test 1 (single valid pair) ----------
-        String[][] t1 = {
-                {"A", "2.25"},
-                {"B", "5.75"}, // ✅ only valid pair
-                {"C", "1.10"},
-                {"D", "6.20"},
-                {"E", "3.30"},
-                {"F", "4.40"}
-        };
-        System.out.println(Arrays.toString(findPair(t1)));
-        // Expected: [A, B]
-
-
-        // ---------- Positive Test 2 (leading zeros) ----------
-        String[][] t2 = {
-                {"M", "01.20"},
-                {"N", "6.80"}, // ✅ only valid pair
-                {"O", "0.50"},
-                {"P", "2.10"},
-                {"Q", "3.40"},
-                {"R", "7.30"}
-        };
-        System.out.println(Arrays.toString(findPair(t2)));
-        // Expected: [M, N]
-
-
-        // ---------- Positive Test 3 (duplicate durations) ----------
-        String[][] t3 = {
-                {"X1", "4.00"},
-                {"X2", "4.00"}, // ✅ only valid pair
-                {"Y",  "1.25"},
-                {"Z",  "6.60"},
-                {"W",  "2.35"}
-        };
-        System.out.println(Arrays.toString(findPair(t3)));
-        // Expected: [X1, X2]
-
-
-        // ---------- Positive Test 4 (0.xx values) ----------
-        String[][] t4 = {
-                {"S", "0.10"},
-                {"T", "7.90"}, // ✅ only valid pair
-                {"U", "0.20"},
-                {"V", "7.70"},
-                {"W", "3.33"},
-                {"X", "4.44"}
-        };
-        System.out.println(Arrays.toString(findPair(t4)));
-        // Expected: [S, T]
-
-
-        // ---------- Negative Test (no valid pair) ----------
-        String[][] tNeg = {
-                {"A", "1.25"},
-                {"B", "2.40"},
-                {"C", "3.35"},
-                {"D", "4.10"},
-                {"E", "5.60"},
-                {"F", "6.75"}
-        };
-        System.out.println(Arrays.toString(findPair(tNeg)));
-        // Expected: []
+       
     }
 }
 ```
@@ -120,11 +59,19 @@ public class SongPairPractice {
 - Two-pointer approach: we sort the array and move the pointer from either ends.
 - Hash Approach: Since also need the titles back, we need a hash-map.
     - Store a Duration,Title map
-    - When we get the complement Duration, we use the map to get the corresponding title and return
+    - When we get the complement Duration, we use the map to get the corresponding title and return the answer
 - Few caveats:
     - Floating point arithmetic may cause issues.
-    - Best is to convert durations to BigDecimal and use those APIs rather than raw math.
-    - Another option is to scale it to 100. (in case values are always 2 decimal points)
+    - Recommended: Best is to convert durations to **BigDecimal** and use those APIs rather than raw math.
+        - Minimal change to core logic
+        - Elegant but uses Java libraries.
+    - Convert into a int
+        - extract the whole and the fraction part using substring logic
+        - then convert into int using whole*100 + fraction
+        - So, 4.11 becomes 400 + 11 = 411
+        - Slightly more time to code.
+    - Least Recommended: Another option is to scale it to 100 with rounding logic. (in case values are always 2 decimal points)
         - so, 0.10 becomes 10, 7.90 becomes 790 and target becomes 800 ( 10 + 790)
-        
+        - there are floating point issues in this approach, you need to debug and fix using rounding off logic.
+
 
