@@ -2,6 +2,13 @@
 
 You are given an array arr[] of non-negative integers. You have to move all the zeros in the array to the right end while maintaining the relative order of the non-zero elements. The operation must be performed in place, meaning you should not use extra space for another array.
 
+// One Approach is using Rotation 
+// Moment you see a zero, you left rotate the array from that index by 1
+ // Each rotation requires O(n) shift operations
+ // for N zeroes, it would be  O(No_of_Zeroes*n) operations.
+ // for an array with large number of zeroes, its O(n^2)
+
+// Can we do better? Yes, use a two pointer
 // Hint1: Use a two-pointer approach, both from left.
 // One traverses the array and other only overwrites and moves when the traversal sees an non-zero
 
@@ -13,12 +20,17 @@ You are given an array arr[] of non-negative integers. You have to move all the 
 // if arr[i]!=0 ,  arr[nonZeroIndex++] = arr[i]
     
 // Working Example    
-//  [1, 2, 0, 4, 3, 0, 5, 0]
-// [1,2,4,4,3,0,5,0], i=3, nonZeroIndex=2, copy the value and move nonZeroIndex pointer
-// [1,2,4,3,3,0,5,0], i=5, nonZeroIndex=3, same as above
-// [1,2,4,3,5,0,5,0], i=6, nonZeroIndex=4, same as above
-// at this point,i=7 has reached the end of array
-// copy from nonZeroIndex till end, zeroes
+//  [1, 2, 0, 4, 3, 0, 5, 0] 
+// after copying 1 and 2 , nonZeroIndex=2
+// i=3, copy 4 into the nonZeroIndex++ position
+// [1,2,4,4,3,0,5,0], nonZeroIndex=3
+// i=4 , copy 3 into nonZeroIndex++ position
+// [1,2,4,3,3,0,5,0], nonZeroIndex=4
+// i=6, copy 5 into nonZeroIndex++ position
+// [1,2,4,3,5,0,5,0], nonZeroIndex=5
+// finally ,i=7, it has reached the end of array
+// copy zero from nonZeroIndex till end
+// Now it becomes [1,2,4,3,5,0,0,0]
 
 ### Indexes of Subarray Sum
 // sliding window concept
@@ -35,6 +47,7 @@ Given an array of positive integers. Your task is to rearrange the array element
 Input: arr[] = [1, 2, 3, 4, 5, 6]
 Output: [6, 1, 5, 2, 4, 3]
 
+// Below approach does not use extra space
 // first sort the input array
 // maxIdx = arr.length-1
 // minIdx = 0
@@ -69,7 +82,7 @@ Output: [6, 1, 5, 2, 4, 3]
 
 ### Merge two sorted arrays
 
-#### General approach ( with auxilliary array)
+#### With Extra auxiliary array
 // assume we have nums1[] and nums2[] are two sorted arrays
 // assume nums[] is aux array, k its index.
 // i runs for nums1, j runs for nums2
