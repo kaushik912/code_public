@@ -18,9 +18,10 @@ You are given an array arr[] of non-negative integers. You have to move all the 
 // you place that number in that pointer and move that pointer forward.
     
 // if arr[i]!=0 ,  arr[nonZeroIndex++] = arr[i]
-    
+// after i has reached the end, copy zeroes from nonZeroIndex till end
+
 // Working Example    
-//  [1, 2, 0, 4, 3, 0, 5, 0] 
+//  [1,2,0,4,3,0,5,0] 
 // after copying 1 and 2 , nonZeroIndex=2
 // i=3, copy 4 into the nonZeroIndex++ position
 // [1,2,4,4,3,0,5,0], nonZeroIndex=3
@@ -31,6 +32,25 @@ You are given an array arr[] of non-negative integers. You have to move all the 
 // finally ,i=7, it has reached the end of array
 // copy zero from nonZeroIndex till end
 // Now it becomes [1,2,4,3,5,0,0,0]
+
+// Another option is instead of copying, we could swap nonZeroIndex with i
+//  [1,2,0,4,3,0,5,0] 
+// after swapping 1 and 2 with itself , nonZeroIndex=2
+// i=3, swap 4 into the nonZeroIndex++ position
+// [1,2,4,0,3,0,5,0], nonZeroIndex=3
+// i=4 , swap 3 into nonZeroIndex++ position
+// [1,2,4,3,0,0,5,0], nonZeroIndex=4
+// i=6, copy 5 into nonZeroIndex++ position
+// [1,2,4,3,5,0,0,0], nonZeroIndex=5
+// finally ,i=7, it has reached the end of array
+// No need to copy zeros as its already solved
+
+//Quick Hint
+    //  if arr[i]!=0 , swap( arr[i],arr[nonZeroIndex++])
+
+KEY IDEA: 
+- Use working examples to re-inforce and proof-check your learning.
+- This way you will have better idea about your approach.
 
 ### Indexes of Subarray Sum
 // sliding window concept
