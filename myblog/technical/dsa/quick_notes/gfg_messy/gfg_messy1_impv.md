@@ -148,3 +148,92 @@ Approach 3
 - So space complexity is O(K) since we keep only k elements in heap, time complexity would be N*Log(K). Each heap operation takes Log(K) and we are processing N elements, so its N*Log(K)
 - So inserting into a min-heap uses "survival of fittest" strategy as it removes weaker keys so that only larger keys remain.
 ```
+
+# Max and SecondMax
+```
+Given an array arr[] of positive integers which may have duplicates. The task is to find the maximum and second maximum from the array, and both of them should be different from each other, and If no second maximum exists, then the second maximum will be -1.
+
+Input: arr[] = [2, 1, 2]
+Output: [2, 1]
+
+Input: arr[] = [3, 3, 3]
+Output: [3, -1]
+```
+```
+This is similar to previous problem. So it can be solved easily using the modified max approach or the tickle-down approach with m1,m2 variables.
+Good for practice!
+```
+
+# Min distance in array
+
+```
+You are given an array, arr[]. Find the minimum index based distance between two distinct elements of the array, x and y. Return -1, if either x or y does not exist in the array.
+
+Input: arr[] = [1, 2, 3, 2, 1 ], x = 1, y = 2
+Output: 1
+
+Explanation: x = 1 and y = 2. 
+There are two distances between x and y, which are 1 and 3 out of which the least is 1.
+```
+```
+hint1: keep track of lastSeenIndex whenever you encounter a x or y
+
+hint2: when you see the "other" number, calculate distance to previous one and update your minDist.
+
+hint3: say arr[i]==x or arr[i]==y, and you also have lastSeenIndex, how do you find if its a x,y pair?
+arr[i]!=arr[lastSeenIndex] indicates a pair!, // provided lastSeenIndex is valid
+
+
+hint4:
+int lastSeenIndex=-1;
+int minDist = Integer.MAX_VALUE;
+if(arr[i]==x || arr[i]==y){
+    if(lastSeenIndex!=-1 && arr[lastSeenIndex]!=arr[i]){
+        minDist = Math.min(minDist, i - lastSeenIndex);
+    }
+    lastSeenIndex=i; // Do not forget to Update lastSeenIndex everytime you see x or y
+}
+```
+
+# Leaders in an array
+```
+You are given an array arr of positive integers. Your task is to find all the leaders in the array. An element is considered a leader if it is greater than or equal to all elements to its right. The rightmost element is always a leader.
+
+Input: arr = [16, 17, 4, 3, 5, 2]
+Output: [17, 5, 2]
+```
+```
+Hint1: Traverse from right to left keeping track of max so far. By default, last element is always a leader since there is no one to the right!
+
+Hint2: whenever max gets updated from right to left, you found a leader!
+
+Code skipped as its simple.
+```
+# Alternative Positive Negative
+```
+Given an unsorted array arr containing both positive and negative numbers. Your task is to rearrange the array and convert it into an array of alternate positive and negative numbers without changing the relative order.
+
+- NOTE: 0 is to be treated as positive
+
+Input: arr[] = [9, 4, -2, -1, 5, 0, -5, -3, 2]
+Output: [9, -2, 4, -1, 5, -5, 0, -3, 2]
+Time Complexity: O(n)
+Recommended Auxiliary Space: O(1)
+```
+```
+Simple solution Using O(n) space
+Hint1:
+WE could simply add positive and negative numbers to separate lists
+Then if its even index, fetch from positive list
+If its odd index, fetch from negative list
+
+```
+### How to right rotate an array by 1?
+```
+[9,4,6,-2] -> [-2,9,4,6]
+```
+```
+temp = arr[N-1]
+arr[i]=arr[i-1], for i=N-1 till 1
+arr[0]=temp
+```
