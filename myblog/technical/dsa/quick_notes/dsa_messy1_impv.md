@@ -139,6 +139,12 @@ Hint6: Java-specific
 PriorityQueue<Integer> minHeap = new PriorityQueue<>();
 PriorityQueue<Integer> maxHeap = new PriorityQueue<>((a,b)->b.compareTo(a));
 
+Hint7: important rules at play
+1. minHeap size should not be greater than maxHeap size (otherwise extract and re-insert into another)
+2. maxHeap.size - minHeap.size should not exceed 1 (otherwise extract and re-insert into another)
+3. minHeap's peek should always be greater than maxHeap's peek. ( we could take care of which heap to use during insertion time)
+Once you have figured out above rules, its easy to solve this "medium" problem.
+
 ```
 
 
