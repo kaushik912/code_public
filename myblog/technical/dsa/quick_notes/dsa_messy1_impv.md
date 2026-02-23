@@ -79,7 +79,7 @@ max-heap's highest element should be less than min-heap's lowest element
 
 Hint4: Do a dry-run on [5,15,1,3]
 
-While adding a number, check if its greater than min-heap's peek, if yes, then it should go there.
+While adding a number, check if its greater than min-heap's peek, if yes, then it should go to min-heap.
 otherwise it should go to max-heap.
 
 add 5 to max-heap
