@@ -205,10 +205,12 @@ for(int i=1;i<height.length;i++){
 
 Similarly for rightMax,
 
-rightMax[0]=height[height.length-1]; //base case
+rightMax[height.length-1]=height[height.length-1]; //base case
 for(int i=height.length-2;i>=0;i--){
     rightMax[i] = Math.max(rightMax[i+1], height[i]);
 }
+
+Since we are iterating and updating backwards, rightMax[i+1] holds what max right we have seen so far until i.
 
 Hint9:
 Previous approach  of using rightMaxVal, leftMaxValue is also fine. It just uses one extra variable to keep track of max-so-far.
