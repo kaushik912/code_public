@@ -110,27 +110,63 @@ Explanation: The longest consecutive elements sequence is [1, 2, 3, 4]. Therefor
 ```
 
 ```
-Hint1: 
-Since they can be in any order, we could use a Set to track numbers.
+Hint1:
+consider the sequence: [1,3,4,2]
+
+we update a map for each element as follows:
+look for left and right of each element in the map.
+  if present, we get its value.
+
+So initially, {1:1, 3:1}
+
+When we see a 4, we see left=3 already exists in the map.
+newLen = 1+left_len = 1+1 = 2
+so we update, {1:1, 3:2,4:2}
+
+Now we see a 2, left=1 and right=3
+left_len =1
+right_len =2
+
+newLen = 1+2+1 = 4
+
+We may be tempted to update {left:4, right:4}!
+
+But we need to update the "boundaries", not just immediate left and right.
+left_boundary = num-left_len = 2 - 1 = 1
+right_boundary = num+right_len = 2+2 = 4
+
+so instead we update: {1:4,4:4}
+
+NOTE: if the key already exists in the map, we ignore.(to avoid double-updates)
 
 Hint2:
-Add all elements to a HashSet.
+We use the fact that for a "consecutive" subsequence for num, we look for left_subsequence length and right_subsequence length and we update that num's subsequence using:
+num_len = left_len+right_len+1
+Update the boundaries
+map.put(num-left_len, num_len);
+map.put(num+right_len,num_len);
 
 Hint3:
-lets say we are having value arr[i] , 
-  check if arr[i]-1 is present in set.
-  if map.get(arr[i])==null
-   map.put(arr[i]-1,arr[i]);
-    //eg: {3:4}
-  else
-    // eg: arr[i]=3
-    oldVal = map.get(arr[i]); //4
-    map.removeKey(arr[i]); 
-    map.put(arr[i]-1,oldVal);//{2:4}
+We could track a maxLen to keep track of the max num_lens calculated so far and return the result.
 
- eventually, you'll have {1:4}
-so max length can be calculated.
- 
+Hint4: Implement these ideas in action!
+Map<Integer,Integer> map = new HashMap<>();
+int max = Integer.MIN_VALUE;
+for(int num : nums){
+  if(map.containsKey(num)){
+    //skip to avoid any duplicate calculations
+    continue;
+  }
+  int left_len = map.getOrDefault(num-1,0);
+  int right_len = map.getOrDefault(num+1,0);
+  int new_len = left_len + right_len + 1;
+  max= Math.max(new_len,max);
+  map.put(num,new_len);
+  map.put(num-left_len,new_len);
+  map.put(num+right_len,new_len);
+}
+
+
 ```
 
 
