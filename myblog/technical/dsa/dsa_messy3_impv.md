@@ -115,7 +115,8 @@ consider the sequence: [1,3,4,2]
 
 we update a map for each element as follows:
 look for left and right of each element in the map.
-  if present, we get its value.
+  if present, we get its value(previously computed length).
+  if not present, set it to 1 (single-length)
 
 So initially, {1:1, 3:1}
 
@@ -166,7 +167,8 @@ for(int num : nums){
   map.put(num+right_len,new_len);
 }
 
-
+I admit this one is a bit hard to get it right first time! It involves thinking in ranges and some of union of ranges concepts.
 ```
+
 
 
