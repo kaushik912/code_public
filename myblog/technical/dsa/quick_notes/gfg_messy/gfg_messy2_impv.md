@@ -198,3 +198,117 @@ while(left<=right && right>=0 && left<prices.length){
 
 ```
 
+# Max subarray sum
+
+```
+You are given an integer array arr[]. You need to find the maximum sum of a subarray (containing at least one element) in the array arr[].
+Input: arr[] = [2, 3, -8, 7, -1, 2, 3]
+Output: 11
+```
+```
+Hint1: The way you accumulate runningSum matters.
+
+Hint2:  If we add arr[i] to our runningSum in beginning,
+if runningSum < 0, we need to reset runningSum to 0.
+if runningSum > 0, then we are good as its an increasing sequence , so we need to update max.
+
+Hint3: Lets implement this solution
+int maxSum=0;
+int runningSum=0;
+for(i=0;i<n;i++){
+    runningSum+=arr[i];
+    if(runningSum<0){
+        runningSum=0;
+    }else{
+        maxSum = Math.max(maxSum, runningSum);
+    }
+}
+
+Hint4: The above solution breaks when all numbers are negative.
+Because runningSum is always reset to 0 and so the maxSum would also be 0.
+But we need to calculate max of all the negative numbers.
+One approach is to use a separate loop to handle this.
+
+Hint5: We could also make this solution generic.
+But we need to tweak our approach of runningSum little bit.
+
+Instead of first accumulating arr[i] into runningSum, 
+check existing runningSum first ( accumulated from previous iteration) and decide whether to add current element or not.
+
+Hint6: So, we need to first define previous currentSum and maxSum before we start checking.
+So, initially lets say,
+currSum = arr[0]
+maxSum = arr[0]
+
+for(int i=1;i<n;i++){
+    if(currSum>0){
+        currSum+=arr[i]; //accumulate 
+    }else{
+        currSum=arr[i]; //reset: discard old and startover at i
+    }
+    maxSum = Math.max(currSum,maxSum);
+}
+
+Here, if all numbers are negative, it'll essentially "max" all the negatives and provide the answer. 
+
+If numbers are both positive and negative, 
+
+when currSum>0, we simply add our current arr[i].
+when currSum < 0, we reset it to the current element ( and not 0).
+
+So, if our array was [-7,12]
+currSum =-7 < 0 , so we reset currSum to 12
+
+Now we update maxSum based on the updated currSum (either it had accumulated or reset )
+
+I would say both approaches are fine. Its important to know the special cases.
+
+Hint7: What if they also want the indices where the max sum lies?
+We need to do additional book keeping.
+Lets assume, we have three variables:
+start=0; // pointing to first element
+end = 0; //pointing to first element
+tempStart=0; // also pointing to first element.
+
+Whenever we reset, we need to update tempStart=i ( note down the new beginning)
+Whenever we our currSum>maxSum, we need to update
+    maxSum=currSum
+    start=tempStart ( we already marked this in reset)
+    end=i ( the place where we hit maximum)
+
+So, our max sub-array would lie in [start,end]
+
+int start=0;
+int end=0;
+int tempStart=0;
+int maxSum=arr[0];
+int currSum=arr[0];
+for(int i=1;i<N;i++){
+    if(currSum > 0){
+        currSum+=arr[i];
+    }else{
+        currSum=arr[i];
+        tempStart=i;
+    }
+    if(currSum > maxSum){
+        maxSum = currSum;
+        start=tempStart;
+        end = i;
+    }
+}
+
+
+```
+### Stock Buy and Sell
+```
+Given an array arr[] denoting the cost of stock on each day, the task is to find the maximum total profit if we can buy and sell the stocks any number of times.
+
+Note: We can only sell a stock which we have bought earlier and we cannot hold multiple stocks on any day.
+Input: arr[] = [100, 180, 260, 310, 40, 535, 695]
+Output: 865
+```
+```
+Hint1: 
+
+```
+
