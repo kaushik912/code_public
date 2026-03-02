@@ -173,3 +173,11 @@ public class LRUComplex{
 This one has lot of implementation details. 
 I need to rewrite a better version.
 ```
+
+```
+Hint7:
+You can also use LinkedHashMap which is default implementation of LRU provided in Java.
+It has a boolean arg accessOrder=true which will order keys based on access order
+You could extend the LinkedHashMap and override the removeEldestEntry() method.
+
+```
