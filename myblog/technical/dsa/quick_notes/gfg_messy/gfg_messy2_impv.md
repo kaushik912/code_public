@@ -299,7 +299,7 @@ for(int i=1;i<N;i++){
 
 
 ```
-### Stock Buy and Sell
+### Stock Buy and Sell Infinite times
 ```
 Given an array arr[] denoting the cost of stock on each day, the task is to find the maximum total profit if we can buy and sell the stocks any number of times.
 
@@ -308,7 +308,171 @@ Input: arr[] = [100, 180, 260, 310, 40, 535, 695]
 Output: 865
 ```
 ```
-Hint1: 
+Hint1: AS long as next value is > previous, keep booking profit!
+= [180-100]+[260-180]+[310-260]+[695-40] // approach 1
+= [310-100] + [695-40] // approach 2
+As you can see there are two approaches.
+
+Hint2: Implement approach1
+int profit=0;
+for(int i=1;i<N;i++){
+    if(arr[i]>arr[i-1]){
+        profit+=(arr[i]-arr[i-1]);
+    }
+}
+return profit;
+
+Hint3: Approach2
+whenever arr[i]< arr[i-1], 
+    Other words, if there is a "drop" after a peak, book profit
+    reset start to arr[i]
+
+initially,
+start=arr[0];
+profit=0;
+for(int i=1;i<N;i++){
+    if(arr[i]<arr[i-1]){
+        profit+=(arr[i-1]-start);
+        start=arr[i];
+    }
+}
+
+Hint4: Will this work for edge cases when there is no drop after a peak?
+eg: [100, 180, 260, 310, 40, 535, 695],
+start=40 at some point,
+its an increasing sequence and so arr[i] > arr[i-1],
+So we forgot to book profit for this case.
+so, handle this case as well:
+profit+=(arr[N-1]-start);
+
+Hint6: Add a safe guard in case the entire sequence is decreasing!
+profit+=Math.max(arr[N-1]-start,0);
+
+Hint5: Final implementation
+
+start=arr[0];
+profit=0;
+for(int i=1;i<N;i++){
+    if(arr[i]<arr[i-1]){
+        profit+=(arr[i-1]-start);
+        start=arr[i];
+    }
+}
+profit+=Math.max(arr[N-1]-start,0);
+
+This approach uses fewer transactions than previous one to achieve same result.
+But I admit approach1 is simple and straight-forward.
 
 ```
+### Buy and Sell Stock - Txn Only once
+```
+You are given an array prices where prices[i] is the price of a given stock on the ith day.
 
+You want to maximize your profit by choosing a single day to buy one stock and choosing a different day in the future to sell that stock.
+
+Return the maximum profit you can achieve from this transaction. If you cannot achieve any profit, return 0.
+
+Input: prices = [7,1,5,3,6,4]
+Output: 5
+Explanation: Buy on day 2 (price = 1) and sell on day 5 (price = 6), profit = 6-1 = 5.
+Note that buying on day 2 and selling on day 1 is not allowed because you must buy before you sell.
+
+```
+```
+Hint1: Max Profit is achieved by "maxDiff".
+maxDiff = arr[i]-minSoFar;
+
+Assume 
+minSoFar=arr[0];
+maxDiff=0;
+
+// iterate from 1 till N
+if(arr[i]>=minSoFar){
+    maxDiff = Math.max(maxDiff, arr[i]-minSoFar);
+}
+else{
+    minSoFar=arr[i];
+}
+
+Hint2: Implement the above idea!
+
+int minSoFar=arr[0];
+int maxDiff = 0;
+for(int i=1;i<N;i++){
+    if(arr[i]>=minSoFar){
+        maxDiff = Math.max(maxDiff, arr[i]-minSoFar);
+    }
+    else{
+        minSoFar=arr[i];
+    }
+}
+return maxDiff; //profit
+
+Hint3: If you observe in all the buy and sell stock problems, we usually initialize for 0th index and run logic from 1 till N.
+
+```
+# Who has the majority?
+```
+Given an array arr[] and two elements x and y, return the element that occurs more frequently. If both elements have the same frequency, return the smaller one.
+
+Input: arr[] = [1, 1, 2, 2, 3, 3, 4, 4, 4, 4, 5], x = 4, y = 5
+Output: 4
+Explanation: frequency of 4 is 4.frequency of 5 is 1.Since 4>1 so return 4
+```
+```
+Hint1:
+Simply find out the count of x and y. O(n) pass for each.
+in case of tie, return the smaller of x and y.
+This is basic. So I won't be writing code.
+```
+
+# Frequencies in limited array
+```
+You are given an array arr[] containing positive integers. The elements in the array arr[] range from  1 to n (where n is the size of the array), and some numbers may be repeated or absent. Your have to count the frequency of all numbers in the range 1 to n and return an array of size n such that result[i] represents the frequency of the number i (1-based indexing).
+
+Input: arr[] = [2, 3, 2, 3, 5]
+Output: [0, 2, 2, 0, 1]
+Explanation: We have: 1 occurring 0 times, 2 occurring 2 times, 3 occurring 2 times, 4 occurring 0 times, and 5 occurring 1 time.
+
+Time Complexity: O(n)
+Auxiliary Space: O(1)
+```
+```
+Hint1: With extra space, we could create a freqcount of numbers.
+{2:2, 3:2,5:1}
+Now its about populating the result array based on freqcount.
+
+Hint2: Without extra space, lets say we update by the index that corresponding value.
+so, output[arr[i]]++
+But output array is also of same size as input.
+So output[5] would cause index out of bounds exceptions.
+
+So, we need to restrain the values from 0 to N-1
+So, if its a 2, we'll store in 1st index
+if its a 5, we'll store it in 4th index.
+So, for arr[i], output[arr[i]-1]++
+
+Hint3: Implement the solution
+int[] output = new int[arr.length];
+for(int i=0;i<arr.length;i++){
+    output[arr[i]-1]++;
+}
+
+Hint4: Another ambitious idea is to use n as a multiplier.
+eg: [2, 3, 2, 3, 5]
+
+now, when I see a arr[i], i append n to it in the same array.
+so, arr[(arr[i]%n)] +=n
+arr[i]%n will ensure it'll always lie between 0 to n-1. (array wise safe)
+
+So, 2 will translate to 3+n, and eventually 3+2n. (index 1 has 3 initially)
+So, 3 will translate to 2+2n (index 2 has 2 initially)
+
+So it'll become: [2,3+2n,2+2n,3,5+n]
+Now we simply divide by n the entire array
+We get:[0,2,2,0,1]
+
+This is for in-place update.
+Basically we append 'n' times for each freq at the particular "positional" index and then do a div to get back the freq counts.
+
+```
