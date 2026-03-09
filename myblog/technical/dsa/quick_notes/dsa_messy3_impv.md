@@ -81,7 +81,7 @@ while(left<right){
         right--;
     }
     else {
-        // This is the case when they are in wrong places.
+        // nums[left] is odd, nums[right] is even
         //swap left and right
         swap(arr,left,right);
         left++;
