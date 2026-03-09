@@ -1,6 +1,9 @@
 # 🎯 FAANG + Product Companies Coding Interview Questions
 ## Topic-Wise Guide (Easy → Medium)
 
+- These are some of the questions i have encountered so far in many companies. 
+- Few are AI-generated as well.
+
 ---
 
 ## 📊 **1. ARRAYS**
