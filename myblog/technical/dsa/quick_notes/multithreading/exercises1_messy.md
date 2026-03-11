@@ -91,7 +91,7 @@ class EvenPrinter implements Runnable{
 Hint3: This could be further optimized by using a single boolean variable isOddThread, etc.
 
 ```
-### Print ABC 
+### Print ABCABCABC..
 ```
 Thread A prints A
 Thread B prints B
@@ -195,3 +195,167 @@ public void run(){
 }
 
 ```
+### Solve producer consumer problem
+```
+producer produces items and pushes it to a fixed capacity queue.
+consumer consumes items from this queue.
+if queue has reached the limit, then producer waits till consumer consumes 
+if queue has reached zero, consumer will wait till producer puts any data.
+
+To simulate a real life experience, add a delay of random seconds (say 4s) while consuming and producing.
+Print "waiting" in both consumer and producer ends as applicable.
+
+```
+```
+Hint1: Queue is a shared resource.
+wait() to be called inside while() based on the condition not met,
+Queue<Integer> q = new LinkedList<>();
+
+
+Hint2: Write Producer and Consumer as separate threads.
+
+class Producer implements Runnable{
+    Queue<Integer> q;
+    int capacity;
+    Object lock;
+
+    public Producer(Queue<Integer> q, int capacity, Object lock){
+        this.q=q;
+        this.capacity=capacity;
+        this.lock=lock;
+    }
+
+    public void run(){
+        while(true){
+            synchronized(lock){
+                while(q.size()==capacity){
+                        lock.wait();         
+                }
+                int newValue = (int)(Math.random()*1000); // always wrap computation before cast 
+                // because cast has higher precedence than multiplication!
+
+                q.offer(newValue);
+                System.out.println("Producer pushed:"+ newValue);
+                lock.notify();
+            }
+            //Keep Sleep outside synchronized block
+            Thread.sleep((long) (Math.random() * 4000)); //with try-catch
+        }
+    }
+}
+
+class Consumer implements Runnable{
+    Queue<Integer> q;
+    int capacity;
+    Object lock;
+
+    public Consumer(Queue<Integer> q, int capacity, Object lock){
+        this.q=q;
+        this.capacity=capacity;
+        this.lock=lock;
+    }
+
+    public void run(){
+        while(true){
+            synchronized(lock){
+                while(q.size()==0){
+                        lock.wait();//with try-catch         
+                }
+                int polledValue = q.poll();
+                System.out.println("Consumer consumed:"+ polledValue);
+                lock.notify(); 
+            }
+            //Keep Sleep outside synchronized block
+            Thread.sleep((int)(Math.random()*4000));//with try-catch
+        }
+    }
+}
+
+public class ProdConsumer {
+    private static Object lock = new Object();
+    private static Queue<Integer> q = new LinkedList<>();
+
+    public static void main(String[] args){
+        Thread p = new Thread(new Producer(q,10,lock));
+        Thread c = new Thread(new Consumer(q,10,lock));
+        p.start();
+        c.start();
+    }
+
+}
+
+Hint3: Small perf hack
+Instead of Math.random, where multiple threads would try to get the "seed" but only one thread will eventually get it, we could instead use ThreadLocalRandom
+eg: ThreadLocalRandom.current().nextLong(4001); // gives random between [0,4001)
+This is way faster than Math.random()
+
+```
+
+### Producer Consumer using BlockingQueue
+```
+Solve the same problem but using Java concurrent packages.
+```
+
+```
+Hint1:
+BlockingQueue is an interface.
+ArrayBlockingQueue is concrete implementation.
+We need to specify a capacity to initialize the queue.
+
+BlockingQueue<Integer> q = new ArrayBlockingQueue<>(10);
+
+Hint2:
+understand BlockingQueue operations.
+q.put() puts the value into the queue, auto blocks if the queue is full!
+q.take() takes value from the queue, auto blocks if queue is empty!
+
+So no need to write the wait() and notify() calls.
+So, put() and take() are the key methods.
+
+Hint3: Implement
+class Producer implements Runnable{
+    BlockingQueue<Integer> q;
+    
+    public Producer(BlockingQueue<Integer> q){
+        this.q=q;
+    }
+
+    public void run(){
+        while(true){
+            int newValue = (int)(Math.random()*1000);
+            q.put(newValue);
+            System.out.println("value pushed!:"+newValue);
+        }
+        
+        Thread.sleep((int)(Math.random()*4000)); //with try-catch
+    }
+}
+
+class Consumer implements Runnable{
+    BlockingQueue<Integer> q;
+    
+    public Consumer(BlockingQueue<Integer> q){
+        this.q=q;
+    }
+
+    public void run(){
+        while(true){
+            int polledValue = q.take(); //with try-catch for interrupted exception
+            System.out.println("value consumed!:"+polledValue);
+        }
+        
+        Thread.sleep((int)(Math.random()*4000)); //with try-catch for interrupted exception
+    }
+}
+
+public class ProdConsumerBlocking {
+	public static void main(String[] args) throws Exception {
+		BlockingQueue<Integer> q = new ArrayBlockingQueue<>(10);//initial capacity of 10
+		Thread p = new Thread(new Producer(q));
+		Thread c = new Thread(new Consumer(q));
+		p.start();
+		c.start();
+	}
+}
+```
+
