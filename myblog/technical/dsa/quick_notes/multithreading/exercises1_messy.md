@@ -88,7 +88,99 @@ class EvenPrinter implements Runnable{
     }
 }
 
-Hint3: This could be further optimized by using a single boolean variable isOddThread, etc.
+Hint3: This could be further optimized using even and odd threadIds for even and odd threads.
+As per concurrency, its recommended to use the "while" for wait and once it breaks, you perform your task (in this case, print the value)
+
+Assume even thread has id=0, odd thread has id=1.
+So , technically our wait condition would be:
+
+while((counter[0]%2==0 && threadid%2!=0) || (counter%2!=0 && threadId%2==0)){
+    lock.wait();
+}
+
+This could be simplified as:
+
+while((counter[0]%2)!=(threadId%2)){
+    // whenever our count is not in parity with threadId
+    lock.wait();
+}
+
+
+Hint4: Implement the above idea
+
+class OddEvenRunner implements Runnable{
+    //constructor and variables as before
+
+    public void run(){
+
+        while(counter[0]< max){
+
+            while((counter[0]%2)!=(threadId%2)){
+                // whenever our count is not in parity with threadId
+                lock.wait();
+            }
+
+            System.out.println("Thread:"+id + ", number:"counter[0]);
+            counter[0]++;
+            lock.notify();
+        }
+
+    }
+}
+
+public class OddEvenPrinter {
+	
+	private static Object lock = new Object();
+	private static int[] counter = new int[1];
+	public static final int capacity=25;
+	
+	public static void main(String[] args) {
+		Thread oddRunner = new Thread(new OddEvenRunner(lock,counter,capacity,1));
+		Thread evenRunner = new Thread(new OddEvenRunner(lock,counter,capacity,0));
+		oddRunner.start();
+		evenRunner.start();
+	}
+
+}
+
+Hint5: Below is the standard template for low level synchronization
+
+1. start with a infinite while loop. (to keep thread alive to do repeated work)
+2. Start with sychronized block
+3. define condition when to exit the loop
+    notify all threads.
+    return or break;
+4. define the while condition for waiting.
+5. Do the task once you exit the wait loop. Print, increment counters,etc.
+6. Call notifyAll. Hand off to others.
+
+Hint6: So, we can implement any kind of problem with above template. 
+Rewrite our OddEven using this:
+
+while(true) { //infinite loop to keep thread alive to do repeated work
+    
+    synchronized(lock) { // entry point , only one thread enters
+        
+        if(counter[0]>=capacity) { // Exit condition
+            lock.notifyAll();
+            break;
+        }
+        
+        while((counter[0]%2)!=(threadId%2)) { //Wait condition
+            // if counter and threadId are different parity, one odd and other even
+            lock.wait(); //with try-catch
+        }
+        
+        //Do the Work!
+        System.out.println("ThreadId:"+ threadId + ", value="+counter[0]);
+        counter[0]++;
+
+        //Handoff to other threads
+        lock.notify();
+    }
+}
+
+This gives a conceptual understanding of the thread synchronization.
 
 ```
 ### Print ABCABCABC..
@@ -166,16 +258,16 @@ Recommended solution using "while" inside synchronized block for the wait() call
 Also, handles the edge case when counter has exceeded max and threads are not notified.
 
 public void run(){
-       while(true) {
+       while(true) { // Start with infinite loop
     		synchronized(lock){
 
-                if(counter[0]>=max){
+                if(counter[0]>=max){ //Exit case
                     //handle edge case of hung threads when counter has exceeded max
                     lock.notifyAll(); 
                     break; //clean exit of while(true) loop
                 }
 
-                while(counter[0]<max && counter[0]!=id){ 
+                while(counter[0]<max && counter[0]!=id){  //Wait case
                     //standard wait pattern using while
                      try {
     					lock.wait();
@@ -188,7 +280,7 @@ public void run(){
                     //do the work!
                     System.out.println("Thread id:"+ id + " value="+value);
                     counter[0]++;
-                    lock.notifyAll();
+                    lock.notifyAll(); //hand off to others
                 }
             }
     	}
@@ -289,6 +381,9 @@ Instead of Math.random, where multiple threads would try to get the "seed" but o
 eg: ThreadLocalRandom.current().nextLong(4001); // gives random between [0,4001)
 This is way faster than Math.random()
 
+Hint4: use notifyAll() in case of multiple producers/consumers!
+But the idea is same.
+
 ```
 
 ### Producer Consumer using BlockingQueue
@@ -358,4 +453,91 @@ public class ProdConsumerBlocking {
 	}
 }
 ```
+### Solve the OddEven Thread printing using Semaphore 
+```
+Hint1: 
+Semaphore oddSem = new Semaphore(1);
+Semaphore evenSem = new Semaphore(0);
 
+Hint2:
+When a semaphore hits zero, it just waits and won't execute the next line.
+For eg: here evenSem is 0.
+lets say, I have:
+
+evenSem.acquire();
+System.out.println("Print evenSem acquired");
+
+So, the .acquire() kind of blocks the thread into WAITING and won't execute the next step until someone calls a evenSem.release() -> (increments by 1) 
+
+Hint3: Use the above idea to implement solution using Semaphore
+
+// Odd Thread
+oddSem.acquire();
+System.out.println("ThreadId:"+id + ", value:"+counter[0]);
+counter[0]++;
+evenSem.release();
+
+// Even Thread
+evenSem.acquire();
+System.out.println("ThreadId:"+id + ", value:"+counter[0]);
+counter[0]++;
+oddSem.release();
+
+Hint4: For simplicity, lets use two thread approach.
+
+class OddRunner implements Runnable{
+    private Semaphore evenSem;
+    private Semaphore oddSem;
+    private int[] counter;
+    private int id;
+
+    public OddRunner(int id, Semaphore evenSem, Semaphore oddSem, int[] counter){
+        this.evenSem=evenSem;
+        this.oddSem=oddSem;
+        this.counter = counter;
+        this.id=id;
+    }
+
+    public void run(){
+        while(true) {
+        		
+            oddSem.acquire(); //with try-catch
+            if(counter[0]>20) {
+                evenSem.release(); //similar to lock.notify()
+                return;
+            }
+            System.out.println("ThreadId:"+id + ", value:"+counter[0]);
+            counter[0]++;
+            evenSem.release();
+        }
+    }
+}
+
+class EvenRunner implements Runnable{
+    private Semaphore evenSem;
+    private Semaphore oddSem;
+    private int[] counter;
+    private int id;
+
+    public EvenRunner(int id,Semaphore evenSem, Semaphore oddSem, int[] counter){
+        this.evenSem=evenSem;
+        this.oddSem=oddSem;
+        this.counter = counter;
+        this.id=id;
+    }
+    
+    public void run(){
+       while(true) {
+	    		evenSem.acquire();//with try-catch
+	    		if(counter[0]>20) {
+                    oddSem.release();  //similar to lock.notify()
+        			return;
+        		}
+				System.out.println("ThreadId:"+id + ", value:"+counter[0]);
+		        counter[0]++;
+		        oddSem.release();
+        		
+        }
+    }
+}
+```
