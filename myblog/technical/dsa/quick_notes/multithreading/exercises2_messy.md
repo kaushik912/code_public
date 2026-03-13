@@ -158,11 +158,8 @@ class Worker implements Runnable{
     }
 }
 
-Hint5: 
-cb.wait()
-
-
-Similarly for write
-
+Hint5: What if only 3 threads called cb.await() but cb expected 4 parties? 
+In that case, the threads will wait forever and won't be release as cb won't get tripped!
+So, in such case, we use Phaser instead of Cyclic Barrier.
 
 ```
