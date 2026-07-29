@@ -102,3 +102,66 @@ Later:   Stage 5        → Streams when you need transformations
 ---
 
 Want me to spin up a concrete **Stage 3 starter project** for you — a runnable Spring Boot order service with producer, `@KafkaListener` consumer, JSON, retries, and a dead-letter topic — so you have working code to experiment on? I can scaffold the whole thing.
+
+Yes — and the good news is Kafka has unusually good **free** learning resources. Here's where to go, mapped to each stage.
+
+---
+
+## 🥇 The best one: Confluent Developer
+**developer.confluent.io**
+
+This is the single best free Kafka resource, made by the company founded by Kafka's original creators. Everything is free (you just make a free account for some hands-on parts).
+
+- **Courses** (`developer.confluent.io/courses`) — video courses with hands-on exercises:
+  - *"Apache Kafka 101"* → perfect for **Stage 1** (concepts + running Kafka + CLI).
+  - *"Kafka Producers and Consumers (Hands On)"* → **Stage 2** (raw clients).
+  - *"Spring Framework and Apache Kafka"* → **Stage 3**.
+  - *"Kafka Streams 101"* → **Stage 5**.
+- **Tutorials** (`developer.confluent.io/tutorials`) — copy-paste recipes ("how do I do X").
+
+Start here. It covers Stages 1–5 end to end.
+
+---
+
+## 🥈 Official Apache Kafka docs
+**kafka.apache.org/documentation**
+
+- **Quickstart** (`kafka.apache.org/quickstart`) → exactly your **Stage 1** — download, start a broker, create a topic, produce/consume from the CLI. Follow it step by step.
+- The **Design** section is a great slow-read once you have context (Stage 4 concepts like replication, ISR, retention).
+
+---
+
+## 🥉 Spring Kafka official docs — for Stage 3
+**docs.spring.io/spring-kafka/reference**
+
+The reference guide with `@KafkaListener`, error handlers, and dead-letter topics. Pair it with the free Spring guide at **spring.io/guides** (search "Messaging with Kafka").
+
+---
+
+## For hands-on practice without any local setup
+
+- **Confluent Cloud** — free tier with credits, gives you a real Kafka cluster in the browser (no Docker needed). Good if local setup annoys you.
+- **GitHub: `confluentinc/examples`** — free runnable sample projects for Stages 2–5.
+
+---
+
+## Free video (if you prefer watching)
+
+- **freeCodeCamp** on YouTube has a full free "Apache Kafka Crash Course / Full Course" — good for Stages 1–3.
+- **Confluent's own YouTube channel** — short, focused explainers.
+
+---
+
+## Suggested path
+
+```
+Stage 1  →  Confluent "Kafka 101" course  +  Apache Kafka Quickstart
+Stage 2  →  Confluent "Producers & Consumers (Hands On)"
+Stage 3  →  Confluent "Spring + Kafka"  +  Spring Kafka docs
+Stage 4  →  Apache Kafka docs "Design" section (as questions come up)
+Stage 5  →  Confluent "Kafka Streams 101"
+```
+
+If I had to pick **one** to start today: create a free account on **developer.confluent.io** and do the *Kafka 101* course while following the *Apache Kafka Quickstart* in a terminal alongside it. That combo covers your Stage 1 completely.
+
+Want me to still scaffold that **Stage 3 Spring Boot starter project** locally so you have working code to poke at while you go through the courses?
