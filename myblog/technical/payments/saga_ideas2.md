@@ -138,3 +138,87 @@ And the caveats we already discussed apply directly to webhooks:
 > A normal API call = **"I call you to ask."** A webhook = **"you call me to tell,"** using a URL I registered with you in advance. Same HTTP POST — opposite direction, event-triggered, push instead of poll.
 
 So in the saga's command/reply, a webhook is simply the **reply** delivered as an inbound HTTP call instead of a queue message.
+
+
+Let me give concrete, real-world examples for each of the three transports, then a decision lens for picking.
+
+## Transport A — Reply message (async queue/event bus)
+
+The outcome is published to a broker; the consumer picks it up.
+
+**Real examples:**
+- **Kafka** `payment.replies` topic — orchestrator consumes. (LinkedIn, Uber, most high-throughput shops.)
+- **RabbitMQ / ActiveMQ** reply queues — classic enterprise messaging.
+- **AWS SQS / SNS** — SNS fans an event out, SQS queues it for the consumer.
+- **Google Pub/Sub, Azure Service Bus** — cloud-native equivalents.
+- **Temporal activity completion** — internally this is the model (durable task queue).
+
+**Best when:**
+- High throughput / spiky load — the queue **buffers** bursts so consumers aren't overwhelmed.
+- You want **loosest coupling** — participant knows only a topic name.
+- Multiple consumers need the same event (fan-out).
+- The two services have **different availability** — if the orchestrator is down, the message waits in the queue instead of being lost.
+- You need **durability/replay** — Kafka keeps the log.
+
+**Weak when:** you don't already run a broker (operational overhead), or you need a synchronous answer *right now* in a request/response cycle.
+
+## Transport B — Webhook / HTTP callback (push)
+
+The participant POSTs the outcome to the orchestrator's URL.
+
+**Real examples:**
+- **Stripe / PayPal** payment webhooks (`payment_intent.succeeded`) — the canonical case; settlement is async, they call you back.
+- **GitHub webhooks** — push/PR events POST to your CI.
+- **Twilio** — SMS/call status callbacks.
+- **Slack Events API**, **Shopify** order webhooks, **CI/CD** deploy-complete callbacks.
+
+**Best when:**
+- Crossing an **organizational boundary** — you can't make an external SaaS publish to *your* Kafka, but they can POST to your public URL. This is *the* reason webhooks dominate third-party integrations.
+- You have **no message broker** and don't want to run one — HTTP is universal.
+- Events are **low-to-moderate volume** and you want near-real-time push without polling.
+
+**Weak when:**
+- The receiver is **down** during delivery — you depend on the sender's retry policy, and delivery guarantees are weaker than a durable queue.
+- **Very high volume** — a POST per event can hammer the receiver (no built-in buffering; queue is better).
+- Receiver isn't publicly reachable (webhooks need an inbound-accessible endpoint).
+
+## Transport C — Shared / polled state (pull)
+
+The participant writes its outcome to a store; the orchestrator polls or reads it.
+
+**Real examples:**
+- **Database polling** — participant sets `payment.status = CHARGED`; a scheduler scans for changes. (Your outbox *relay* is exactly this pattern.)
+- **S3 / object-store markers** — write a `job-123.done` file; watcher polls the bucket. Common in **data pipelines / batch ETL**.
+- **Redis / cache flag** polled by the orchestrator.
+- **Cron/batch reconciliation jobs** — nightly "find all payments marked captured but orders not confirmed."
+- **AWS Step Functions polling pattern** (`waitForTaskToken` with polling) for long-running jobs.
+
+**Best when:**
+- The participant **can't reach out** (locked down, no outbound network, or a legacy batch system that only writes to a DB/file).
+- **Long-running / batch** work where near-real-time isn't needed (ETL, report generation, nightly settlement).
+- You want a **reconciliation safety net** even if you primarily use A or B — polling catches the events that a message drop or a failed webhook missed. (This is why serious systems use C *alongside* A/B.)
+
+**Weak when:** you need low latency (polling adds delay), or high frequency (polling wastes cycles asking "anything yet?").
+
+## Decision lens — pick by asking 3 questions
+
+| Question | Points to |
+|---|---|
+| **Is it inside my system or across an org boundary?** | Inside → A (queue). External SaaS → B (webhook) — they can't touch your broker. |
+| **What's the volume/latency?** | High volume / spiky → A (buffers). Low volume, real-time → B. Batch / not-urgent → C. |
+| **Can the participant even initiate a call?** | Yes → A or B. No (locked-down/legacy/batch) → C (they write, you poll). |
+| **Do I need durability & replay?** | Yes → A (Kafka log) or C (DB is the record). Webhook alone → weakest. |
+
+## The practical real-world answer
+
+Mature systems don't pick *one* — they **layer**:
+
+- **A (queue)** for internal, high-throughput saga steps → decoupling + buffering.
+- **B (webhook)** at the **edges**, for third-party providers (Stripe, PayPal, GitHub) that can only reach you over HTTP.
+- **C (polling reconciliation)** as the **safety net** underneath both — a periodic job that catches anything a dropped message or a failed webhook missed. This is why you'll see "we process Stripe webhooks **and** run a nightly reconciliation poll against Stripe's API" — belt and suspenders.
+
+## One-line summary
+
+> **Inside your system, high volume → message queue (A).** **Across an org boundary / third-party → webhook (B).** **Long-running, locked-down, or as a safety net → polled state (C).** Serious systems use B at the edge, A in the core, and C underneath to catch what the other two drop.
+
+That layering — queue in the core, webhooks at the boundary, polling as reconciliation — is the answer that shows you've seen these fail in production, not just read about them.
