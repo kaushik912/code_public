@@ -65,3 +65,76 @@ The participant owns 1. The orchestrator owns 3. **2 is just plumbing** and is t
 > A saga step's completion has three separable concerns — **perform-and-record-own-outcome** (participant), **transport-the-outcome** (message / webhook / polled state — interchangeable), **interpret-outcome-into-a-transition** (orchestrator). The participant emits a *fact*, never a *transition*. Everything you listed is a choice of *transport* only; the ownership boundary stays fixed.
 
 That framing — "the participant reports facts, the orchestrator owns transitions, transport is pluggable" — is the theorization you're after, and it's exactly why frameworks like Temporal can swap the transport (queue vs poll vs callback) without your saga logic changing.
+
+
+Yes, your instinct is right — a webhook **is** just an HTTP API call. The twist is *who calls whom*. Let me give you the precise semantics.
+
+## The core definition
+
+> A webhook is a **reversed API call**: instead of *you* calling a server to ask "is it done yet?", the server calls *you* when it's done.
+
+That's the whole idea. It's sometimes called a **"reverse API"** or an **"HTTP callback."** Same HTTP POST you already know — the direction of initiation is flipped.
+
+## Normal API vs webhook
+
+**Normal API (you initiate — "pull"):**
+```
+You  ──── GET /payment/123/status ───▶  Payment provider
+You  ◀──── "still processing" ─────────  
+You  ──── GET /payment/123/status ───▶   (poll again...)
+You  ◀──── "still processing" ─────────
+You  ──── GET /payment/123/status ───▶   (and again...)
+```
+You have to keep asking. Wasteful, laggy — this is **polling**.
+
+**Webhook (they initiate — "push"):**
+```
+(you registered your URL once, ahead of time)
+...time passes, you do nothing...
+Payment provider ──── POST https://you.com/hooks/payment ───▶  You
+                       body: { "event": "payment.charged", "id": "123" }
+You ──── 200 OK ─────────────────────────────────────────────▶
+```
+They call *your* endpoint the moment the event happens. No polling. This is **push**.
+
+## The semantics / lifecycle
+
+A webhook has four distinct phases — this is the "exact semantics" you asked for:
+
+1. **Registration (once, up front).** You tell the provider: "when event X happens, POST to *this URL* of mine." Either via their dashboard (Stripe/GitHub settings) or an API call. This is the critical difference from a plain callback — the caller learns your address **ahead of time**, not per-request.
+
+2. **Event occurs.** Something happens on their side — payment settles, a git push lands, a build finishes.
+
+3. **Delivery.** The provider makes an **HTTP POST to your registered URL**, with the event details in the body (usually JSON). Your endpoint is a normal REST endpoint — nothing special about it except that *they* are the client.
+
+4. **Acknowledgment.** You return **`200 OK`** to say "got it." If you return an error or time out, the provider will typically **retry** (which is why webhook handlers must be **idempotent** — the same event may arrive twice).
+
+## So, precisely answering your question
+
+> "Is it just an API call when a process is done with its task?"
+
+**Almost exactly** — with two refinements:
+
+- It's an API call **made *to you*, by the system that did the work** (not one you make to them).
+- It requires **prior registration** — they can only call you because you told them your URL in advance. Without that registration step, it's just an arbitrary callback; the "webhook" concept is specifically *the pre-arranged, event-triggered reverse call*.
+
+## Why it exists (the "why" makes the semantics stick)
+
+Polling is wasteful and slow: you either poll too often (burning requests on "not yet") or too rarely (laggy). Webhooks invert it — **zero requests while nothing happens, one request the instant it does.** It's **event-driven push over HTTP.**
+
+## How it ties back to our saga conversation
+
+Remember transport option **B** ("participant calls a POST API")? That **is** a webhook:
+
+- In the saga, when Payment finishes charging, it POSTs `PaymentCharged` to the orchestrator's `/saga/{id}/events` endpoint. Payment is the *caller*, orchestrator is the *callee* — reversed from the original command call.
+- Real-world example: **Stripe/PayPal**. You call *their* API to start a charge (normal API). But payment settlement is async and can take time, so they call *your* webhook when it finalizes (`payment_intent.succeeded`). That webhook is exactly transport B delivering the "fact" back to your orchestrator.
+
+And the caveats we already discussed apply directly to webhooks:
+- **Idempotency** — retries mean duplicate deliveries; dedupe on the event id.
+- **Signature verification** — since anyone could POST to your public URL, providers sign the payload (e.g. Stripe's `Stripe-Signature` header) so you can verify it genuinely came from them. This is the one security wrinkle webhooks add over a normal API.
+
+## One-line mental model
+
+> A normal API call = **"I call you to ask."** A webhook = **"you call me to tell,"** using a URL I registered with you in advance. Same HTTP POST — opposite direction, event-triggered, push instead of poll.
+
+So in the saga's command/reply, a webhook is simply the **reply** delivered as an inbound HTTP call instead of a queue message.
