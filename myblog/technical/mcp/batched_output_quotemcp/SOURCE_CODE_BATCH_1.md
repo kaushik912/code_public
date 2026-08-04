@@ -1,6 +1,6 @@
 # Source Code Batch
 
-This file contains 5 source files
+This file contains 5 source files.
 
 ---
 
