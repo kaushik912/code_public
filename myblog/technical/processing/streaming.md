@@ -92,4 +92,65 @@ if (!dest.write(chunk)) {
 
 Back pressure is what makes streaming *safe* at scale. Streaming without it is just deferring the memory explosion, not preventing it.
 
-Want me to sketch a concrete code example in a specific language (Node, Go, Java/Reactor, Python asyncio), or walk through how a real system like Kafka handles a lagging consumer?
+---
+
+Absolutely — this is one of the most important distinctions in the whole topic, because it separates **stream processing** from **batch processing**. Let me expand on it.
+
+# Bounded vs. unbounded datasets
+
+**Batch processing** works over a *bounded* dataset — a finite blob with a known beginning and end (a file, a table, yesterday's logs). The program's shape is:
+
+```
+start → read all of it → compute → produce result → EXIT
+```
+
+It has a natural finish line. When the last record is processed, the job is *done*.
+
+**Stream processing** works over an *unbounded* dataset — a conceptually infinite sequence of events with no end (user clicks, sensor readings, trades, log lines, GPS pings). There is no "last record," so:
+
+```
+start → [event → react → event → react → event → react → ...]  ← never exits
+```
+
+The program **never finishes**. It's a long-lived process that stays running indefinitely, waking up to handle each event the moment it arrives. "Completion" isn't even a meaningful concept — the only end states are *you shut it down* or *it crashes*.
+
+---
+
+# This flips what you optimize for
+
+Because there's no finish line, you can't optimize for **throughput-to-completion** ("process all 4TB as fast as possible"). Instead you optimize for **latency per event** — output within *milliseconds* of input.
+
+| | Batch | Stream |
+|---|---|---|
+| Dataset | Bounded (finite) | Unbounded (infinite) |
+| Lifecycle | Runs then exits | Runs forever |
+| Success metric | Total throughput / job time | Per-event latency |
+| Question it answers | "What happened yesterday?" | "What is happening *right now*?" |
+| Example | Nightly billing report | Fraud alert as the card is swiped |
+
+The value of a streaming result often **decays with time**. A fraud alert 3 hours after the transaction is nearly worthless; the same alert in 40 ms blocks the charge. So the whole system is engineered around minimizing the gap between "event occurred" and "we reacted."
+
+---
+
+# Why this connects back to back pressure
+
+This is exactly *why* back pressure matters so much in streaming. Because:
+
+1. **The stream never ends** → you can never "just buffer it all and deal with it later." There is no later. The buffer would grow forever.
+2. **The input rate isn't yours to control** → events arrive when the real world produces them (a traffic spike, a viral moment, market open). You can't tell users to click slower.
+
+So an infinite, externally-driven firehose meets a consumer with finite capacity. Back pressure is the *only* sustainable way to reconcile the two — it lets a forever-running process survive load it can't predict, by continuously matching intake to the slowest stage instead of accumulating an infinite backlog.
+
+---
+
+# Real-life examples of the "never finishes" property
+
+- **A thermostat.** Not a program you "run to completion" — it lives on the wall reacting to each temperature reading forever.
+- **A security camera's motion detector.** No final frame; it processes the feed indefinitely and reacts within milliseconds when something moves.
+- **Uber's pricing / matching engine.** Rides, locations, and demand never stop flowing. The system continuously reacts; surge pricing updates live.
+- **A stock exchange's matching engine.** Orders stream in during market hours; each must match in microseconds. Latency *is* the product.
+- **Your phone's notification system.** Always on, dormant until an event arrives, then reacts instantly.
+
+The mental shift is: batch is a **verb** (run a job, get an answer, stop), streaming is a **noun** — a standing piece of infrastructure that's always alive, always listening, judged by how fast it reacts rather than when it finishes.
+
+Want me to fold both of my answers (the streaming/back-pressure fundamentals plus this bounded-vs-unbounded framing) into a single clean write-up you could keep as notes?
