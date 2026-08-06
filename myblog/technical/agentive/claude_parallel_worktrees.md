@@ -18,7 +18,40 @@ worktrees/
 
 ## The base app (the starting point)
 
-`todo/todo.py` — an in-memory todo CLI. The flaw we set out to fix:
+`todo/todo.py` — an in-memory todo CLI:
+
+```python
+#!/usr/bin/env python3
+"""Tiny todo CLI (in-memory — todos vanish when the process exits)."""
+import sys
+
+TODOS = []
+
+def add(text):
+    TODOS.append(text)
+    print(f"added: {text}")
+
+def list_all():
+    for i, t in enumerate(TODOS):
+        print(f"{i}: {t}")
+
+def main(argv):
+    if not argv:
+        print("commands: add <text> | list")
+        return
+    cmd, rest = argv[0], argv[1:]
+    if cmd == "add":
+        add(" ".join(rest))
+    elif cmd == "list":
+        list_all()
+    else:
+        print(f"unknown command: {cmd}")
+
+if __name__ == "__main__":
+    main(sys.argv[1:])
+```
+
+The flaw we set out to fix:
 
 ```bash
 python3 todo.py add "buy milk"
@@ -34,10 +67,27 @@ only in memory. **That missing persistence is the feature we parallelized.**
 
 One spec, committed so every worktree inherits it. It deliberately leaves the
 **storage format up to the agent** — that under-specification is what makes the
-three attempts diverge and the comparison worthwhile.
+three attempts diverge and the comparison worthwhile. Full contents of
+`todo/PLAN.md`:
 
-Key requirements: `add` must survive into a new process, `list` reads the store,
-add a `done <index>` command, single-file + stdlib only, data file next to script.
+```markdown
+# Feature: make todos persist across runs
+
+Right now todos live in memory and vanish when the process exits.
+
+## Requirements
+1. `add <text>` must save so a later `todo.py list` (new process) still shows it.
+2. `list` reads from the saved store.
+3. Add a `done <index>` command that removes/marks a todo as complete.
+4. Single-file CLI, standard library only, store the data file next to the script.
+
+## Acceptance check
+    python3 todo.py add "buy milk"
+    python3 todo.py add "call mom"
+    python3 todo.py list        # new process -> shows both
+
+You choose the storage format. Optimize for correctness and simplicity.
+```
 
 ---
 
@@ -133,6 +183,66 @@ git worktree list         # back to just main; winning code already merged
    caught it. **Always verify from git state, never from the agent saying "done."**
 
 ---
+
+## Recommended: `claude -w <name>` in the CLI (verified working, minimal config)
+
+**What actually works best — verified.** The CLI's `-w` / `--worktree` flag
+creates an isolated, named worktree and drops you into a session inside it, with
+**no extra config**. Give each approach a descriptive name:
+
+```bash
+cd ~/GitHub/tac_code/worktrees/todo   # the repo with the base todo.py
+
+claude -w json-approach     # session #1, isolated worktree for the JSON attempt
+claude -w csv-approach      # session #2, isolated worktree for the CSV attempt
+claude -w sqlite-approach   # session #3, isolated worktree for the SQLite attempt
+```
+
+Verified behavior:
+- Worktree path: **`<repo>/.claude/worktrees/<name>`** (nested + managed, not a
+  sibling `../`). The `<name>` you pass is exactly this folder name.
+- Branch name: **`worktree-<name>`** (auto-prefixed), created from current HEAD.
+- The worktree is **locked** while the session owns it → manual removal needs
+  `git worktree remove -f -f <path>`.
+- Add `--tmux` to split the worktree session into iTerm2/tmux panes.
+
+### Run the prompt yourself (interactive — no `-p`)
+Prefer **not** using `-p` for real work: persistence (or any non-trivial feature)
+usually takes a few back-and-forth iterations, and `-p` is one-shot/headless. So
+just start the named-worktree session and type the prompt in the chat, iterating
+until the implementation is right:
+
+```bash
+claude -w json-approach
+# then, in the interactive session, type:
+#   "Read todo.py and add persistence using a JSON file so todos survive
+#    restarts. Add a `done <index>` command. Then run it to prove it works."
+# iterate in chat until it's correct, then ask it to commit.
+```
+Repeat in two more terminals/tabs with `csv-approach` and `sqlite-approach`.
+Because each is its own worktree, the three `todo.py` files never collide.
+
+Then compare and merge from the main repo (branches are `worktree-json-approach`,
+`worktree-csv-approach`, `worktree-sqlite-approach`):
+```bash
+git -C ~/GitHub/tac_code/worktrees/todo diff --stat main..worktree-json-approach -- todo.py
+git merge --no-ff worktree-json-approach -m "merge: persist todos (winner)"
+```
+
+### Manual vs `-w` — both are CLI, both verified
+| | Manual `git worktree add ../todo-json` | `claude -w json-approach` |
+|---|---|---|
+| Worktree location | sibling `../todo-json` (you pick) | `.claude/worktrees/json-approach` |
+| Branch name | you choose (`agent-json`) | auto `worktree-json-approach` |
+| Setup effort | 3 `git worktree add` lines | none — the flag does it |
+| Inspecting side by side | easy, obvious sibling folders | folders tucked under `.claude/` |
+| Cleanup | `git worktree remove` (unlocked) | `git worktree remove -f -f` (locked) |
+| Best when | you want to eyeball/cherry-pick across attempts | you want named worktrees + an interactive session per attempt |
+
+For our 3-storage bake-off both CLI paths isolate correctly. Use **manual** when
+you want the three `todo.py` files in plain sibling folders to diff; use
+**`claude -w <name>`** when you want each approach in its own named, ready-to-chat
+session.
 
 ## Why this specific setup was a good demo
 - The feature ("persist todos") had **genuine design freedom**, so JSON/CSV/SQLite
