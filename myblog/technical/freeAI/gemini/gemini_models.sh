@@ -1,0 +1,1 @@
+curl "https://generativelanguage.googleapis.com/v1beta/models"   -H "X-goog-api-key: $GEMINI_API_KEY"
