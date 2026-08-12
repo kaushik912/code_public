@@ -11,3 +11,6 @@
 - try with ollama/qwen2.5-coder:7b, its okay for my 16GB RAM for occasional usage.
 
 - claude code + haiku/sonnet is also a good idea for exploring claude-specific eco-system.
+
+- install pi and herdr(tmux for ai) 
+- herdr + pi is a good combo.
