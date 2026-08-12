@@ -5,7 +5,7 @@
 - pi agent + openrouter/free , this is okay. I did see some hallucinations. 
 - pi agent + gemini 3.6 flash worked great.
 - pi takes up less memory compared to opencode as it is minimally bootstrapped.
-- pi install npm:safe-coder
+- pi install npm:safe-coder, this is must-have to avoid any unintended operations like deletion of files etc.
 
 - i would also lean towards ollama with above agents.
 - try with ollama/qwen2.5-coder:7b, its okay for my 16GB RAM for occasional usage.
