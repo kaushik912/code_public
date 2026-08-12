@@ -16,9 +16,12 @@ load_dotenv()
 
 client = OpenRouter(api_key=os.environ["OPENROUTER_API_KEY"])
 
+## use openrouter/free will auto-select the free model
+## other options : meta-llama/llama-3.3-70b-instruct
+## cohere/north-mini-code:free: good for coding
 resp = client.chat.send(
-    model="meta-llama/llama-3.3-70b-instruct",
-    messages=[{"role": "user", "content": "Tell me a joke."}],
+    model="openrouter/free",
+    messages=[{"role": "user", "content": "Count vowels in the following text: Welcome"}],
 )
 
 print("model used :", resp.model)
