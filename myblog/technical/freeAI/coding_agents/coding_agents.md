@@ -7,3 +7,6 @@
 - i would also lean towards ollama with above agents.
 - try with ollama/qwen2.5-coder:7b, its okay for my 16GB RAM for occasional usage.
 
+
+- install pi and herdr(tmux for ai) 
+- herdr + pi is a good combo.
