@@ -12,3 +12,6 @@ This is very useful in case you want to avoid your tabs from getting overwritten
 - Type "Surround with" and select the command from the list. 
 - Select `Code` for inline or `Fenced Code Block` for multi-line code block.
 - Remember to select the text, otherwise the options don't come up.
+
+### Quick way to check markdown preview
+Ctrl + Shift + +V ( toggles markdown view)
