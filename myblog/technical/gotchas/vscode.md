@@ -15,3 +15,8 @@ This is very useful in case you want to avoid your tabs from getting overwritten
 
 ### Quick way to check markdown preview
 Ctrl + Shift + +V ( toggles markdown view)
+
+### Go back and forth in vscode
+- alt + back (go back to previous selection)
+- alt + forward (go forward)
+- alt + d ( drill-down into the method, i think this is my custom binding)
