@@ -1,0 +1,10 @@
+- Explored Routines in Claude Code
+    - I configured a PR merge -> Release Notes Draft.
+    - Every time the PR got merged, claude updated the PR with release notes of the changes that went-in that PR.
+    - This is kind-of similar to `/schedule` in the claude code cli.
+    - You could run a job to trigger based on cron schedule or some event (eg: PR open or closed etc)
+- Remote-Control
+    - this feature allows me to use my phone once the session is enabled with remote-control.
+    - It syncs both ways: whatever i type in my laptop terminal syncs to mobile and vice-versa
+    - it can be enabled/disabled per session using `/remote-control`
+    - Also, we can enable/disable globally using `/config` -> search for remote control and toggle it.
