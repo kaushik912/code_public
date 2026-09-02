@@ -8,3 +8,7 @@ The above skills don’t auto-work in claude. Only when we specify they work. Th
 ## Installation
 /plugin install mattpocock-skills
 
+## some useful prompts
+/waitwhat : when you feel struck in a long conversation and need some easy recap of last message!
+/grill-me: useful
+/learn: overkill, use if you want to create a learning repository with html/tutorial etc.
