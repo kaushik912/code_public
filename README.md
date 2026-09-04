@@ -1,75 +1,70 @@
-# AI Engineering Portfolio: Agents, RAG, MCP & Spring AI
+# SITEMAP — Project Mind-Map
 
-A working engineer's AI-agent stack, built one standalone repo at a time — not a single mega-project, but a deliberate set of focused builds, each one nailing down a specific piece: tool discovery, agent-to-agent delegation, RAG, memory, resilience. All linked repos are public, runnable, and on GitHub.
+## 🤖 ai-mcp-lab/
+- **a2a-hello-world** · [GitHub](https://github.com/kaushik912/ai-mcp-lab/tree/master/a2a-hello-world) — LLM orchestrator delegates to specialist agents via A2A (JSON-RPC) protocol
+- **langchain-learning-lab** · [GitHub](https://github.com/kaushik912/ai-mcp-lab/tree/master/langchain-learning-lab) — Runnable Python LangChain course examples (incl. Streamlit apps)
+- **langgraph_useful** · [GitHub](https://github.com/kaushik912/ai-mcp-lab/tree/master/langgraph_useful) — LangGraph lessons 2–4
+- **mcp-quote-client** · [GitHub](https://github.com/kaushik912/ai-mcp-lab/tree/master/mcp-quote-client) — MCP + LLM client consuming quote server
+- **mcp-quote-server** · [GitHub](https://github.com/kaushik912/ai-mcp-lab/tree/master/mcp-quote-server) — MCP server exposing `randomQuote` tool
+- **research-agent** · [GitHub](https://github.com/kaushik912/ai-mcp-lab/tree/master/research-agent) — Gemini-based Java agent: ChatClient + MCP tool calling + RAG + session memory
+- **research-agent-news-tool** · [GitHub](https://github.com/kaushik912/ai-mcp-lab/tree/master/research-agent-news-tool) — MCP server (`searchNews`) companion to research-agent
+- **resilience-llm-failover** · [GitHub](https://github.com/kaushik912/ai-mcp-lab/tree/master/resilience-llm-failover) — Gemini→OpenRouter failover via Resilience4j circuit breaker
+- **spring-ai-mcp-demo** · [GitHub](https://github.com/kaushik912/ai-mcp-lab/tree/master/spring-ai-mcp-demo) — Multi-service Spring AI + MCP (person/account services + client)
+- **weathermcp** · [GitHub](https://github.com/kaushik912/ai-mcp-lab/tree/master/weathermcp) — MCP weather agent, Dockerized
 
-If you're an interviewer skimming this: every project below is real code with a README and a `mvn`/`docker` command that works, not slideware. Anchored in a Java/Spring background, extended into the current AI-agent ecosystem.
+## 🎫 spec-driven/
+- **custom-spec-repo** · [GitHub](https://github.com/kaushik912/custom-spec-repo) — quote-board, tinyurl, todo-app, openapi-mcp, parallel-tutorial (spec-driven scaffolds)
+- **ecommerce-checkout** · [GitHub](https://github.com/kaushik912/ecommerce-checkout) — Checkout flow, Bruno tests, Makefile — built with the ticket-spec custom skill
+- **githubspeckit-repo** · [GitHub](https://github.com/kaushik912/githubspeckit-repo) — GitHub Spec Kit experiments: inventory-store, weather-app, java-constitution
+- **ticket-spec-demo** · [GitHub](https://github.com/kaushik912/ticket-spec-demo) — Python banking lib demoing TICKET → spec → plan → tasks workflow
 
-## Top 10 projects
+## 🏗️ infra-demos/
+- **flyway-demo** · [GitHub](https://github.com/kaushik912/infra-demos/tree/master/flyway-demo) — Flyway vs Liquibase side-by-side (Spring Boot 4)
+- **kstreams-demo** · [GitHub](https://github.com/kaushik912/infra-demos/tree/master/kstreams-demo) — Kafka Streams Java demo
+- **liquibase-demo** · [GitHub](https://github.com/kaushik912/infra-demos/tree/master/liquibase-demo) — Liquibase-owned schema, `ddl-auto=validate`
+- **outbox-demo** · [GitHub](https://github.com/kaushik912/infra-demos/tree/master/outbox-demo) — Transactional outbox pattern + Kafka relay
+- **splunk-springboot-distributed** · [GitHub](https://github.com/kaushik912/infra-demos/tree/master/splunk-springboot-distributed) — Distributed tracing across 2 services, Splunk HEC + Micrometer
+- **splunk-tracing-springboot** · [GitHub](https://github.com/kaushik912/infra-demos/tree/master/splunk-tracing-springboot) — Hello-world Spring Boot + Splunk HEC logging
 
-All original (non-forked) work, all public on GitHub.
+## 🧰 claude-code-tooling/
+- **agent-testing** · [GitHub](https://github.com/kaushik912/claude-code-tooling/tree/master/agent-testing) — Spring Boot sandbox for Claude agent workflows (review/docs/tests)
+- **herdr_demo** · [GitHub](https://github.com/kaushik912/claude-code-tooling/tree/master/herdr_demo) — agent-tab demo (backend/frontend)
+- **linux_utils** · [GitHub](https://github.com/kaushik912/claude-code-tooling/tree/master/linux_utils) — Shell/Python scripts: git repo init, Maven builds, push-status checks
+- **tmux-claude** · [GitHub](https://github.com/kaushik912/claude-code-tooling/tree/master/tmux-claude) — tmux + Claude workflow notes/bug lab
+- **topClaudeSkills** · [GitHub](https://github.com/kaushik912/claude-code-tooling/tree/master/topClaudeSkills) — Reference repo tracking installed 3rd-party Claude Code skills/plugins
+- **agent-porter** · [GitHub](https://github.com/kaushik912/claude-code-tooling/tree/master/agent-porter) — CLI to convert/install agent defs between Claude Code (`.claude/agents`) and GitHub Copilot (`.github/agents`) formats
+- **batch-utils** · [GitHub](https://github.com/kaushik912/claude-code-tooling/tree/master/batch-utils) — Batch/unbatch source files ↔ markdown docs (incl. GitHub Actions)
+- **claude_orchestrator** · [GitHub](https://github.com/kaushik912/claude-code-tooling/tree/master/claude_orchestrator) — Headless batch runner for `claude` CLI prompts/workflows
+- **my-claude-hooks** · [GitHub](https://github.com/kaushik912/claude-code-tooling/tree/master/my-claude-hooks) — Claude Code lifecycle hooks (moved in from `portfolio/`)
 
-### 1. [mcp-quote-server](https://github.com/kaushik912/mcp-quote-server) — a minimal MCP tool server
-Exposes one tool (`randomQuote`) over SSE using `spring-ai-starter-mcp-server-webmvc` — the "server" half of the MCP protocol, kept deliberately small so the contract (`tools/list`, tool call/result) is easy to point to.
+## 📦 misc/
+- **colab-notebooks** · [GitHub](https://github.com/kaushik912/misc/tree/master/colab-notebooks) — Colab workflow notes
+- **expense-tracker** · [GitHub](https://github.com/kaushik912/misc/tree/master/expense-tracker) — Firebase-backed expense tracker
+- **javasamples** · [GitHub](https://github.com/kaushik912/misc/tree/master/javasamples) — Topological sort / course schedule (DFS); needs JDK 21 (uses virtual threads)
+- **pythonsamples** · [GitHub](https://github.com/kaushik912/misc/tree/master/pythonsamples) — `topo_sort_dfs.py`
+- **system-design-quiz** · [GitHub](https://github.com/kaushik912/misc/tree/master/system-design-quiz) — Static design-practice quiz app (HTML + questions.json)
+- **tc-guide-testing-spring-boot-rest-api** · [GitHub](https://github.com/kaushik912/misc/tree/master/tc-guide-testing-spring-boot-rest-api) — Testcontainers + Spring Boot REST API tutorial-following code
 
-### 2. [mcp-quote-client](https://github.com/kaushik912/mcp-quote-client) — MCP host, three interchangeable brains
-Connects to `mcp-quote-server`, discovers its tools at startup, and hands the *same* toolset to three separate `ChatClient`s — Ollama (local), Anthropic, and Gemini (via Spring AI's OpenAI-compatible starter) — so the LLM decides per-request whether to call the tool, purely from its description. Mental model stated explicitly in the README: **"MCP is USB for tools."**
+## 🧪 nonclaude-coding-agents/
+- **github-copilot-demo** · [GitHub](https://github.com/kaushik912/nonclaude-coding-agents/tree/master/github-copilot-demo) — calendar-backend (Spring Boot + MySQL/Flyway) built via GitHub Copilot agents, Bruno e2e
+- **pi-agent-demo** · [GitHub](https://github.com/kaushik912/nonclaude-coding-agents/tree/master/pi-agent-demo) — firstpiworld (Spring Boot), Bruno e2e
 
-**Talking points (1+2):** host/server separation, tool selection is a model decision (not keyword routing), swapping the "brain" behind an identical toolset to compare providers.
+## 🗂️ portfolio/
+- **kaushik912.github.io** · [GitHub](https://github.com/kaushik912/kaushik912.github.io) — Jekyll resume site (GitHub Pages, live)
 
-### 3. [weathermcp](https://github.com/kaushik912/weathermcp) — provider-agnostic agent with multi-server MCP tool discovery
-A Python agent (FastAPI + LiteLLM) that aggregates tools from *two independent* MCP servers (weather, quotes) and routes each tool call back to the server that owns it — new tools require zero changes to the agent. LiteLLM makes the model itself a one-line swap (`anthropic/claude-sonnet-5` → `ollama/llama3.1` → any of ~100 providers), so neither the model nor the toolset is hardcoded anywhere in the app.
-
-**Talking points:** aggregating tools across multiple MCP servers, provider-agnostic model layer via LiteLLM, "reason → act → observe" agent loop from scratch (no framework).
-
-### 4. [research-agent-news-tool](https://github.com/kaushik912/research-agent-news-tool) — companion MCP server
-A `searchNews` tool exposed over SSE, standing in for a real news API behind a stable tool contract — the server half of project 5.
-
-### 5. [research-agent](https://github.com/kaushik912/research-agent) — full agent: RAG + memory + MCP tools, wired together
-Implements a published reference architecture (ChatClient + MCP tool calling + RAG + session memory) end to end on Gemini. `MessageChatMemoryAdvisor` gives it per-session conversation history, `QuestionAnswerAdvisor` injects retrieved docs from an in-memory vector store, and MCP tool callbacks — discovered at startup from `research-agent-news-tool` — let the model decide when to call `searchNews`. The README documents a real bug hit and fixed: Gemini's OpenAI-compatible `/embeddings` endpoint omits a field the strict `openai-java` client requires, so embeddings are routed through Spring AI's native Gemini module instead.
-
-**Talking points (4+5):** composing three advisor/tool concerns into one `ChatClient`, debugging a cross-vendor API compatibility gap instead of just swallowing the error, MCP client/server split across two services.
-
-### 6. [a2a-hello-world](https://github.com/kaushik912/a2a-hello-world) — Agent2Agent protocol, implemented not just documented
-A working A2A (Agent2Agent) system: an orchestrator that routes a query to one of two specialist agents by asking an LLM (temp 0.0) to pick, then sends a real `message/send` JSON-RPC 2.0 call to that agent's URL and unwraps the reply — no A2A SDK, hand-rolled request/response helpers, to see the actual wire protocol. LLM provider is pluggable per agent (`ollama` / `openai` / `anthropic`) via a `ChatModelFactory`, and each agent exposes a discovery card at `/.well-known/agent-card.json`.
-
-**Talking points:** A2A vs. MCP (agent-to-agent vs. agent-to-tool), building the protocol layer by hand before reaching for an SDK, per-agent model pluggability.
-
-### 7. [resilience-llm-failover](https://github.com/kaushik912/resilience-llm-failover) — treating an LLM provider like any other flaky dependency
-A Spring Boot POC that routes chat requests to Gemini by default and automatically fails over to OpenRouter when Gemini is rate-limited, using Resilience4j's `@CircuitBreaker` — plus Swagger/OpenAPI docs out of the box. It applies standard backend resilience patterns to an LLM call instead of treating "call the model" as a special case.
-
-**Talking points:** circuit breakers applied to LLM providers, multi-provider failover as a reliability concern (not just a cost-optimization one), Resilience4j in a Spring Boot service.
-
-### 8. [claude_orchestrator](https://github.com/kaushik912/claude_orchestrator) — tooling that drives AI agents, not just calls them
-A headless runner that batches prompts through the `claude` CLI — single files, a directory of `.md` prompts, or an ordered JSON workflow spec — executing each with `stream-json` output parsing, per-prompt timeouts, and full logging, wired to run unattended off a cron schedule. It's the meta layer: instead of writing another app that calls an LLM, this is infrastructure for running *many* agent invocations reliably and repeatably.
-
-**Talking points:** building infra around agentic CLIs rather than just using them interactively, batch/cron-driven AI workflows, treating agent runs as something you log and audit.
-
-### 9. [my-claude-skills](https://github.com/kaushik912/my-claude-skills) — authoring reusable capabilities for a coding agent
-A version-controlled library of custom Claude Code skills — structured instruction sets an agent loads on demand rather than being told from scratch each time. Includes a spec-driven feature workflow (`spec`/`ticket-spec`: spec → plan → tasks → TDD implementation, resumable from disk state, never from memory of an earlier turn), a Spring Boot project-init generator, a Postman→Bruno script converter, and a free-tier-LLM picker — plus checked-in security/Spring rules the agent must follow. This very README was produced by an agent operating under those rules.
-
-**Talking points:** treating agent behavior as versioned, testable configuration rather than ad hoc prompting; designing skills to be resumable from on-disk state (never trusted memory) for safe parallel/unattended runs.
-
-### 10. [langchain-learning-lab](https://github.com/kaushik912/langchain-learning-lab) — LangChain v1 / LangGraph fundamentals, runnable
-A from-scratch Python port of a LangChain course, rebuilt on the current LangChain v1/LangGraph API (`StateGraph`s with a checkpointer, not the deprecated `AgentExecutor`/`RunnableWithMessageHistory`) — numbered example folders covering LCEL, prompt templates, embeddings/vector stores, RAG, chat memory, sequential workflows, and agents, with concept docs kept separate from code.
-
-**Talking points:** migrating off deprecated LangChain APIs onto `StateGraph`, keeping runnable examples separate from prose explanation, breadth across the LangChain/LangGraph fundamentals independent of the Java/Spring stack.
-
----
-
-## Why this matters for a Spring/Java role with AI ambitions
-
-Most "AI experience" on a resume is a single `openai.ChatCompletion.create()` call. This portfolio instead treats AI features as **systems problems**: protocol design (A2A, MCP), resilience (circuit breakers, failover), composability (advisors, memory, RAG, tools), and workflow infrastructure — the same rigor you'd bring to any backend system, applied to agents. Deeper dives and design notes behind several of these builds live in this repo under [`technical/a2a`](technical/a2a), [`technical/mcp`](technical/mcp), [`technical/spring/spring-orchestrator`](technical/spring/spring-orchestrator), and [`technical/genai`](technical/genai).
+## 📍 Root
+- **my-claude-skills** · [GitHub](https://github.com/kaushik912/my-claude-skills) — 🌟 Git-controlled custom skills + rules. Kept at root: `.claude` is a symlink into `my-claude-skills/.claude`, and CLAUDE.md hardcodes this path.
+- **my-claude-agents** · [GitHub](https://github.com/kaushik912/my-claude-agents) — Canonical library of tested Claude Code subagents (from `agent-testing`), installable via `agent-porter`
 
 ---
-
-# Repository purpose
-
-This repository is a personal collection of technical notes, end-to-end (E2E) guides and quick-reference material maintained for learning and practical recall. It is meant as a learning aid and a ready-reckoner for common patterns, gotchas and walkthroughs.
-
-Key points:
-- Learning-focused: curated notes, tips and examples to help understand concepts quickly.
-- E2E guides: practical walkthroughs that can be followed start-to-finish for common tasks.
-- Quick references: short notes and "cheat-sheet" style pages for fast lookup.
-
-License / Use
-- This repo is intended for personal learning and sharing. Verify and test any steps before using in production.
+### Quick topic index
+| Folder | Projects |
+|---|---|
+| ai-mcp-lab/ | a2a-hello-world, langchain-learning-lab, langgraph_useful, mcp-quote-client, mcp-quote-server, research-agent, research-agent-news-tool, resilience-llm-failover, spring-ai-mcp-demo, weathermcp |
+| spec-driven/ | custom-spec-repo, ecommerce-checkout, githubspeckit-repo, ticket-spec-demo |
+| infra-demos/ | flyway-demo, kstreams-demo, liquibase-demo, outbox-demo, splunk-springboot-distributed, splunk-tracing-springboot |
+| claude-code-tooling/ | agent-testing, herdr_demo, linux_utils, tmux-claude, topClaudeSkills, agent-porter, batch-utils, claude_orchestrator, my-claude-hooks |
+| misc/ | colab-notebooks, expense-tracker, javasamples, pythonsamples, system-design-quiz, tc-guide-testing-spring-boot-rest-api |
+| nonclaude-coding-agents/ | github-copilot-demo, pi-agent-demo |
+| portfolio/ | kaushik912.github.io |
+| root | my-claude-skills, my-claude-agents |
