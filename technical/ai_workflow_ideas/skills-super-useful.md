@@ -38,3 +38,7 @@ npx skills remove (interactive selection, best)
 - agent-skills@addy-agent-skills
 - https://skills.addy.ie/tutorials/
 - plugins are in one common place and we can enable it per project. Its much better than copying using npx skills. A plugin often contains a bunch of skills and so its easier to disable/enable them.
+
+## Install project wise 
+- Avoid cluttering the user space with loads of skills.
+- Install whatever you require in a project.
