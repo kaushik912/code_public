@@ -3,6 +3,9 @@
 
 npx skills list -g
 npx mcpick list
+
+---
+## npx terminal skills
 npx terminal-skills install -h
 npx terminal-skills list
 
