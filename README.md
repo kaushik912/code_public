@@ -32,7 +32,6 @@
 - **linux_utils** · [GitHub](https://github.com/kaushik912/claude-code-tooling/tree/master/linux_utils) — Shell/Python scripts: git repo init, Maven builds, push-status checks
 - **tmux-claude** · [GitHub](https://github.com/kaushik912/claude-code-tooling/tree/master/tmux-claude) — tmux + Claude workflow notes/bug lab
 - **topClaudeSkills** · [GitHub](https://github.com/kaushik912/claude-code-tooling/tree/master/topClaudeSkills) — Reference repo tracking installed 3rd-party Claude Code skills/plugins
-- **agent-porter** · [GitHub](https://github.com/kaushik912/claude-code-tooling/tree/master/agent-porter) — CLI to convert/install agent defs between Claude Code (`.claude/agents`) and GitHub Copilot (`.github/agents`) formats
 - **batch-utils** · [GitHub](https://github.com/kaushik912/claude-code-tooling/tree/master/batch-utils) — Batch/unbatch source files ↔ markdown docs (incl. GitHub Actions)
 - **claude_orchestrator** · [GitHub](https://github.com/kaushik912/claude-code-tooling/tree/master/claude_orchestrator) — Headless batch runner for `claude` CLI prompts/workflows
 - **my-claude-hooks** · [GitHub](https://github.com/kaushik912/claude-code-tooling/tree/master/my-claude-hooks) — Claude Code lifecycle hooks (moved in from `portfolio/`)
@@ -53,7 +52,7 @@
 - **kaushik912.github.io** · [GitHub](https://github.com/kaushik912/kaushik912.github.io) — Jekyll resume site (GitHub Pages, live)
 
 ## 📍 Root
-- **my-claude-lib** · [GitHub](https://github.com/kaushik912/my-claude-lib) — 🌟 Git-controlled skills, agents, commands, and rules (consolidates the old `my-claude-skills` + `my-claude-agents`). Kept at root: `.claude` is a symlink into `my-claude-lib/.claude`, and CLAUDE.md hardcodes this path. Agents installable via `agent-porter`.
+- **my-claude-lib** · [GitHub](https://github.com/kaushik912/my-claude-lib) — 🌟 Git-controlled skills, agents, commands, and rules (consolidates the old `my-claude-skills` + `my-claude-agents`). Kept at root: `.claude` is a symlink into `my-claude-lib/.claude`, and CLAUDE.md hardcodes this path. Includes `tools/agent-porter` (CLI to convert/install agent defs between Claude Code and GitHub Copilot formats) and `tools/my-pick`.
 
 ---
 ### Quick topic index
@@ -62,7 +61,7 @@
 | ai-mcp-lab/ | a2a-hello-world, langchain-learning-lab, langgraph_useful, mcp-quote-client, mcp-quote-server, research-agent, research-agent-news-tool, resilience-llm-failover, spring-ai-mcp-demo, weathermcp |
 | spec-driven/ | custom-spec-repo, ecommerce-checkout, githubspeckit-repo, ticket-spec-demo |
 | infra-demos/ | flyway-demo, kstreams-demo, liquibase-demo, outbox-demo, splunk-springboot-distributed, splunk-tracing-springboot |
-| claude-code-tooling/ | agent-testing, herdr_demo, linux_utils, tmux-claude, topClaudeSkills, agent-porter, batch-utils, claude_orchestrator, my-claude-hooks |
+| claude-code-tooling/ | agent-testing, herdr_demo, linux_utils, tmux-claude, topClaudeSkills, batch-utils, claude_orchestrator, my-claude-hooks |
 | misc/ | colab-notebooks, expense-tracker, javasamples, pythonsamples, system-design-quiz, tc-guide-testing-spring-boot-rest-api |
 | nonclaude-coding-agents/ | github-copilot-demo, pi-agent-demo |
 | portfolio/ | kaushik912.github.io |
