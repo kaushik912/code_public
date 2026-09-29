@@ -14,3 +14,7 @@ Try this out and see how it goes with overall workflow.
 - Once can switch between copilot and claude using the --force merge options.
 - This way, I feel its model-agnostic.
 - I still prefer to keep it very minimal so that I don't spend too much time on detailed specs (esp. if the requirements are in flux)
+
+---
+You can look at extensions: 
+https://github.github.io/spec-kit/community/extensions.html
