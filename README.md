@@ -53,8 +53,7 @@
 - **kaushik912.github.io** · [GitHub](https://github.com/kaushik912/kaushik912.github.io) — Jekyll resume site (GitHub Pages, live)
 
 ## 📍 Root
-- **my-claude-skills** · [GitHub](https://github.com/kaushik912/my-claude-skills) — 🌟 Git-controlled custom skills + rules. Kept at root: `.claude` is a symlink into `my-claude-skills/.claude`, and CLAUDE.md hardcodes this path.
-- **my-claude-agents** · [GitHub](https://github.com/kaushik912/my-claude-agents) — Canonical library of tested Claude Code subagents (from `agent-testing`), installable via `agent-porter`
+- **my-claude-lib** · [GitHub](https://github.com/kaushik912/my-claude-lib) — 🌟 Git-controlled skills, agents, commands, and rules (consolidates the old `my-claude-skills` + `my-claude-agents`). Kept at root: `.claude` is a symlink into `my-claude-lib/.claude`, and CLAUDE.md hardcodes this path. Agents installable via `agent-porter`.
 
 ---
 ### Quick topic index
@@ -67,4 +66,4 @@
 | misc/ | colab-notebooks, expense-tracker, javasamples, pythonsamples, system-design-quiz, tc-guide-testing-spring-boot-rest-api |
 | nonclaude-coding-agents/ | github-copilot-demo, pi-agent-demo |
 | portfolio/ | kaushik912.github.io |
-| root | my-claude-skills, my-claude-agents |
+| root | my-claude-lib |
