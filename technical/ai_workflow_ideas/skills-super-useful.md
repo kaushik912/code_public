@@ -4,6 +4,8 @@
 npx skills list -g
 npx mcpick list
 
+npx mcpick enable <server> --scope local
+npx mcpick disable <server> --scope local
 ---
 ## npx terminal skills
 npx terminal-skills install -h
